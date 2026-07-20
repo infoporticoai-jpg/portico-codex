@@ -6,7 +6,6 @@ import {
   Headphones, Languages, Menu, PhoneCall, ShieldCheck, Sparkles,
   Stethoscope, Wrench, X,
 } from "lucide-react";
-import { motion } from "framer-motion";
 
 const problems = [
   [PhoneCall, "Missed leads", "When calls go unanswered, new business goes elsewhere."],
@@ -19,13 +18,13 @@ const industries = [[Building2, "Property Management"], [Wrench, "HVAC"], [Steth
 const faq = [["How human does the voice agent sound?", "Natural, clear, and tailored to your business. The goal is a reliable first response that feels helpful from the first word."], ["Can calls be transferred?", "Yes. When a customer needs a person, Portico routes the call with context so the handoff feels seamless."], ["Can I customize the agent?", "Yes. Your agent can be trained on your services, hours, policies, routing rules, and preferred conversation style."], ["Do you support English and French?", "Yes. Portico supports bilingual customer experiences in English and French."], ["How long does setup take?", "Self-serve customers can get started quickly. Enterprise onboarding is scoped around your workflow and integrations."], ["What happens if the agent cannot solve the request?", "The call is warm-transferred to a real person for help."]];
 
 function ProductPreview() {
-  return <motion.div className="product" initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: .7 }}>
+  return <div className="product">
     <div className="app"><aside className="sidebar"><b className="wordmark">PORTICO</b><p className="side-title">WORKSPACE</p>{["Overview", "Calls", "Appointments", "Conversations", "Analytics"].map((item, i) => <div key={item} className={`side-item ${i === 0 ? "active" : ""}`}>{item}</div>)}</aside>
       <main className="appmain"><div className="apphead"><div><h3>Good morning, Portico</h3><span className="fine">Monday, July 20</span></div><span className="status">● All systems live</span></div>
         <div className="stats">{[["Today’s calls", "48"], ["Appointments", "12"], ["Transfers", "6"], ["Avg. response", "1.2s"]].map(([label, value]) => <div className="stat" key={label}><span>{label}</span><strong>{value}</strong></div>)}</div>
         <div className="appgrid"><div className="panel"><h4>Recent conversations</h4>{["New patient inquiry", "Service appointment", "After-hours support"].map((item, i) => <div className="call" key={item}><span><b>{item}</b><br /><small>Sample call · {i + 2} min ago</small></span><span className="tag">Handled</span></div>)}</div><div className="panel"><h4>Current call</h4><b className="call-name">Incoming customer</b><p className="fine">Transcript preview</p><div className="wave">{Array.from({ length: 20 }, (_, i) => <i key={i} />)}</div><span className="tag">Voice agent active</span></div></div>
       </main></div>
-  </motion.div>;
+  </div>;
 }
 
 function ContactModal({ mode, onClose }: { mode: "trial" | "demo"; onClose: () => void }) {
