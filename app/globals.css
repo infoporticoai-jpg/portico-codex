@@ -270,6 +270,15 @@ body { margin:0; color:var(--ink); background:#fff; font-family:Geist,Arial,sans
   .vd-cta-actions .button { flex:1; }
 }
 
+/* Scroll-triggered sticky CTA */
+.stickybar { position:fixed; left:0; right:0; margin:0 auto; bottom:22px; z-index:40; display:flex; align-items:center; gap:16px; width:min(720px,calc(100% - 32px)); padding:12px 14px 12px 20px; background:#fff; border:1px solid #eef2f7; border-radius:16px; box-shadow:0 22px 54px rgba(15,23,42,.18); }
+.stickybar-dot { width:9px; height:9px; border-radius:50%; background:#ef4444; flex:none; animation:livedot 1.5s infinite; }
+.stickybar p { margin:0; flex:1; font-size:14.5px; font-weight:600; color:#1b2438; line-height:1.35; }
+.stickybar .button.primary { flex:none; }
+.stickybar-x { flex:none; border:0; background:transparent; color:#94a3b8; cursor:pointer; padding:6px; display:grid; place-items:center; border-radius:8px; }
+.stickybar-x:hover { color:#1b2438; background:#f1f5f9; }
+@media(max-width:560px){ .stickybar { flex-wrap:wrap; gap:10px 12px; padding:14px; bottom:12px; } .stickybar p{ flex:1 1 100%; font-size:13px; } .stickybar .button.primary{ flex:1; } }
+
 /* Voice-demo compact overrides (placed last so they win) */
 .vdemo { margin:18px auto 0; }
 .vd-center { min-height:0; }

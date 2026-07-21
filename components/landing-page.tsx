@@ -5,7 +5,7 @@ import {
   ArrowRight, Building2, CheckCircle2, Clock, HeartPulse, Home, Menu, PawPrint,
   PhoneCall, PhoneMissed, Scale, ShieldCheck, Stethoscope, Users, Wrench, X,
 } from "lucide-react";
-import { motion } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 import { VoiceDemo } from "./voice-demo";
 
 function LogoMark() {
@@ -92,6 +92,34 @@ const SOLUTIONS: { id: string; label: string; Icon: typeof Building2; blurb: str
 const trustSectors = ["Property Management", "Healthcare", "Home Services", "Legal", "Dental", "Insurance"];
 const faq = [["How human does the voice agent sound?", "Natural, clear, and tailored to your business. The goal is a reliable first response that feels helpful from the first word."], ["Can calls be transferred?", "Yes. When a customer needs a person, Portico routes the call with context so the handoff feels seamless."], ["Can I customize the agent?", "Yes. Your agent can be trained on your services, hours, policies, routing rules, and preferred conversation style."], ["Do you support English and French?", "Yes. Portico supports bilingual customer experiences in English and French."], ["How long does setup take?", "Self-serve customers can get started quickly. Enterprise onboarding is scoped around your workflow and integrations."], ["What happens if the agent cannot solve the request?", "The call is warm-transferred to a real person for help."]];
 
+function StickyCTA({ onStart }: { onStart: () => void }) {
+  const [show, setShow] = useState(false);
+  const [dismissed, setDismissed] = useState(false);
+  useEffect(() => {
+    const onScroll = () => {
+      const y = window.scrollY;
+      const doc = document.documentElement;
+      const nearBottom = window.innerHeight + y > doc.scrollHeight - 640;
+      setShow(y > window.innerHeight * 0.85 && !nearBottom);
+    };
+    window.addEventListener("scroll", onScroll, { passive: true });
+    onScroll();
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+  return (
+    <AnimatePresence>
+      {show && !dismissed && (
+        <motion.div className="stickybar" initial={{ y: 96, opacity: 0 }} animate={{ y: 0, opacity: 1 }} exit={{ y: 96, opacity: 0 }} transition={{ type: "spring", stiffness: 320, damping: 30 }}>
+          <span className="stickybar-dot" />
+          <p>While you&rsquo;re reading this, a missed call just went to a competitor.</p>
+          <button className="button primary" onClick={onStart}>Start Free Trial</button>
+          <button className="stickybar-x" aria-label="Dismiss" onClick={() => setDismissed(true)}><X size={18} /></button>
+        </motion.div>
+      )}
+    </AnimatePresence>
+  );
+}
+
 function ContactModal({ mode, onClose }: { mode: "trial" | "demo"; onClose: () => void }) {
   const [sent, setSent] = useState(false);
   const isTrial = mode === "trial";
@@ -136,5 +164,5 @@ export function LandingPage() {
       <section id="pricing" className="section"><div className="shell"><div className="section-head reveal"><span className="eyebrow">Straightforward start</span><h2>Choose the way you want to begin.</h2></div><div className="pricing reveal"><div className="plan"><span className="eyebrow">Self-serve</span><h3>For growing businesses.</h3><p>Start answering more calls today.</p><ul><li>14-day free trial</li><li>Up to 30 voice-agent handled calls</li><li>No setup fee</li><li>Cancel anytime</li></ul><button className="button primary" onClick={() => open("trial")}>Start Free Trial</button></div><div id="enterprise" className="plan featured"><span className="eyebrow enterprise-label">Enterprise</span><h3>Built around your operation.</h3><p>Custom workflows for teams where every conversation counts.</p><ul><li>Custom voice workflows</li><li>CRM integrations</li><li>Dedicated onboarding</li><li>Ongoing support</li><li>Custom pricing</li></ul><button className="button light" onClick={() => open("demo")}>Contact Sales</button></div></div></div></section>
       <section className="section soft"><div className="shell"><div className="section-head reveal"><span className="eyebrow">Questions, answered</span><h2>What to expect from Portico.</h2></div><div className="faq reveal">{faq.map(([question, answer]) => <details key={question}><summary>{question}</summary><p>{answer}</p></details>)}</div></div></section>
       <section className="cta"><div className="shell"><h2 className="reveal">Never Miss Another<br />Customer Call.</h2><p className="reveal">Voice agents answer instantly. Humans handle what matters. You get peace of mind.</p><div className="hero-actions reveal"><button className="button primary" onClick={() => open("trial")}>Start Free Trial</button><button className="button dark-outline" onClick={() => open("demo")}>Book Enterprise Demo</button></div></div></section>
-    </main><footer className="footer"><div className="shell footer-inner"><a className="wordmark" href="#top"><LogoMark />PORTICO</a><div className="footer-links"><a href="#solution">How it Works</a><a href="#pricing">Pricing</a><a href="#enterprise">Enterprise</a><a href="mailto:hello@portico.intelligence">Email us</a></div></div></footer>{modal && <ContactModal mode={modal} onClose={() => setModal(null)} />}</>;
+    </main><footer className="footer"><div className="shell footer-inner"><a className="wordmark" href="#top"><LogoMark />PORTICO</a><div className="footer-links"><a href="#solution">How it Works</a><a href="#pricing">Pricing</a><a href="#enterprise">Enterprise</a><a href="mailto:hello@portico.intelligence">Email us</a></div></div></footer><StickyCTA onStart={() => open("trial")} />{modal && <ContactModal mode={modal} onClose={() => setModal(null)} />}</>;
 }
