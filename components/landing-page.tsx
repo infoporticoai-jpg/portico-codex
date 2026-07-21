@@ -2,10 +2,10 @@
 
 import { FormEvent, useEffect, useRef, useState } from "react";
 import {
-  ArrowRight, ArrowRightLeft, BarChart3, Bot, Building2, CalendarCheck, CheckCircle2,
-  Clock, Headphones, History, Languages, Menu, Mic, PhoneCall, PhoneMissed,
-  ShieldCheck, Sparkles, Stethoscope, UserCheck, Users, Wrench, X,
+  ArrowRight, Building2, CheckCircle2, Clock, Menu, Package, PawPrint,
+  PhoneCall, PhoneMissed, Scale, ShieldCheck, Stethoscope, Users, Wrench, X,
 } from "lucide-react";
+import { motion } from "framer-motion";
 import { VoiceDemo } from "./voice-demo";
 
 function LogoMark() {
@@ -20,48 +20,39 @@ function LogoMark() {
   );
 }
 
-function BentoViz({ kind }: { kind: string }) {
-  if (kind === "live") return (
-    <div className="fx-panel">
-      <div className="fx-row"><span className="fx-badge"><span className="fx-dot" />Live call</span><span className="fx-mini">answered 1.2s</span></div>
-      <div className="fx-wave">{Array.from({ length: 28 }, (_, i) => <i key={i} style={{ height: `${18 + Math.round(70 * Math.abs(Math.sin(i * 0.7)))}%` }} />)}</div>
-      <div className="fx-row"><span className="fx-mini">Incoming customer</span><span className="fx-tag">Answered</span></div>
-    </div>
-  );
-  if (kind === "chart") return (
-    <div className="fx-panel">
-      <div className="fx-row"><span className="fx-mini">Calls this week</span><span className="fx-up">▲ 18%</span></div>
-      <div className="fx-chart">{[46, 64, 52, 78, 60, 90, 72].map((h, i) => <span key={i} style={{ height: `${h}%` }} />)}</div>
-      <div className="fx-row"><span className="fx-mini">Mon</span><span className="fx-mini">Sun</span></div>
-    </div>
-  );
-  if (kind === "cal") return (
-    <div className="fx-cal">
-      <div className="fx-cal-h">{["M", "T", "W", "T", "F"].map((d, i) => <span key={i}>{d}</span>)}</div>
-      <div className="fx-cal-g">{Array.from({ length: 10 }, (_, i) => <span key={i} className={i === 7 ? "booked" : ""}>{i === 7 ? "✓" : ""}</span>)}</div>
-    </div>
-  );
-  if (kind === "wave") return (
-    <div className="fx-rec">
-      <span className="fx-play" />
-      <div className="fx-wave sm">{Array.from({ length: 22 }, (_, i) => <i key={i} style={{ height: `${20 + Math.round(60 * Math.abs(Math.sin(i * 0.9)))}%` }} />)}</div>
-      <span className="fx-mini">0:12</span>
-    </div>
-  );
-  if (kind === "lang") return <div className="fx-lang"><span className="on">EN</span><span>FR</span></div>;
-  return null;
-}
-
-function BentoCard({ Icon, title, desc, cls, viz }: (typeof BENTO)[number]) {
-  const big = cls === "b-lg";
+function IndustrySolutions() {
+  const [active, setActive] = useState(SOLUTIONS[0].id);
+  const s = SOLUTIONS.find((x) => x.id === active) ?? SOLUTIONS[0];
+  const Icon = s.Icon;
   return (
-    <div className={`bento-card ${cls}`}>
-      {viz && <div className={`bento-viz ${big ? "big" : "mini"}`}><BentoViz kind={viz} /></div>}
-      <div className="bento-foot">
-        {(big || !viz) && <span className="bento-ico"><Icon size={big ? 22 : 20} /></span>}
-        <h3>{title}</h3>
-        <p>{desc}</p>
+    <div className="sol reveal">
+      <div className="sol-tabs" role="tablist" aria-label="Choose an industry">
+        {SOLUTIONS.map((x) => (
+          <button key={x.id} role="tab" aria-selected={x.id === active} className={`sol-tab ${x.id === active ? "on" : ""}`} onClick={() => setActive(x.id)}>
+            {x.id === active && <motion.span layoutId="sol-pill" className="sol-pill" transition={{ type: "spring", stiffness: 400, damping: 34 }} />}
+            <span className="sol-tab-t">{x.label}</span>
+          </button>
+        ))}
       </div>
+      <motion.div key={active} className="sol-panel" initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.3 }}>
+        <div className="sol-left">
+          <h3>{s.label}</h3>
+          <p className="sol-blurb">{s.blurb}</p>
+          <ul className="sol-list">
+            {s.handles.map((h) => <li key={h}><CheckCircle2 size={17} />{h}</li>)}
+          </ul>
+        </div>
+        <div className="sol-card">
+          <div className="sol-card-h">
+            <span className="sol-ico"><Icon size={24} /></span>
+            <div className="sol-card-id"><b>{s.label}</b><span>Configured workflow</span></div>
+            <span className="sol-live"><i />Live</span>
+          </div>
+          <p className="sol-card-label">Common call intents</p>
+          <div className="sol-tags">{s.tags.map((t) => <span key={t}>{t}</span>)}</div>
+          <div className="sol-route"><span className="sol-route-dot" />AI answers instantly — warm-transfers to your team when it matters.</div>
+        </div>
+      </motion.div>
     </div>
   );
 }
@@ -72,18 +63,14 @@ const problems = [
   [Clock, "After hours", "Business doesn’t stop at 5 PM — and neither do your callers."],
   [ShieldCheck, "Inconsistent experience", "Every caller deserves the same professional first impression."],
 ];
-const BENTO: { Icon: typeof PhoneCall; title: string; desc: string; cls: string; viz?: string }[] = [
-  { Icon: PhoneCall, title: "24/7 Answering", desc: "Never send a customer to voicemail, day or night.", cls: "b-lg", viz: "live" },
-  { Icon: CalendarCheck, title: "Appointment Booking", desc: "Schedule appointments directly during the conversation.", cls: "", viz: "cal" },
-  { Icon: UserCheck, title: "Lead Qualification", desc: "Capture the information your team needs before following up.", cls: "" },
-  { Icon: BarChart3, title: "Analytics Dashboard", desc: "Review calls, transcripts, and performance in one place.", cls: "b-lg", viz: "chart" },
-  { Icon: Languages, title: "Bilingual Support", desc: "Serve callers in English and French.", cls: "", viz: "lang" },
-  { Icon: Mic, title: "Call Recording", desc: "Keep searchable recordings for training and quality assurance.", cls: "", viz: "wave" },
-  { Icon: ArrowRightLeft, title: "Call Transfers", desc: "Seamlessly hand complex conversations to the right person.", cls: "" },
-  { Icon: History, title: "Conversation History", desc: "Access every conversation whenever you need it.", cls: "" },
-  { Icon: Bot, title: "Custom Voice Agents", desc: "Tailor your voice agent to your business and workflows.", cls: "" },
+const SOLUTIONS: { id: string; label: string; Icon: typeof Building2; blurb: string; handles: string[]; tags: string[] }[] = [
+  { id: "property-management", label: "Property Management", Icon: Building2, blurb: "Keep tenants and prospects served without tying up your office.", handles: ["Tenant inquiries", "Maintenance requests", "Leasing appointments", "Emergency dispatch", "Rent & payment questions", "Bilingual support"], tags: ["Tenants", "Maintenance", "Leasing", "Emergencies"] },
+  { id: "hvac", label: "HVAC", Icon: Wrench, blurb: "Capture every service call, day or night, and dispatch fast.", handles: ["Emergency service requests", "Appointment scheduling", "After-hours dispatch", "Service & quote questions", "Maintenance reminders", "Bilingual support"], tags: ["Emergencies", "Scheduling", "Dispatch", "Quotes"] },
+  { id: "dental", label: "Dental", Icon: Stethoscope, blurb: "Fill the schedule and welcome new patients automatically.", handles: ["New patient booking", "Appointment scheduling", "Insurance questions", "Reminders & reschedules", "After-hours triage", "Bilingual support"], tags: ["New patients", "Booking", "Insurance", "Reminders"] },
+  { id: "law-firms", label: "Law Firms", Icon: Scale, blurb: "Qualify and intake new clients before they call the next firm.", handles: ["Client intake", "Lead qualification", "Consultation scheduling", "Case status routing", "Confidential messages", "Bilingual support"], tags: ["Intake", "Qualification", "Scheduling", "Routing"] },
+  { id: "veterinary", label: "Veterinary", Icon: PawPrint, blurb: "Triage urgent cases and book visits without missing a call.", handles: ["Urgent care triage", "Appointment booking", "Prescription refills", "After-hours coverage", "New client intake", "Bilingual support"], tags: ["Urgent care", "Booking", "Refills", "After-hours"] },
+  { id: "storage", label: "Storage", Icon: Package, blurb: "Answer availability and access questions, and reserve units.", handles: ["Unit availability", "Reservations", "Access & gate hours", "Billing questions", "Move-in scheduling", "Bilingual support"], tags: ["Availability", "Reservations", "Access", "Billing"] },
 ];
-const industries = [[Building2, "Property Management"], [Wrench, "HVAC"], [Stethoscope, "Dental"], [Headphones, "Veterinary"], [ShieldCheck, "Insurance"], [Building2, "Storage"], [ShieldCheck, "Law Firms"], [Stethoscope, "Medical Clinics"], [Wrench, "Home Services"], [Building2, "Automotive"]];
 const trustSectors = ["Property Management", "Healthcare", "Home Services", "Legal", "Dental", "Insurance"];
 const faq = [["How human does the voice agent sound?", "Natural, clear, and tailored to your business. The goal is a reliable first response that feels helpful from the first word."], ["Can calls be transferred?", "Yes. When a customer needs a person, Portico routes the call with context so the handoff feels seamless."], ["Can I customize the agent?", "Yes. Your agent can be trained on your services, hours, policies, routing rules, and preferred conversation style."], ["Do you support English and French?", "Yes. Portico supports bilingual customer experiences in English and French."], ["How long does setup take?", "Self-serve customers can get started quickly. Enterprise onboarding is scoped around your workflow and integrations."], ["What happens if the agent cannot solve the request?", "The call is warm-transferred to a real person for help."]];
 
@@ -166,9 +153,8 @@ export function LandingPage() {
         </div>
       </div></div></section>
       <section className="section"><div className="shell"><div className="section-head reveal"><span className="eyebrow">Why hybrid wins</span><h2>AI speed with human judgment, on every call.</h2></div><div className="compare reveal">{[["", "Traditional call center", "Voice-only AI", "Portico"], ["Availability", "Business hours", "24/7", "24/7"], ["Customer experience", "Variable", "Limited escalation", "Human expertise on demand"], ["Complex requests", "Capable", "Limited", "AI speed + human judgment"], ["Response time", "Queue dependent", "Instant", "Instant"], ["Scalability", "Costly", "High", "Enterprise scale"]].map((row, i) => <div className={`compare-row ${i === 0 ? "header" : ""}`} key={row[0]}>{row.map((item, j) => <div key={j}>{item}</div>)}</div>)}</div></div></section>
-      <section className="section soft"><div className="shell"><div className="section-head reveal"><span className="eyebrow">Built around the call</span><h2>Everything you need to deliver a better first response.</h2></div><div className="bento reveal">{BENTO.map((f) => <BentoCard key={f.title} {...f} />)}</div></div></section>
+      <section id="industries" className="section soft"><div className="shell"><div className="section-head reveal"><span className="eyebrow">Built around your business</span><h2>One platform. Configured for every industry.</h2><p>Portico adapts to how each business takes calls — the intents it handles, and when it hands off to your team.</p></div><IndustrySolutions /></div></section>
       <section className="section"><div className="shell"><div className="section-head reveal"><span className="eyebrow">Full visibility</span><h2>A clear view of every conversation.</h2><p>See call activity, appointments, transfers and the context behind every customer touchpoint.</p></div><div className="dash-preview reveal"><ProductPreview /></div></div></section>
-      <section id="industries" className="section soft"><div className="shell"><div className="section-head reveal"><span className="eyebrow">Made for real operations</span><h2>Reliable calls across every kind of service business.</h2></div><div className="cards industry reveal">{industries.map(([Icon, title]) => { const I = Icon as typeof PhoneCall; return <div className="card" key={title as string}><I className="icon" size={19} /><h3>{title as string}</h3></div>; })}</div></div></section>
       <section id="pricing" className="section"><div className="shell"><div className="section-head reveal"><span className="eyebrow">Straightforward start</span><h2>Choose the way you want to begin.</h2></div><div className="pricing reveal"><div className="plan"><span className="eyebrow">Self-serve</span><h3>For growing businesses.</h3><p>Start answering more calls today.</p><ul><li>14-day free trial</li><li>Up to 30 voice-agent handled calls</li><li>No setup fee</li><li>Cancel anytime</li></ul><button className="button primary" onClick={() => open("trial")}>Start Free Trial</button></div><div id="enterprise" className="plan featured"><span className="eyebrow enterprise-label">Enterprise</span><h3>Built around your operation.</h3><p>Custom workflows for teams where every conversation counts.</p><ul><li>Custom voice workflows</li><li>CRM integrations</li><li>Dedicated onboarding</li><li>Ongoing support</li><li>Custom pricing</li></ul><button className="button light" onClick={() => open("demo")}>Contact Sales</button></div></div></div></section>
       <section className="section soft"><div className="shell"><div className="section-head reveal"><span className="eyebrow">Questions, answered</span><h2>What to expect from Portico.</h2></div><div className="faq reveal">{faq.map(([question, answer]) => <details key={question}><summary>{question}</summary><p>{answer}</p></details>)}</div></div></section>
       <section className="cta"><div className="shell"><h2 className="reveal">Never Miss Another<br />Customer Call.</h2><p className="reveal">Voice agents answer instantly. Humans handle what matters. You get peace of mind.</p><div className="hero-actions reveal"><button className="button primary" onClick={() => open("trial")}>Start Free Trial</button><button className="button dark-outline" onClick={() => open("demo")}>Book Enterprise Demo</button></div></div></section>
