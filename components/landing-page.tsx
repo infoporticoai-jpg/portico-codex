@@ -1,6 +1,6 @@
 "use client";
 
-import { FormEvent, useEffect, useRef, useState } from "react";
+import { FormEvent, useEffect, useState } from "react";
 import {
   ArrowRight, Building2, CheckCircle2, Clock, HeartPulse, Home, Menu, PawPrint,
   PhoneCall, PhoneMissed, Scale, ShieldCheck, Stethoscope, Users, Wrench, X,
@@ -92,45 +92,6 @@ const SOLUTIONS: { id: string; label: string; Icon: typeof Building2; blurb: str
 const trustSectors = ["Property Management", "Healthcare", "Home Services", "Legal", "Dental", "Insurance"];
 const faq = [["How human does the voice agent sound?", "Natural, clear, and tailored to your business. The goal is a reliable first response that feels helpful from the first word."], ["Can calls be transferred?", "Yes. When a customer needs a person, Portico routes the call with context so the handoff feels seamless."], ["Can I customize the agent?", "Yes. Your agent can be trained on your services, hours, policies, routing rules, and preferred conversation style."], ["Do you support English and French?", "Yes. Portico supports bilingual customer experiences in English and French."], ["How long does setup take?", "Self-serve customers can get started quickly. Enterprise onboarding is scoped around your workflow and integrations."], ["What happens if the agent cannot solve the request?", "The call is warm-transferred to a real person for help."]];
 
-function CountUp({ value, suffix = "" }: { value: number; suffix?: string }) {
-  const ref = useRef<HTMLElement>(null);
-  useEffect(() => {
-    const el = ref.current;
-    if (!el) return;
-    if (typeof IntersectionObserver === "undefined") { el.textContent = `${value}${suffix}`; return; }
-    let raf = 0;
-    const run = () => {
-      const start = performance.now();
-      const step = (now: number) => {
-        const p = Math.min(1, (now - start) / 900);
-        const eased = 1 - Math.pow(1 - p, 3);
-        el.textContent = `${Math.round(value * eased)}${suffix}`;
-        if (p < 1) raf = requestAnimationFrame(step);
-      };
-      raf = requestAnimationFrame(step);
-    };
-    const io = new IntersectionObserver((entries) => {
-      if (entries[0].isIntersecting) { run(); io.disconnect(); }
-    }, { threshold: 0.4 });
-    io.observe(el);
-    return () => { cancelAnimationFrame(raf); io.disconnect(); };
-  }, [value, suffix]);
-  return <strong ref={ref}>{value}{suffix}</strong>;
-}
-
-function ProductPreview() {
-  const stats: [string, number | string, string?][] = [
-    ["Incoming calls", 18], ["Active conversations", 3], ["Pending transfers", 2], ["Avg. wait time", "1.2s"],
-  ];
-  return <div className="product">
-    <div className="app"><aside className="sidebar"><b className="wordmark">PORTICO</b><p className="side-title">WORKSPACE</p>{["Overview", "Calls", "Appointments", "Conversations", "Analytics"].map((item, i) => <div key={item} className={`side-item ${i === 0 ? "active" : ""}`}>{item}</div>)}</aside>
-      <main className="appmain"><div className="apphead"><div><h3>Good morning, Portico</h3><span className="fine">Live workspace</span></div><span className="status">● All systems live</span></div>
-        <div className="stats">{stats.map(([label, value, suffix]) => <div className="stat" key={label}><span>{label}</span>{typeof value === "number" ? <CountUp value={value} suffix={suffix} /> : <strong>{value}</strong>}</div>)}</div>
-        <div className="appgrid"><div className="panel"><h4>Recent conversations</h4>{["New patient inquiry", "Service appointment", "After-hours support"].map((item, i) => <div className="call" key={item}><span><b>{item}</b><br /><small>Sample call · {i + 2} min ago</small></span><span className="tag">Handled</span></div>)}</div><div className="panel"><h4>Current call</h4><b className="call-name">Incoming customer</b><p className="fine">Transcript preview</p><div className="wave">{Array.from({ length: 20 }, (_, i) => <i key={i} />)}</div><span className="tag">Voice agent active</span></div></div>
-      </main></div>
-  </div>;
-}
-
 function ContactModal({ mode, onClose }: { mode: "trial" | "demo"; onClose: () => void }) {
   const [sent, setSent] = useState(false);
   const isTrial = mode === "trial";
@@ -172,7 +133,6 @@ export function LandingPage() {
       </div></div></section>
       <section className="section"><div className="shell"><div className="section-head reveal"><span className="eyebrow">Why hybrid wins</span><h2>Instant answers with human judgment, on every call.</h2></div><div className="compare reveal">{[["", "Traditional call center", "Voice-only bots", "Portico"], ["Availability", "Business hours", "24/7", "24/7"], ["Customer experience", "Variable", "Limited escalation", "Human expertise on demand"], ["Complex requests", "Capable", "Limited", "Voice agent + human judgment"], ["Response time", "Queue dependent", "Instant", "Instant"], ["Scalability", "Costly", "High", "Enterprise scale"]].map((row, i) => <div className={`compare-row ${i === 0 ? "header" : ""}`} key={row[0]}>{row.map((item, j) => <div key={j}>{item}</div>)}</div>)}</div></div></section>
       <section id="industries" className="section soft"><div className="shell"><div className="section-head reveal"><span className="eyebrow">Built around your business</span><h2>One platform. Configured for every industry.</h2><p>Every industry handles calls differently. Portico adapts its voice agents, workflows, and escalation paths to match your business.</p></div><IndustrySolutions /></div></section>
-      <section className="section"><div className="shell"><div className="section-head reveal"><span className="eyebrow">Full visibility</span><h2>A clear view of every conversation.</h2><p>See call activity, appointments, transfers and the context behind every customer touchpoint.</p></div><div className="dash-preview reveal"><ProductPreview /></div></div></section>
       <section id="pricing" className="section"><div className="shell"><div className="section-head reveal"><span className="eyebrow">Straightforward start</span><h2>Choose the way you want to begin.</h2></div><div className="pricing reveal"><div className="plan"><span className="eyebrow">Self-serve</span><h3>For growing businesses.</h3><p>Start answering more calls today.</p><ul><li>14-day free trial</li><li>Up to 30 voice-agent handled calls</li><li>No setup fee</li><li>Cancel anytime</li></ul><button className="button primary" onClick={() => open("trial")}>Start Free Trial</button></div><div id="enterprise" className="plan featured"><span className="eyebrow enterprise-label">Enterprise</span><h3>Built around your operation.</h3><p>Custom workflows for teams where every conversation counts.</p><ul><li>Custom voice workflows</li><li>CRM integrations</li><li>Dedicated onboarding</li><li>Ongoing support</li><li>Custom pricing</li></ul><button className="button light" onClick={() => open("demo")}>Contact Sales</button></div></div></div></section>
       <section className="section soft"><div className="shell"><div className="section-head reveal"><span className="eyebrow">Questions, answered</span><h2>What to expect from Portico.</h2></div><div className="faq reveal">{faq.map(([question, answer]) => <details key={question}><summary>{question}</summary><p>{answer}</p></details>)}</div></div></section>
       <section className="cta"><div className="shell"><h2 className="reveal">Never Miss Another<br />Customer Call.</h2><p className="reveal">Voice agents answer instantly. Humans handle what matters. You get peace of mind.</p><div className="hero-actions reveal"><button className="button primary" onClick={() => open("trial")}>Start Free Trial</button><button className="button dark-outline" onClick={() => open("demo")}>Book Enterprise Demo</button></div></div></section>
