@@ -56,7 +56,7 @@ function IndustrySolutions() {
         <div className="sol-card">
           <div className="sol-card-h">
             <span className="sol-ico"><Icon size={26} /></span>
-            <div className="sol-card-id"><b>{s.label}</b><span>AI Receptionist</span></div>
+            <div className="sol-card-id"><b>{s.label}</b><span>Voice Agent</span></div>
             <span className="sol-live"><i />Live</span>
           </div>
           <div className="sol-statrow">
