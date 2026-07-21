@@ -95,6 +95,47 @@ body { margin:0; color:var(--ink); background:#fff; font-family:Geist,Arial,sans
 @media(prefers-reduced-motion:reduce){ .cta:before{animation:none} }
 @media(max-width:800px){ .fbranch{gap:22px} .fnode{min-width:0} }
 
+/* ───────────────── Feature bento ───────────────── */
+.bento { display:grid; grid-template-columns:repeat(3,1fr); grid-auto-rows:174px; grid-auto-flow:row dense; gap:14px; }
+.bento-card { display:flex; flex-direction:column; border:1px solid var(--line); border-radius:16px; background:#fff; padding:18px; overflow:hidden; transition:transform .25s ease, box-shadow .25s ease, border-color .25s ease; }
+.bento-card:hover { transform:translateY(-4px); box-shadow:0 18px 40px rgba(15,23,42,.08); border-color:#f3d3ba; }
+.bento-card h3 { margin:0 0 6px; font-size:16px; letter-spacing:-.01em; }
+.bento-card p { margin:0; color:var(--muted); font-size:13px; line-height:1.5; }
+.bento-ico { display:inline-grid; place-items:center; width:36px; height:36px; border-radius:10px; background:#fff3ea; color:var(--blue); margin-bottom:12px; }
+.b-lg { grid-column:span 2; grid-row:span 2; }
+.b-lg h3 { font-size:19px; }
+.b-lg p { font-size:14px; max-width:44ch; }
+.bento-viz.big { flex:1; min-height:0; margin-bottom:16px; }
+.bento-viz.mini { margin-bottom:12px; }
+.fx-cal { padding:9px 10px; }
+.reveal.in .bento-card { animation:rise .6s cubic-bezier(.22,1,.36,1) both; }
+.fx-panel { height:100%; display:flex; flex-direction:column; justify-content:space-between; gap:10px; background:linear-gradient(160deg,#fff9f4,#fff); border:1px solid #f6e3d4; border-radius:13px; padding:14px; }
+.fx-row { display:flex; align-items:center; justify-content:space-between; }
+.fx-badge { display:inline-flex; align-items:center; gap:6px; font-size:11px; font-weight:700; color:#d75c12; }
+.fx-dot { width:7px; height:7px; border-radius:50%; background:#ef4444; animation:livedot 1.5s infinite; }
+.fx-mini { font-size:11px; color:#94a3b8; }
+.fx-tag { font-size:10px; font-weight:600; color:#15803d; background:#f0fdf4; border:1px solid #bbf7d0; padding:2px 8px; border-radius:999px; }
+.fx-up { font-size:11px; font-weight:700; color:#15803d; }
+.fx-wave { flex:1; display:flex; align-items:center; gap:2px; min-height:30px; }
+.fx-wave i { flex:1; border-radius:2px; background:linear-gradient(#f59d5a,#f26a1f); }
+.fx-wave.sm { min-height:20px; }
+.fx-chart { flex:1; display:flex; align-items:flex-end; gap:7px; min-height:40px; }
+.fx-chart span { flex:1; border-radius:5px 5px 0 0; background:linear-gradient(#f59d5a,#f26a1f); }
+.fx-cal { background:#fff9f4; border:1px solid #f6e3d4; border-radius:12px; padding:10px; }
+.fx-cal-h { display:grid; grid-template-columns:repeat(5,1fr); gap:4px; margin-bottom:5px; }
+.fx-cal-h span { font-size:9px; color:#94a3b8; text-align:center; }
+.fx-cal-g { display:grid; grid-template-columns:repeat(5,1fr); gap:4px; }
+.fx-cal-g span { height:16px; border-radius:4px; background:#f4ece4; display:grid; place-items:center; font-size:9px; font-weight:700; color:#f26a1f; }
+.fx-cal-g span.booked { background:#f26a1f; color:#fff; box-shadow:0 4px 10px rgba(242,106,31,.3); }
+.fx-rec { display:flex; align-items:center; gap:10px; }
+.fx-play { position:relative; width:26px; height:26px; border-radius:50%; background:#f26a1f; flex:none; }
+.fx-play:after { content:""; position:absolute; top:50%; left:53%; transform:translate(-50%,-50%); border-left:7px solid #fff; border-top:4px solid transparent; border-bottom:4px solid transparent; }
+.fx-lang { display:flex; gap:8px; }
+.fx-lang span { font-size:12px; font-weight:700; padding:7px 15px; border-radius:9px; border:1px solid #eef2f7; color:#94a3b8; }
+.fx-lang span.on { background:#fff3ea; border-color:#fbdcc4; color:#d75c12; }
+@media(max-width:900px){ .bento{ grid-template-columns:repeat(2,1fr); grid-auto-rows:168px; } .b-lg{ grid-column:span 2; grid-row:span 2; } }
+@media(max-width:560px){ .bento{ grid-template-columns:1fr; grid-auto-rows:auto; } .b-lg{ grid-column:span 1; grid-row:auto; } .bento-viz.big{ min-height:150px; } }
+
 /* ───────────────── Interactive voice demo ───────────────── */
 .vdemo { width:100%; max-width:1200px; margin:64px auto 0; text-align:left; }
 .vdemo-card { background:linear-gradient(180deg,#ffffff,#f7fbff); border:1px solid #efe4d8; border-radius:24px; box-shadow:0 34px 90px rgba(242,106,31,.10),0 2px 0 #fff inset; overflow:hidden; }
