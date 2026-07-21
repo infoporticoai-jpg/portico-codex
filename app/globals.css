@@ -175,9 +175,10 @@ body { margin:0; color:var(--ink); background:#fff; font-family:Geist,Arial,sans
 .section { padding:54px 0; }
 .section-head { margin:0 auto 26px; }
 .section h2 { font-size:clamp(30px,3.6vw,44px); }
-.hero { padding:58px 0 42px; }
-.hero h1 { font-size:clamp(42px,6vw,64px); margin:14px auto; }
-.hero p { font-size:17px; }
+.hero { padding:28px 0 32px; }
+.hero h1 { font-size:clamp(38px,5vw,56px); margin:10px auto; }
+.hero p { font-size:16px; }
+.hero-actions { margin:20px 0 6px; }
 .cta { padding:56px 0; }
 .cta h2 { font-size:clamp(32px,4.4vw,48px); }
 .plan { padding:24px; }
@@ -189,7 +190,7 @@ body { margin:0; color:var(--ink); background:#fff; font-family:Geist,Arial,sans
 .sol-conns { gap:7px; }
 .sol-conn { padding:9px 14px; }
 .sol-stat { padding:12px 14px; }
-@media(max-width:800px){ .hero{ padding:48px 0 34px; } .section{ padding:42px 0; } }
+@media(max-width:800px){ .hero{ padding:24px 0 26px; } .section{ padding:42px 0; } }
 
 /* ───────────────── Interactive voice demo ───────────────── */
 .vdemo { width:100%; max-width:1200px; margin:64px auto 0; text-align:left; }
@@ -270,15 +271,16 @@ body { margin:0; color:var(--ink); background:#fff; font-family:Geist,Arial,sans
 }
 
 /* Voice-demo compact overrides (placed last so they win) */
-.vdemo { margin:34px auto 0; }
+.vdemo { margin:18px auto 0; }
 .vd-center { min-height:0; }
-.vd-biz { margin:5px 0 10px; font-size:18px; }
-.vd-player { padding:13px; margin-bottom:11px; }
-.vd-wave { height:50px; }
-.vd-transcript { max-height:184px; }
-.vd-caps { gap:6px; }
-.vd-cap { padding:7px 10px; }
-.vd-status { gap:6px; }
-.vd-stat { padding:8px 11px; }
-.vd-cta { padding:18px; }
-.vd-cta h3 { font-size:18px; margin:0 0 4px; }
+.vd-biz { margin:4px 0 8px; font-size:17px; }
+.vd-player { padding:11px; margin-bottom:9px; }
+.vd-wave { height:42px; }
+.vd-transcript { max-height:120px; }
+.vd-caps { gap:5px; }
+.vd-cap { padding:6px 10px; }
+.vd-status { gap:5px; }
+.vd-stat { padding:7px 11px; }
+.vd-grid { padding:10px; }
+.vd-cta { padding:13px 16px; }
+.vd-cta h3 { font-size:17px; margin:0 0 3px; }
