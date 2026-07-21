@@ -171,6 +171,26 @@ body { margin:0; color:var(--ink); background:#fff; font-family:Geist,Arial,sans
 @media(max-width:860px){ .sol-panel{ grid-template-columns:1fr; gap:26px; } .sol-left{ padding-top:0; } }
 @media(max-width:520px){ .sol-stat{ padding:11px 12px; } .sol-stat strong{ font-size:21px; } .sol-tab{ padding:9px 13px; font-size:13px; } }
 
+/* ───────────────── Compact spacing pass ───────────────── */
+.section { padding:54px 0; }
+.section-head { margin:0 auto 26px; }
+.section h2 { font-size:clamp(30px,3.6vw,44px); }
+.hero { padding:58px 0 42px; }
+.hero h1 { font-size:clamp(42px,6vw,64px); margin:14px auto; }
+.hero p { font-size:17px; }
+.cta { padding:56px 0; }
+.cta h2 { font-size:clamp(32px,4.4vw,48px); }
+.plan { padding:24px; }
+.faq details { padding:16px 0; }
+.sol-tabs { margin-bottom:24px; }
+.sol-statrow { margin:16px 0; }
+.sol-card { padding:22px; }
+.sol-left h3 { font-size:26px; }
+.sol-conns { gap:7px; }
+.sol-conn { padding:9px 14px; }
+.sol-stat { padding:12px 14px; }
+@media(max-width:800px){ .hero{ padding:48px 0 34px; } .section{ padding:42px 0; } }
+
 /* ───────────────── Interactive voice demo ───────────────── */
 .vdemo { width:100%; max-width:1200px; margin:64px auto 0; text-align:left; }
 .vdemo-card { background:linear-gradient(180deg,#ffffff,#f7fbff); border:1px solid #efe4d8; border-radius:24px; box-shadow:0 34px 90px rgba(242,106,31,.10),0 2px 0 #fff inset; overflow:hidden; }
@@ -248,3 +268,17 @@ body { margin:0; color:var(--ink); background:#fff; font-family:Geist,Arial,sans
   .vd-cta-actions { width:100%; }
   .vd-cta-actions .button { flex:1; }
 }
+
+/* Voice-demo compact overrides (placed last so they win) */
+.vdemo { margin:34px auto 0; }
+.vd-center { min-height:0; }
+.vd-biz { margin:5px 0 10px; font-size:18px; }
+.vd-player { padding:13px; margin-bottom:11px; }
+.vd-wave { height:50px; }
+.vd-transcript { max-height:184px; }
+.vd-caps { gap:6px; }
+.vd-cap { padding:7px 10px; }
+.vd-status { gap:6px; }
+.vd-stat { padding:8px 11px; }
+.vd-cta { padding:18px; }
+.vd-cta h3 { font-size:18px; margin:0 0 4px; }
