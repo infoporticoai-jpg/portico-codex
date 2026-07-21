@@ -280,16 +280,16 @@ body { margin:0; color:var(--ink); background:#fff; font-family:Geist,Arial,sans
 @media(max-width:560px){ .stickybar { flex-wrap:wrap; gap:10px 12px; padding:14px; bottom:12px; } .stickybar p{ flex:1 1 100%; font-size:13px; } .stickybar .button.primary{ flex:1; } }
 
 /* Voice-demo compact overrides (placed last so they win) */
-.vdemo { margin:18px auto 0; }
+.vdemo { margin:26px auto 0; }
 .vd-center { min-height:0; }
-.vd-biz { margin:4px 0 8px; font-size:17px; }
-.vd-player { padding:11px; margin-bottom:9px; }
-.vd-wave { height:42px; }
-.vd-transcript { max-height:120px; }
-.vd-caps { gap:5px; }
-.vd-cap { padding:6px 10px; }
-.vd-status { gap:5px; }
-.vd-stat { padding:7px 11px; }
-.vd-grid { padding:10px; }
-.vd-cta { padding:13px 16px; }
-.vd-cta h3 { font-size:17px; margin:0 0 3px; }
+.vd-biz { margin:6px 0 12px; font-size:18px; }
+.vd-player { padding:14px; margin-bottom:14px; }
+.vd-wave { height:46px; }
+.vd-transcript { max-height:150px; }
+.vd-caps { gap:9px; }
+.vd-cap { padding:10px 12px; }
+.vd-status { gap:9px; }
+.vd-stat { padding:11px 13px; }
+.vd-grid { padding:16px; gap:16px; }
+.vd-cta { padding:20px 24px; margin:16px; }
+.vd-cta h3 { font-size:18px; margin:0 0 4px; }

@@ -111,7 +111,7 @@ function StickyCTA({ onStart }: { onStart: () => void }) {
       {show && !dismissed && (
         <motion.div className="stickybar" initial={{ y: 96, opacity: 0 }} animate={{ y: 0, opacity: 1 }} exit={{ y: 96, opacity: 0 }} transition={{ type: "spring", stiffness: 320, damping: 30 }}>
           <span className="stickybar-dot" />
-          <p>While you&rsquo;re reading this, a missed call just went to a competitor.</p>
+          <p>Missed calls are lost customers &mdash; Portico picks up every time.</p>
           <button className="button primary" onClick={onStart}>Start Free Trial</button>
           <button className="stickybar-x" aria-label="Dismiss" onClick={() => setDismissed(true)}><X size={18} /></button>
         </motion.div>
