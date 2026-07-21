@@ -2,7 +2,7 @@
 
 import { FormEvent, useEffect, useRef, useState } from "react";
 import {
-  ArrowRight, Building2, CheckCircle2, Clock, Menu, Package, PawPrint,
+  ArrowRight, Building2, CheckCircle2, Clock, HeartPulse, Home, Menu, PawPrint,
   PhoneCall, PhoneMissed, Scale, ShieldCheck, Stethoscope, Users, Wrench, X,
 } from "lucide-react";
 import { motion } from "framer-motion";
@@ -69,7 +69,8 @@ const SOLUTIONS: { id: string; label: string; Icon: typeof Building2; blurb: str
   { id: "dental", label: "Dental", Icon: Stethoscope, blurb: "Fill the schedule and welcome new patients automatically.", handles: ["New patient booking", "Appointment scheduling", "Insurance questions", "Reminders & reschedules", "After-hours triage", "Bilingual support"], tags: ["New patients", "Booking", "Insurance", "Reminders"] },
   { id: "law-firms", label: "Law Firms", Icon: Scale, blurb: "Qualify and intake new clients before they call the next firm.", handles: ["Client intake", "Lead qualification", "Consultation scheduling", "Case status routing", "Confidential messages", "Bilingual support"], tags: ["Intake", "Qualification", "Scheduling", "Routing"] },
   { id: "veterinary", label: "Veterinary", Icon: PawPrint, blurb: "Triage urgent cases and book visits without missing a call.", handles: ["Urgent care triage", "Appointment booking", "Prescription refills", "After-hours coverage", "New client intake", "Bilingual support"], tags: ["Urgent care", "Booking", "Refills", "After-hours"] },
-  { id: "storage", label: "Storage", Icon: Package, blurb: "Answer availability and access questions, and reserve units.", handles: ["Unit availability", "Reservations", "Access & gate hours", "Billing questions", "Move-in scheduling", "Bilingual support"], tags: ["Availability", "Reservations", "Access", "Billing"] },
+  { id: "medical-clinics", label: "Medical Clinics", Icon: HeartPulse, blurb: "Book patients and triage calls so your front desk isn't buried.", handles: ["Appointment scheduling", "New patient intake", "Insurance & billing questions", "Prescription requests", "After-hours triage", "Bilingual support"], tags: ["Scheduling", "Intake", "Triage", "Insurance"] },
+  { id: "real-estate", label: "Real Estate", Icon: Home, blurb: "Never miss a buyer or seller lead while you're showing a property.", handles: ["Buyer & seller inquiries", "Showing appointments", "Listing questions", "Lead qualification", "After-hours coverage", "Bilingual support"], tags: ["Buyers", "Showings", "Listings", "Leads"] },
 ];
 const trustSectors = ["Property Management", "Healthcare", "Home Services", "Legal", "Dental", "Insurance"];
 const faq = [["How human does the voice agent sound?", "Natural, clear, and tailored to your business. The goal is a reliable first response that feels helpful from the first word."], ["Can calls be transferred?", "Yes. When a customer needs a person, Portico routes the call with context so the handoff feels seamless."], ["Can I customize the agent?", "Yes. Your agent can be trained on your services, hours, policies, routing rules, and preferred conversation style."], ["Do you support English and French?", "Yes. Portico supports bilingual customer experiences in English and French."], ["How long does setup take?", "Self-serve customers can get started quickly. Enterprise onboarding is scoped around your workflow and integrations."], ["What happens if the agent cannot solve the request?", "The call is warm-transferred to a real person for help."]];

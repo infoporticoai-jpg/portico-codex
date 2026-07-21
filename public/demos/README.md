@@ -12,7 +12,8 @@ Expected filenames (referenced by `components/demo-config.ts` → `audio`):
 | Dental              | `dental.mp3`                  |
 | Law Firms           | `law-firms.mp3`               |
 | Veterinary          | `veterinary.mp3`              |
-| Storage             | `storage.mp3`                 |
+| Medical Clinics     | `medical-clinics.mp3`         |
+| Real Estate         | `real-estate.mp3`             |
 
 Notes
 - Any browser-playable audio works (`.mp3`, `.m4a`, `.wav`, `.ogg`); if you use a
