@@ -11,11 +11,11 @@ import { VoiceDemo } from "./voice-demo";
 function LogoMark() {
   return (
     <svg viewBox="0 0 64 64" role="img" aria-label="Portico" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <path d="M13 27 Q32 13 51 27" stroke="#1b2438" strokeWidth="5.5" strokeLinecap="round" fill="none" />
-      <rect x="19" y="29" width="7" height="21" rx="3.5" fill="#f26a1f" />
-      <rect x="28.5" y="29" width="7" height="21" rx="3.5" fill="#f26a1f" />
-      <rect x="38" y="29" width="7" height="21" rx="3.5" fill="#f26a1f" />
-      <rect x="13" y="53" width="38" height="6" rx="3" fill="#1b2438" />
+      <path d="M10 24 C10 15 19 12 32 12 C45 12 54 15 54 24" stroke="#1b2438" strokeWidth="5" strokeLinecap="round" fill="none" />
+      <rect x="17" y="26" width="5.5" height="21" rx="2.75" fill="#f26a1f" />
+      <rect x="29.25" y="26" width="5.5" height="21" rx="2.75" fill="#f26a1f" />
+      <rect x="41.5" y="26" width="5.5" height="21" rx="2.75" fill="#f26a1f" />
+      <rect x="12" y="50" width="40" height="4.5" rx="2.25" fill="#1b2438" />
     </svg>
   );
 }
