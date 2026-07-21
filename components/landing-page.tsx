@@ -20,10 +20,19 @@ function LogoMark() {
   );
 }
 
+const SOL_CONNECTIONS: [string, string][] = [
+  ["Knowledge Base", "Connected"],
+  ["CRM", "Connected"],
+  ["Calendar", "Connected"],
+  ["English & French", "Enabled"],
+  ["Warm Transfer", "Enabled"],
+];
+
 function IndustrySolutions() {
   const [active, setActive] = useState(SOLUTIONS[0].id);
   const s = SOLUTIONS.find((x) => x.id === active) ?? SOLUTIONS[0];
   const Icon = s.Icon;
+  const solStats: [string, number][] = [["Calls today", s.stats.calls], ["Appointments", s.stats.appts], ["Transferred", s.stats.transfers]];
   return (
     <div className="sol reveal">
       <div className="sol-tabs" role="tablist" aria-label="Choose an industry">
@@ -34,23 +43,31 @@ function IndustrySolutions() {
           </button>
         ))}
       </div>
-      <motion.div key={active} className="sol-panel" initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.3 }}>
+      <motion.div key={active} className="sol-panel" initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.32 }}>
         <div className="sol-left">
           <h3>{s.label}</h3>
           <p className="sol-blurb">{s.blurb}</p>
-          <ul className="sol-list">
-            {s.handles.map((h) => <li key={h}><CheckCircle2 size={17} />{h}</li>)}
-          </ul>
+          <div className="sol-pills">
+            {s.handles.map((h, i) => (
+              <motion.span key={h} initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.3, delay: 0.08 + i * 0.05 }}>{h}</motion.span>
+            ))}
+          </div>
         </div>
         <div className="sol-card">
           <div className="sol-card-h">
-            <span className="sol-ico"><Icon size={24} /></span>
-            <div className="sol-card-id"><b>{s.label}</b><span>Configured workflow</span></div>
+            <span className="sol-ico"><Icon size={26} /></span>
+            <div className="sol-card-id"><b>{s.label}</b><span>AI Receptionist</span></div>
             <span className="sol-live"><i />Live</span>
           </div>
-          <p className="sol-card-label">Common call intents</p>
-          <div className="sol-tags">{s.tags.map((t) => <span key={t}>{t}</span>)}</div>
-          <div className="sol-route"><span className="sol-route-dot" />AI answers instantly — warm-transfers to your team when it matters.</div>
+          <div className="sol-statrow">
+            {solStats.map(([label, val]) => <div className="sol-stat" key={label}><span>{label}</span><strong>{val}</strong></div>)}
+          </div>
+          <p className="sol-card-label">Live configuration</p>
+          <div className="sol-conns">
+            {SOL_CONNECTIONS.map(([label, state]) => (
+              <div className="sol-conn" key={label}><span className="sol-conn-l"><CheckCircle2 size={15} />{label}</span><span className="sol-conn-s">{state}</span></div>
+            ))}
+          </div>
         </div>
       </motion.div>
     </div>
@@ -63,14 +80,14 @@ const problems = [
   [Clock, "After hours", "Business doesn’t stop at 5 PM — and neither do your callers."],
   [ShieldCheck, "Inconsistent experience", "Every caller deserves the same professional first impression."],
 ];
-const SOLUTIONS: { id: string; label: string; Icon: typeof Building2; blurb: string; handles: string[]; tags: string[] }[] = [
-  { id: "property-management", label: "Property Management", Icon: Building2, blurb: "Keep tenants and prospects served without tying up your office.", handles: ["Tenant inquiries", "Maintenance requests", "Leasing appointments", "Emergency dispatch", "Rent & payment questions", "Bilingual support"], tags: ["Tenants", "Maintenance", "Leasing", "Emergencies"] },
-  { id: "hvac", label: "HVAC", Icon: Wrench, blurb: "Capture every service call, day or night, and dispatch fast.", handles: ["Emergency service requests", "Appointment scheduling", "After-hours dispatch", "Service & quote questions", "Maintenance reminders", "Bilingual support"], tags: ["Emergencies", "Scheduling", "Dispatch", "Quotes"] },
-  { id: "dental", label: "Dental", Icon: Stethoscope, blurb: "Fill the schedule and welcome new patients automatically.", handles: ["New patient booking", "Appointment scheduling", "Insurance questions", "Reminders & reschedules", "After-hours triage", "Bilingual support"], tags: ["New patients", "Booking", "Insurance", "Reminders"] },
-  { id: "law-firms", label: "Law Firms", Icon: Scale, blurb: "Qualify and intake new clients before they call the next firm.", handles: ["Client intake", "Lead qualification", "Consultation scheduling", "Case status routing", "Confidential messages", "Bilingual support"], tags: ["Intake", "Qualification", "Scheduling", "Routing"] },
-  { id: "veterinary", label: "Veterinary", Icon: PawPrint, blurb: "Triage urgent cases and book visits without missing a call.", handles: ["Urgent care triage", "Appointment booking", "Prescription refills", "After-hours coverage", "New client intake", "Bilingual support"], tags: ["Urgent care", "Booking", "Refills", "After-hours"] },
-  { id: "medical-clinics", label: "Medical Clinics", Icon: HeartPulse, blurb: "Book patients and triage calls so your front desk isn't buried.", handles: ["Appointment scheduling", "New patient intake", "Insurance & billing questions", "Prescription requests", "After-hours triage", "Bilingual support"], tags: ["Scheduling", "Intake", "Triage", "Insurance"] },
-  { id: "real-estate", label: "Real Estate", Icon: Home, blurb: "Never miss a buyer or seller lead while you're showing a property.", handles: ["Buyer & seller inquiries", "Showing appointments", "Listing questions", "Lead qualification", "After-hours coverage", "Bilingual support"], tags: ["Buyers", "Showings", "Listings", "Leads"] },
+const SOLUTIONS: { id: string; label: string; Icon: typeof Building2; blurb: string; handles: string[]; stats: { calls: number; appts: number; transfers: number } }[] = [
+  { id: "property-management", label: "Property Management", Icon: Building2, blurb: "Keep tenants and prospects served without tying up your office.", handles: ["Tenant inquiries", "Maintenance requests", "Leasing appointments", "Emergency dispatch", "Rent & payment questions", "English & French"], stats: { calls: 42, appts: 12, transfers: 5 } },
+  { id: "hvac", label: "HVAC", Icon: Wrench, blurb: "Capture every service call, day or night, and dispatch fast.", handles: ["Emergency requests", "Appointment scheduling", "After-hours dispatch", "Service & quotes", "Maintenance reminders", "English & French"], stats: { calls: 58, appts: 9, transfers: 11 } },
+  { id: "dental", label: "Dental", Icon: Stethoscope, blurb: "Fill the schedule and welcome new patients automatically.", handles: ["New patient booking", "Appointment scheduling", "Insurance questions", "Reminders & reschedules", "After-hours triage", "English & French"], stats: { calls: 37, appts: 21, transfers: 3 } },
+  { id: "law-firms", label: "Law Firms", Icon: Scale, blurb: "Qualify and intake new clients before they call the next firm.", handles: ["Client intake", "Lead qualification", "Consultation scheduling", "Case status routing", "Confidential messages", "English & French"], stats: { calls: 24, appts: 6, transfers: 8 } },
+  { id: "veterinary", label: "Veterinary", Icon: PawPrint, blurb: "Triage urgent cases and book visits without missing a call.", handles: ["Urgent care triage", "Appointment booking", "Prescription refills", "After-hours coverage", "New client intake", "English & French"], stats: { calls: 46, appts: 17, transfers: 6 } },
+  { id: "medical-clinics", label: "Medical Clinics", Icon: HeartPulse, blurb: "Book patients and triage calls so your front desk isn't buried.", handles: ["Appointment scheduling", "New patient intake", "Insurance & billing", "Prescription requests", "After-hours triage", "English & French"], stats: { calls: 63, appts: 28, transfers: 4 } },
+  { id: "real-estate", label: "Real Estate", Icon: Home, blurb: "Never miss a buyer or seller lead while you're showing a property.", handles: ["Buyer & seller inquiries", "Showing appointments", "Listing questions", "Lead qualification", "After-hours coverage", "English & French"], stats: { calls: 31, appts: 14, transfers: 7 } },
 ];
 const trustSectors = ["Property Management", "Healthcare", "Home Services", "Legal", "Dental", "Insurance"];
 const faq = [["How human does the voice agent sound?", "Natural, clear, and tailored to your business. The goal is a reliable first response that feels helpful from the first word."], ["Can calls be transferred?", "Yes. When a customer needs a person, Portico routes the call with context so the handoff feels seamless."], ["Can I customize the agent?", "Yes. Your agent can be trained on your services, hours, policies, routing rules, and preferred conversation style."], ["Do you support English and French?", "Yes. Portico supports bilingual customer experiences in English and French."], ["How long does setup take?", "Self-serve customers can get started quickly. Enterprise onboarding is scoped around your workflow and integrations."], ["What happens if the agent cannot solve the request?", "The call is warm-transferred to a real person for help."]];
@@ -154,7 +171,7 @@ export function LandingPage() {
         </div>
       </div></div></section>
       <section className="section"><div className="shell"><div className="section-head reveal"><span className="eyebrow">Why hybrid wins</span><h2>AI speed with human judgment, on every call.</h2></div><div className="compare reveal">{[["", "Traditional call center", "Voice-only AI", "Portico"], ["Availability", "Business hours", "24/7", "24/7"], ["Customer experience", "Variable", "Limited escalation", "Human expertise on demand"], ["Complex requests", "Capable", "Limited", "AI speed + human judgment"], ["Response time", "Queue dependent", "Instant", "Instant"], ["Scalability", "Costly", "High", "Enterprise scale"]].map((row, i) => <div className={`compare-row ${i === 0 ? "header" : ""}`} key={row[0]}>{row.map((item, j) => <div key={j}>{item}</div>)}</div>)}</div></div></section>
-      <section id="industries" className="section soft"><div className="shell"><div className="section-head reveal"><span className="eyebrow">Built around your business</span><h2>One platform. Configured for every industry.</h2><p>Portico adapts to how each business takes calls — the intents it handles, and when it hands off to your team.</p></div><IndustrySolutions /></div></section>
+      <section id="industries" className="section soft"><div className="shell"><div className="section-head reveal"><span className="eyebrow">Built around your business</span><h2>One platform. Configured for every industry.</h2><p>Every industry handles calls differently. Portico adapts its AI, workflows, and escalation paths to match your business.</p></div><IndustrySolutions /></div></section>
       <section className="section"><div className="shell"><div className="section-head reveal"><span className="eyebrow">Full visibility</span><h2>A clear view of every conversation.</h2><p>See call activity, appointments, transfers and the context behind every customer touchpoint.</p></div><div className="dash-preview reveal"><ProductPreview /></div></div></section>
       <section id="pricing" className="section"><div className="shell"><div className="section-head reveal"><span className="eyebrow">Straightforward start</span><h2>Choose the way you want to begin.</h2></div><div className="pricing reveal"><div className="plan"><span className="eyebrow">Self-serve</span><h3>For growing businesses.</h3><p>Start answering more calls today.</p><ul><li>14-day free trial</li><li>Up to 30 voice-agent handled calls</li><li>No setup fee</li><li>Cancel anytime</li></ul><button className="button primary" onClick={() => open("trial")}>Start Free Trial</button></div><div id="enterprise" className="plan featured"><span className="eyebrow enterprise-label">Enterprise</span><h3>Built around your operation.</h3><p>Custom workflows for teams where every conversation counts.</p><ul><li>Custom voice workflows</li><li>CRM integrations</li><li>Dedicated onboarding</li><li>Ongoing support</li><li>Custom pricing</li></ul><button className="button light" onClick={() => open("demo")}>Contact Sales</button></div></div></div></section>
       <section className="section soft"><div className="shell"><div className="section-head reveal"><span className="eyebrow">Questions, answered</span><h2>What to expect from Portico.</h2></div><div className="faq reveal">{faq.map(([question, answer]) => <details key={question}><summary>{question}</summary><p>{answer}</p></details>)}</div></div></section>
