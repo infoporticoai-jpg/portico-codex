@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import { SiteChrome } from "../components/site-chrome";
 
 export const metadata: Metadata = {
   title: "Portico Intelligence | Every Call Answered. Every Time.",
@@ -7,5 +8,5 @@ export const metadata: Metadata = {
 };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
-  return <html lang="en"><body>{children}</body></html>;
+  return <html lang="en"><body><SiteChrome>{children}</SiteChrome></body></html>;
 }
