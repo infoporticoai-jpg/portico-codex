@@ -7,7 +7,7 @@
 html { scroll-behavior:smooth; }
 body { margin:0; color:var(--ink); background:#fff; font-family:Geist,Arial,sans-serif; }
 .shell { width:min(1160px,calc(100% - 40px)); margin:auto; }
-.nav { position:sticky; top:16px; z-index:20; display:flex; align-items:center; justify-content:space-between; height:58px; padding:0 12px 0 20px; border:1px solid rgba(226,232,240,.8); background:rgba(255,255,255,.78); backdrop-filter:blur(16px); border-radius:16px; box-shadow:0 8px 30px rgba(15,23,42,.05); }
+.nav { position:fixed; top:16px; left:0; right:0; margin:0 auto; width:min(1160px,calc(100% - 40px)); z-index:30; display:flex; align-items:center; justify-content:space-between; height:58px; padding:0 12px 0 20px; border:1px solid rgba(226,232,240,.85); background:rgba(255,255,255,.85); backdrop-filter:blur(16px); border-radius:16px; box-shadow:0 8px 30px rgba(15,23,42,.09); }
 .wordmark { display:inline-flex; align-items:center; gap:9px; font-weight:700; font-size:15px; letter-spacing:.1em; }
 .wordmark svg { width:24px; height:24px; flex:none; }
 .footer .wordmark svg, .sidebar .wordmark svg { width:20px; height:20px; }
@@ -40,7 +40,7 @@ body { margin:0; color:var(--ink); background:#fff; font-family:Geist,Arial,sans
 .flow-item { display:flex; align-items:center; gap:8px; flex:1; }
 .flow-step { width:100%; }
 .menu-button { display:none; border:0; background:transparent; color:var(--ink); padding:8px; }
-.mobile-menu { position:absolute; z-index:19; top:80px; left:20px; right:20px; display:none; padding:12px; border:1px solid #e2e8f0; background:#fff; border-radius:14px; box-shadow:0 18px 32px rgba(15,23,42,.12); }
+.mobile-menu { position:fixed; z-index:29; top:82px; left:20px; right:20px; display:none; padding:12px; border:1px solid #e2e8f0; background:#fff; border-radius:14px; box-shadow:0 18px 32px rgba(15,23,42,.12); }
 .mobile-menu a { color:#334155; padding:12px; text-decoration:none; font-size:14px; }
 .modal-backdrop { position:fixed; inset:0; z-index:50; display:grid; place-items:center; padding:20px; background:rgba(15,23,42,.55); backdrop-filter:blur(5px); }
 .modal { position:relative; width:min(100%,480px); padding:34px; border-radius:20px; background:#fff; box-shadow:0 25px 70px rgba(15,23,42,.28); }
@@ -175,7 +175,7 @@ body { margin:0; color:var(--ink); background:#fff; font-family:Geist,Arial,sans
 .section { padding:54px 0; }
 .section-head { margin:0 auto 26px; }
 .section h2 { font-size:clamp(30px,3.6vw,44px); }
-.hero { padding:34px 0 40px; }
+.hero { padding:104px 0 40px; }
 .hero .eyebrow { display:inline-block; margin-bottom:6px; }
 .hero h1 { font-size:clamp(38px,5vw,56px); margin:20px auto 18px; }
 .hero p { font-size:16px; margin:0 auto; }
@@ -192,7 +192,7 @@ body { margin:0; color:var(--ink); background:#fff; font-family:Geist,Arial,sans
 .sol-conns { gap:7px; }
 .sol-conn { padding:9px 14px; }
 .sol-stat { padding:12px 14px; }
-@media(max-width:800px){ .hero{ padding:24px 0 26px; } .section{ padding:42px 0; } }
+@media(max-width:800px){ .hero{ padding:90px 0 26px; } .section{ padding:42px 0; } }
 
 /* ───────────────── Interactive voice demo ───────────────── */
 .vdemo { width:100%; max-width:1200px; margin:64px auto 0; text-align:left; }
