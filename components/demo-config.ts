@@ -118,20 +118,14 @@ export const DEMOS: Demo[] = [
     labelFr: "Services à domicile",
     business: "Summit Heating & Air",
     audio: "/demos/home-services.mp3",
-    duration: 54,
+    duration: 110,
     initialStatus: baseStatus({ intent: "Detecting…" }),
+    // Real recording — the written transcript hasn't been supplied yet, so we
+    // show one honest note instead of fabricated dialogue. Replace this
+    // single entry with the real, timestamped transcript once you have it
+    // (see public/demos/README.md for the line format).
     transcript: [
-      { t: 0, speaker: "portico", text: "Thanks for calling Summit Heating and Air. What can I help you with?" },
-      { t: 4, speaker: "caller", text: "My furnace stopped working and it's freezing — I think this is an emergency.", capability: "emergency-dispatch", status: { intent: "Emergency Repair", sentiment: "Concerned" } },
-      { t: 10, speaker: "portico", text: "I'm sorry to hear that. I can get an on-call technician dispatched right away. Is there any gas smell in the home?", capability: "emergency-dispatch" },
-      { t: 16, speaker: "caller", text: "No gas smell, it's just very cold." },
-      { t: 20, speaker: "portico", text: "Understood. Let me confirm your address and priority-flag this as an urgent no-heat call.", capability: "lead-qualification", status: { knowledgeBase: "Connected" } },
-      { t: 26, speaker: "caller", text: "It's 48 Birch Lane." },
-      { t: 30, speaker: "system", event: "transfer-initiated", text: "Warm transfer initiated…", capability: "call-transfers", status: { transfer: "In progress" } },
-      { t: 33, speaker: "system", event: "receptionist-connected", text: "On-call dispatcher connected", status: { transfer: "Connected" } },
-      { t: 36, speaker: "human", text: "Hi, this is Marcus with the Summit dispatch team. I've got your no-heat call at 48 Birch Lane — a technician can be there within the hour." },
-      { t: 45, speaker: "caller", text: "That's a relief, thank you.", status: { sentiment: "Positive" } },
-      { t: 49, speaker: "human", text: "You're welcome. You'll get a text with your technician's name and ETA shortly.", capability: "customer-support" },
+      { t: 0, speaker: "system", text: "Real recording — press play to listen. A synced written transcript is coming soon." },
     ],
   },
   {
