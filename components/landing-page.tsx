@@ -14,15 +14,54 @@ import { Faq } from "./faq";
 
 // `photo` is an optional real industry photo (drop into public/industries/).
 // When present it renders on the right; otherwise a placeholder frame shows.
-const SOLUTIONS: { id: string; label: string; Icon: typeof Building2; blurb: string; handles: string[]; photo?: string }[] = [
-  { id: "property-management", label: "Property Management", Icon: Building2, blurb: "Keep tenants and prospects served without tying up your office.", handles: ["Tenant inquiries", "Maintenance requests", "Leasing appointments", "Emergency dispatch", "Rent & payment questions", "English & French"], photo: "/industries/property-management.png" },
-  { id: "home-services", label: "Home Services", Icon: Wrench, blurb: "For HVAC, plumbing, electrical and more — capture every service call and get a tech on the way fast.", handles: ["Emergency requests", "Job scheduling", "After-hours dispatch", "Quotes & estimates", "Service reminders", "English & French"], photo: "/industries/home-services.png" },
-  { id: "dental", label: "Dental", Icon: Stethoscope, blurb: "Fill the schedule and welcome new patients automatically.", handles: ["New patient booking", "Appointment scheduling", "Insurance questions", "Reminders & reschedules", "After-hours triage", "English & French"], photo: "/industries/dental.png" },
-  { id: "law-firms", label: "Law Firms", Icon: Scale, blurb: "Qualify and intake new clients before they call the next firm.", handles: ["Client intake", "Lead qualification", "Consultation scheduling", "Case status routing", "Confidential messages", "English & French"], photo: "/industries/law-firms.png" },
-  { id: "veterinary", label: "Veterinary", Icon: PawPrint, blurb: "Triage urgent cases and book visits without missing a call.", handles: ["Urgent care triage", "Appointment booking", "Prescription refills", "After-hours coverage", "New client intake", "English & French"], photo: "/industries/veterinary.png" },
-  { id: "medical-clinics", label: "Medical Clinics", Icon: HeartPulse, blurb: "Book patients and triage calls so your front desk isn't buried.", handles: ["Appointment scheduling", "New patient intake", "Insurance & billing", "Prescription requests", "After-hours triage", "English & French"], photo: "/industries/medical-clinics.png" },
-  { id: "real-estate", label: "Real Estate", Icon: Home, blurb: "Never miss a buyer or seller lead while you're showing a property.", handles: ["Buyer & seller inquiries", "Showing appointments", "Listing questions", "Lead qualification", "After-hours coverage", "English & French"], photo: "/industries/real-estate.png" },
+const SOLUTIONS: { id: string; label: string; Icon: typeof Building2; blurb: string; bullets: string[]; photo?: string }[] = [
+  { id: "property-management", label: "Property Management", Icon: Building2, blurb: "Keep tenants and prospects served without tying up your office.", bullets: [
+    "Answer tenant and prospect calls 24/7 with **voice agents**, and warm-transfer the ones that need a person.",
+    "Log **maintenance requests** and route true emergencies to your on-call team.",
+    "Book **leasing appointments and showings** right into your calendar.",
+    "Serve every caller in **English and French**.",
+  ], photo: "/industries/property-management.jpg" },
+  { id: "home-services", label: "Home Services", Icon: Wrench, blurb: "For HVAC, plumbing, electrical and more — capture every service call and get a tech on the way fast.", bullets: [
+    "Capture every service call day or night and **priority-flag emergencies**.",
+    "Book **service windows** and confirm appointments automatically.",
+    "Warm-transfer urgent jobs to your **on-call technician**.",
+    "Answer **quote and pricing questions** on the spot.",
+  ], photo: "/industries/home-services.jpg" },
+  { id: "dental", label: "Dental", Icon: Stethoscope, blurb: "Fill the schedule and welcome new patients automatically.", bullets: [
+    "Book **new patients** and fill last-minute openings around the clock.",
+    "Handle **scheduling, reminders, and reschedules** without tying up the front desk.",
+    "Answer **insurance and billing** questions instantly.",
+    "Triage urgent issues and **escalate to your team** when needed.",
+  ], photo: "/industries/dental.jpg" },
+  { id: "law-firms", label: "Law Firms", Icon: Scale, blurb: "Qualify and intake new clients before they call the next firm.", bullets: [
+    "Run structured **client intake** and qualify leads instantly.",
+    "Book **consultations** and route by practice area.",
+    "Take **confidential messages** and warm-transfer to an attorney.",
+    "Never miss an **after-hours inquiry**.",
+  ], photo: "/industries/law-firms.jpg" },
+  { id: "veterinary", label: "Veterinary", Icon: PawPrint, blurb: "Triage urgent cases and book visits without missing a call.", bullets: [
+    "**Triage urgent cases** and get emergencies to a human fast.",
+    "Book **appointments** and capture **prescription refills**.",
+    "Handle **new client intake** and routine questions.",
+    "Cover **nights and weekends** automatically.",
+  ], photo: "/industries/veterinary.jpg" },
+  { id: "medical-clinics", label: "Medical Clinics", Icon: HeartPulse, blurb: "Book patients and triage calls so your front desk isn't buried.", bullets: [
+    "Book patients and **triage calls** so your front desk isn't buried.",
+    "Collect **new-patient intake** details before the visit.",
+    "Answer **insurance and billing** questions.",
+    "**Escalate clinical urgency** to your staff instantly.",
+  ], photo: "/industries/medical-clinics.jpg" },
+  { id: "real-estate", label: "Real Estate", Icon: Home, blurb: "Never miss a buyer or seller lead while you're showing a property.", bullets: [
+    "Answer **buyer and seller** inquiries the instant they call.",
+    "Book **showings** and qualify leads automatically.",
+    "Answer **listing questions** and route to the right agent.",
+    "Capture every lead, even **after hours**.",
+  ], photo: "/industries/real-estate.jpg" },
 ];
+
+function richText(s: string) {
+  return s.split("**").map((part, i) => (i % 2 === 1 ? <b key={i}>{part}</b> : <span key={i}>{part}</span>));
+}
 
 function IndustryPhoto({ photo, label }: { photo?: string; label: string }) {
   const [failed, setFailed] = useState(false);
@@ -79,11 +118,11 @@ function IndustrySolutions() {
         <div className="sol-left">
           <h3>{s.label}</h3>
           <p className="sol-blurb">{s.blurb}</p>
-          <div className="sol-pills">
-            {s.handles.map((h, i) => (
-              <motion.span key={h} initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.3, delay: 0.08 + i * 0.05 }}>{h}</motion.span>
+          <ul className="sol-bullets">
+            {s.bullets.map((b, i) => (
+              <motion.li key={b} initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.3, delay: 0.08 + i * 0.06 }}><CheckCircle2 size={19} /><span className="sol-bullet-t">{richText(b)}</span></motion.li>
             ))}
-          </div>
+          </ul>
         </div>
         <IndustryPhoto key={s.id} photo={s.photo} label={s.label} />
       </motion.div>

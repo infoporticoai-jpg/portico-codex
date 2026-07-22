@@ -5,12 +5,12 @@ industry, shown on the right of each tab (like a real lifestyle photo, not a
 UI mockup). Until you add them, a placeholder frame shows.
 
 ## How to add
-1. Save a photo here as `<id>.png` (or `.png`/`.webp`).
-2. In `components/landing-page.tsx`, add `photo: "/industries/<id>.png"` to the
+1. Save a photo here as `<id>.jpg` (or `.jpg`/`.webp`).
+2. In `components/landing-page.tsx`, add `photo: "/industries/<id>.jpg"` to the
    matching `SOLUTIONS` entry. That industry then shows the real photo.
 
 ## Filenames (match the SOLUTIONS ids)
-`property-management.png`, `home-services.png`, `dental.png`, `law-firms.png`,
-`veterinary.png`, `medical-clinics.png`, `real-estate.png`
+`property-management.jpg`, `home-services.jpg`, `dental.jpg`, `law-firms.jpg`,
+`veterinary.jpg`, `medical-clinics.jpg`, `real-estate.jpg`
 
 Landscape photos (roughly 4:3) look best — they're cropped to fill the frame.
