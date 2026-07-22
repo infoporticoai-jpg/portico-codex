@@ -3,16 +3,20 @@
 import { createContext, FormEvent, ReactNode, useContext, useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 import { AnimatePresence, motion } from "framer-motion";
-import { ArrowRight, CheckCircle2, Menu, X } from "lucide-react";
+import { ArrowRight, CheckCircle2, ChevronDown, Menu, X } from "lucide-react";
 
 type OpenFn = (mode: "trial" | "demo") => void;
 const ModalCtx = createContext<OpenFn>(() => {});
 export const useOpenModal = () => useContext(ModalCtx);
 
-const NAV_LINKS: [string, string][] = [
+const TOP_LINKS: [string, string][] = [
   ["/#solution", "How it Works"],
   ["/#industries", "Industries"],
   ["/pricing", "Pricing"],
+];
+const COMPANY_LINKS: [string, string][] = [
+  ["/about", "About us"],
+  ["/blog", "Blog"],
   ["/faq", "FAQ"],
 ];
 
@@ -84,9 +88,9 @@ export function SiteChrome({ children }: { children: ReactNode }) {
 
   return (
     <ModalCtx.Provider value={open}>
-      <div id="top" className="shell"><nav className="nav" aria-label="Main navigation"><div className="nav-inner"><a className="wordmark" href="/"><LogoMark />PORTICO</a><div className="navlinks">{NAV_LINKS.map(([href, label]) => <a href={href} key={label}>{label}</a>)}</div><div className="nav-actions"><button className="button secondary" onClick={() => open("demo")}>Book Demo</button><button className="button primary" onClick={() => open("trial")}>Start Free Trial</button></div><button className="menu-button" aria-label="Toggle menu" aria-expanded={mobileOpen} onClick={() => setMobileOpen(!mobileOpen)}>{mobileOpen ? <X /> : <Menu />}</button></div></nav>{mobileOpen && <div className="mobile-menu">{NAV_LINKS.map(([href, label]) => <a href={href} key={label} onClick={() => setMobileOpen(false)}>{label}</a>)}<button className="button primary" onClick={() => open("trial")}>Start Free Trial</button></div>}</div>
+      <div id="top" className="shell"><nav className="nav" aria-label="Main navigation"><div className="nav-inner"><a className="wordmark" href="/"><LogoMark />PORTICO</a><div className="navlinks">{TOP_LINKS.map(([href, label]) => <a href={href} key={label}>{label}</a>)}<div className="nav-group"><button className="nav-group-btn" aria-haspopup="true">Company <ChevronDown size={15} /></button><div className="nav-drop">{COMPANY_LINKS.map(([href, label]) => <a href={href} key={label}>{label}</a>)}</div></div></div><div className="nav-actions"><button className="button secondary" onClick={() => open("demo")}>Book Demo</button><button className="button primary" onClick={() => open("trial")}>Start Free Trial</button></div><button className="menu-button" aria-label="Toggle menu" aria-expanded={mobileOpen} onClick={() => setMobileOpen(!mobileOpen)}>{mobileOpen ? <X /> : <Menu />}</button></div></nav>{mobileOpen && <div className="mobile-menu">{[...TOP_LINKS, ...COMPANY_LINKS].map(([href, label]) => <a href={href} key={label} onClick={() => setMobileOpen(false)}>{label}</a>)}<button className="button primary" onClick={() => open("trial")}>Start Free Trial</button></div>}</div>
       <main>{children}</main>
-      <footer className="footer"><div className="shell footer-inner"><a className="wordmark" href="/"><LogoMark />PORTICO</a><div className="footer-links"><a href="/#solution">How it Works</a><a href="/pricing">Pricing</a><a href="/faq">FAQ</a><a href="/pricing#enterprise">Enterprise</a><a href="mailto:hello@portico.intelligence">Email us</a></div></div></footer>
+      <footer className="footer"><div className="shell footer-inner"><a className="wordmark" href="/"><LogoMark />PORTICO</a><div className="footer-links"><a href="/#solution">How it Works</a><a href="/pricing">Pricing</a><a href="/about">About</a><a href="/blog">Blog</a><a href="/faq">FAQ</a><a href="/pricing#enterprise">Enterprise</a><a href="mailto:hello@portico.intelligence">Email us</a></div></div></footer>
       <StickyCTA onStart={() => open("trial")} />
       {modal && <ContactModal mode={modal} onClose={() => setModal(null)} />}
     </ModalCtx.Provider>
