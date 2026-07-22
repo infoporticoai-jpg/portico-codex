@@ -577,3 +577,8 @@ body { margin:0; color:var(--ink); background:#fff; font-family:Geist,Arial,sans
 .lang-toggle button { border:0; background:none; padding:3px 7px; border-radius:999px; font:inherit; font-size:12px; font-weight:700; color:#94a3b8; cursor:pointer; transition:.15s; }
 .lang-toggle button.on { background:#f26a1f; color:#fff; }
 .mobile-menu .lang-toggle { align-self:flex-start; margin:4px 12px 10px; }
+
+/* Sign In link */
+.nav-signin { display:inline-flex; align-items:center; gap:6px; font-size:14px; font-weight:600; color:#475569; text-decoration:none; padding:0 4px; white-space:nowrap; }
+.nav-signin:hover { color:#1b2438; }
+.mm-signin { padding:10px 12px; color:#334155 !important; font-weight:700; }
