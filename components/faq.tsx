@@ -16,11 +16,11 @@ const FAQ_ITEMS: [string, string][] = [
   ["Can I cancel anytime?", "Yes. Self-serve plans are month-to-month with no lock-in."],
 ];
 
-export function Faq() {
+export function Faq({ items = FAQ_ITEMS }: { items?: [string, string][] }) {
   const [open, setOpen] = useState<number | null>(0);
   return (
     <div className="faq2 reveal">
-      {FAQ_ITEMS.map(([q, a], i) => (
+      {items.map(([q, a], i) => (
         <div className={`faq2-item ${open === i ? "on" : ""}`} key={q}>
           <button className="faq2-q" onClick={() => setOpen(open === i ? null : i)} aria-expanded={open === i}>
             <span>{q}</span>

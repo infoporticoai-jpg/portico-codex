@@ -14,9 +14,8 @@ type NavEntry = { label: string; href?: string; items?: NavItem[]; foot?: { text
 
 const NAV: NavEntry[] = [
   { label: "Products", items: [
-    { label: "AI Receptionist", href: "/#solution" },
-    { label: "Voice Agents", href: "/#solution" },
-    { label: "Call Routing", href: "/#solution" },
+    { label: "Voice Agents", href: "/voice-agents" },
+    { label: "Intelligent Call Routing", href: "/#solution" },
     { label: "Integrations", href: "/integrations" },
   ] },
   { label: "Industries", items: [
