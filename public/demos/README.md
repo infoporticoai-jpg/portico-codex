@@ -8,7 +8,7 @@ Expected filenames (referenced by `components/demo-config.ts` → `audio`):
 | Industry            | File                          |
 |---------------------|-------------------------------|
 | Property Management | `property-management.mp3`     |
-| HVAC                | `hvac.mp3`                    |
+| Home Services       | `home-services.mp3`           |
 | Dental              | `dental.mp3`                  |
 | Law Firms           | `law-firms.mp3`               |
 | Veterinary          | `veterinary.mp3`              |

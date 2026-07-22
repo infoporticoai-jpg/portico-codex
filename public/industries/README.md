@@ -10,7 +10,7 @@ UI mockup). Until you add them, a placeholder frame shows.
    matching `SOLUTIONS` entry. That industry then shows the real photo.
 
 ## Filenames (match the SOLUTIONS ids)
-`property-management.jpg`, `hvac.jpg`, `dental.jpg`, `law-firms.jpg`,
+`property-management.jpg`, `home-services.jpg`, `dental.jpg`, `law-firms.jpg`,
 `veterinary.jpg`, `medical-clinics.jpg`, `real-estate.jpg`
 
 Landscape photos (roughly 4:3) look best — they're cropped to fill the frame.

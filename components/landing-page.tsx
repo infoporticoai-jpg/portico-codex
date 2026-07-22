@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   ArrowRight, Building2, CheckCircle2, HeartPulse, Home, Image as ImageIcon, PawPrint, Scale, Stethoscope, Wrench,
 } from "lucide-react";
@@ -15,14 +15,28 @@ import { Faq } from "./faq";
 // `photo` is an optional real industry photo (drop into public/industries/).
 // When present it renders on the right; otherwise a placeholder frame shows.
 const SOLUTIONS: { id: string; label: string; Icon: typeof Building2; blurb: string; handles: string[]; photo?: string }[] = [
-  { id: "property-management", label: "Property Management", Icon: Building2, blurb: "Keep tenants and prospects served without tying up your office.", handles: ["Tenant inquiries", "Maintenance requests", "Leasing appointments", "Emergency dispatch", "Rent & payment questions", "English & French"] },
-  { id: "hvac", label: "HVAC", Icon: Wrench, blurb: "Capture every service call, day or night, and dispatch fast.", handles: ["Emergency requests", "Appointment scheduling", "After-hours dispatch", "Service & quotes", "Maintenance reminders", "English & French"] },
-  { id: "dental", label: "Dental", Icon: Stethoscope, blurb: "Fill the schedule and welcome new patients automatically.", handles: ["New patient booking", "Appointment scheduling", "Insurance questions", "Reminders & reschedules", "After-hours triage", "English & French"] },
-  { id: "law-firms", label: "Law Firms", Icon: Scale, blurb: "Qualify and intake new clients before they call the next firm.", handles: ["Client intake", "Lead qualification", "Consultation scheduling", "Case status routing", "Confidential messages", "English & French"] },
-  { id: "veterinary", label: "Veterinary", Icon: PawPrint, blurb: "Triage urgent cases and book visits without missing a call.", handles: ["Urgent care triage", "Appointment booking", "Prescription refills", "After-hours coverage", "New client intake", "English & French"] },
-  { id: "medical-clinics", label: "Medical Clinics", Icon: HeartPulse, blurb: "Book patients and triage calls so your front desk isn't buried.", handles: ["Appointment scheduling", "New patient intake", "Insurance & billing", "Prescription requests", "After-hours triage", "English & French"] },
-  { id: "real-estate", label: "Real Estate", Icon: Home, blurb: "Never miss a buyer or seller lead while you're showing a property.", handles: ["Buyer & seller inquiries", "Showing appointments", "Listing questions", "Lead qualification", "After-hours coverage", "English & French"] },
+  { id: "property-management", label: "Property Management", Icon: Building2, blurb: "Keep tenants and prospects served without tying up your office.", handles: ["Tenant inquiries", "Maintenance requests", "Leasing appointments", "Emergency dispatch", "Rent & payment questions", "English & French"], photo: "/industries/property-management.jpg" },
+  { id: "home-services", label: "Home Services", Icon: Wrench, blurb: "For HVAC, plumbing, electrical and more — capture every service call and get a tech on the way fast.", handles: ["Emergency requests", "Job scheduling", "After-hours dispatch", "Quotes & estimates", "Service reminders", "English & French"], photo: "/industries/home-services.jpg" },
+  { id: "dental", label: "Dental", Icon: Stethoscope, blurb: "Fill the schedule and welcome new patients automatically.", handles: ["New patient booking", "Appointment scheduling", "Insurance questions", "Reminders & reschedules", "After-hours triage", "English & French"], photo: "/industries/dental.jpg" },
+  { id: "law-firms", label: "Law Firms", Icon: Scale, blurb: "Qualify and intake new clients before they call the next firm.", handles: ["Client intake", "Lead qualification", "Consultation scheduling", "Case status routing", "Confidential messages", "English & French"], photo: "/industries/law-firms.jpg" },
+  { id: "veterinary", label: "Veterinary", Icon: PawPrint, blurb: "Triage urgent cases and book visits without missing a call.", handles: ["Urgent care triage", "Appointment booking", "Prescription refills", "After-hours coverage", "New client intake", "English & French"], photo: "/industries/veterinary.jpg" },
+  { id: "medical-clinics", label: "Medical Clinics", Icon: HeartPulse, blurb: "Book patients and triage calls so your front desk isn't buried.", handles: ["Appointment scheduling", "New patient intake", "Insurance & billing", "Prescription requests", "After-hours triage", "English & French"], photo: "/industries/medical-clinics.jpg" },
+  { id: "real-estate", label: "Real Estate", Icon: Home, blurb: "Never miss a buyer or seller lead while you're showing a property.", handles: ["Buyer & seller inquiries", "Showing appointments", "Listing questions", "Lead qualification", "After-hours coverage", "English & French"], photo: "/industries/real-estate.jpg" },
 ];
+
+function IndustryPhoto({ photo, label }: { photo?: string; label: string }) {
+  const [failed, setFailed] = useState(false);
+  const ref = useRef<HTMLImageElement>(null);
+  useEffect(() => {
+    // Catch images that already errored before hydration attached onError.
+    const img = ref.current;
+    if (img && img.complete && img.naturalWidth === 0) setFailed(true);
+  }, [photo]);
+  if (photo && !failed) {
+    return <img ref={ref} className="sol-photo" src={photo} alt={`${label} — Portico`} onError={() => setFailed(true)} />;
+  }
+  return <div className="sol-photo ph"><ImageIcon size={30} /><span>{label} photo</span></div>;
+}
 
 const HIW_BADGES = ["24/7 Answering", "Under 2-second pickup", "Appointment booking", "CRM sync", "English & French", "Human escalation"];
 
@@ -71,11 +85,7 @@ function IndustrySolutions() {
             ))}
           </div>
         </div>
-        {s.photo ? (
-          <img className="sol-photo" src={s.photo} alt={`${s.label} — Portico answering calls`} />
-        ) : (
-          <div className="sol-photo ph"><ImageIcon size={30} /><span>{s.label} photo</span></div>
-        )}
+        <IndustryPhoto key={s.id} photo={s.photo} label={s.label} />
       </motion.div>
     </div>
   );

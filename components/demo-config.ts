@@ -102,10 +102,10 @@ export const DEMOS: Demo[] = [
     ],
   },
   {
-    id: "hvac",
-    label: "HVAC",
+    id: "home-services",
+    label: "Home Services",
     business: "Summit Heating & Air",
-    audio: "/demos/hvac.mp3",
+    audio: "/demos/home-services.mp3",
     duration: 54,
     initialStatus: baseStatus({ intent: "Detecting…" }),
     transcript: [

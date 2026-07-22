@@ -24,7 +24,7 @@ export default function AboutPage() {
         <div className="prose reveal">
           <p>Most businesses lose customers for the simplest reason — no one picked up. A missed call is a booked competitor, an unqualified lead, or a frustrated regular who won&rsquo;t call back. We started Portico because &ldquo;leave a message&rdquo; shouldn&rsquo;t be the difference between winning and losing a customer.</p>
           <p>So we built a call center that pairs instant voice agents with real human backup. The agent answers on the first ring, books the appointment, qualifies the lead, and answers the common questions. When a call needs judgment or a personal touch, it&rsquo;s warm-transferred to your team with full context. Callers always reach a resolution — and your team only handles what actually needs them.</p>
-          <p>Portico is built for the service businesses that live and die by the phone: property management, HVAC, dental, legal, veterinary, medical, and real estate. One platform, configured for how each of them works.</p>
+          <p>Portico is built for the service businesses that live and die by the phone: property management, home services, dental, legal, veterinary, medical, and real estate. One platform, configured for how each of them works.</p>
         </div>
         <div className="cards reveal">
           {values.map(([Icon, title, body]) => (

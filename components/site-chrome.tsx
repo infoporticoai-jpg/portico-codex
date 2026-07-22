@@ -21,7 +21,7 @@ const NAV: NavEntry[] = [
   ] },
   { label: "Industries", items: [
     { label: "Property Management", href: "/industries#property-management" },
-    { label: "HVAC", href: "/industries#hvac" },
+    { label: "Home Services", href: "/industries#home-services" },
     { label: "Dental", href: "/industries#dental" },
     { label: "Veterinary", href: "/industries#veterinary" },
     { label: "Law Firms", href: "/industries#law-firms" },
