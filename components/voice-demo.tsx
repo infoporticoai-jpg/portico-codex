@@ -189,7 +189,11 @@ export function VoiceDemo({ onBook }: { onBook: () => void }) {
               <span className="vd-tab-text">{t(d.label, d.labelFr)}</span>
             </button>
           ))}
-          <span className="vd-sample">{t("Illustrative sample · real recordings coming soon", "Exemple illustratif · vrais enregistrements à venir")}</span>
+          {demo.real ? (
+            <span className="vd-sample vd-sample-real">{t("Real recording · real transcript", "Enregistrement réel · transcription réelle")}</span>
+          ) : (
+            <span className="vd-sample">{t("Illustrative sample · real recordings coming soon", "Exemple illustratif · vrais enregistrements à venir")}</span>
+          )}
         </div>
 
         <div className="vd-grid">

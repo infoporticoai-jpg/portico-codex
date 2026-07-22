@@ -69,6 +69,8 @@ export interface Demo {
   duration: number;
   initialStatus: CallStatus;
   transcript: TranscriptLine[];
+  /** True once this industry has a real recording + real transcript (not a placeholder). */
+  real?: boolean;
   /**
    * Optional French recording + transcript (drop the file in /public/demos/
    * and add the matching transcript). When the language toggle is set to
@@ -116,16 +118,31 @@ export const DEMOS: Demo[] = [
     id: "home-services",
     label: "Home Services",
     labelFr: "Services à domicile",
-    business: "Summit Heating & Air",
+    business: "Comfort Home Services",
     audio: "/demos/home-services.mp3",
     duration: 110,
+    real: true,
     initialStatus: baseStatus({ intent: "Detecting…" }),
-    // Real recording — the written transcript hasn't been supplied yet, so we
-    // show one honest note instead of fabricated dialogue. Replace this
-    // single entry with the real, timestamped transcript once you have it
-    // (see public/demos/README.md for the line format).
+    // Real recording, real transcript — timed against the actual 110s file.
     transcript: [
-      { t: 0, speaker: "system", text: "Real recording — press play to listen. A synced written transcript is coming soon." },
+      { t: 0, speaker: "portico", text: "Thanks for calling Comfort Home Services. This is Ava, your virtual assistant. How can I help you today?" },
+      { t: 8, speaker: "caller", text: "Hi, Ava. The AC is not working at my house. I'd like to get a technician sent over as soon as you can.", capability: "lead-qualification", status: { intent: "AC Repair Request" } },
+      { t: 19, speaker: "portico", text: "Oh, I understand — that can't be comfortable. We'll take care of it. Alright, let's get your details so the team can reach you quickly. Can I start with your name?", capability: "lead-qualification" },
+      { t: 33, speaker: "caller", text: "Yeah, my name is Nicholas.", capability: "lead-qualification" },
+      { t: 36, speaker: "portico", text: "Thanks, Nicholas. And what's the best number to reach you?", capability: "lead-qualification" },
+      { t: 41, speaker: "caller", text: "It's gonna be (514) 280-1770." },
+      { t: 45, speaker: "portico", text: "Okay, so that's (514) 280-1770. Is that right?", capability: "lead-qualification" },
+      { t: 50, speaker: "caller", text: "That's correct." },
+      { t: 52, speaker: "portico", text: "Perfect. And what's the service address, please?", capability: "lead-qualification" },
+      { t: 56, speaker: "caller", text: "It's gonna be 484 Bass Road in Chicago." },
+      { t: 60, speaker: "portico", text: "Okay, so that's 484 Bass Road in Chicago. Is that correct?", capability: "lead-qualification" },
+      { t: 65, speaker: "caller", text: "That is correct." },
+      { t: 67, speaker: "portico", text: "Great. And generally, do mornings or afternoons work better for you?", capability: "appointment-booking", status: { appointment: "Booking in progress" } },
+      { t: 72, speaker: "caller", text: "The afternoons work better. If you could send a technician later this week, that would be the best.", status: { sentiment: "Positive" } },
+      { t: 81, speaker: "portico", text: "Okay, so I've got your AC not working at 484 Bass Road in Chicago, and the team will call you back on the next business day to confirm a time. Anything else I should note for them?", capability: "appointment-booking", status: { appointment: "Callback scheduled" } },
+      { t: 97, speaker: "caller", text: "That'll be everything. Thank you so much, Ava.", status: { sentiment: "Positive" } },
+      { t: 101, speaker: "portico", text: "Alright, thanks so much, Nicholas. It's all noted. Have a great day. Thanks for calling — bye now.", capability: "customer-support" },
+      { t: 109, speaker: "caller", text: "Bye." },
     ],
   },
   {
