@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import {
-  ArrowRight, Building2, CheckCircle2, HeartPulse, Home, PawPrint, Scale, Stethoscope, Wrench,
+  ArrowRight, Building2, CheckCircle2, HeartPulse, Home, Image as ImageIcon, PawPrint, Scale, Stethoscope, Wrench,
 } from "lucide-react";
 import { motion } from "framer-motion";
 import { VoiceDemo } from "./voice-demo";
@@ -12,16 +12,9 @@ import { RoiCalculator } from "./roi-calculator";
 import { PricingPlans } from "./pricing-plans";
 import { Faq } from "./faq";
 
-const SOL_CONNECTIONS: [string, string][] = [
-  ["Knowledge Base", "Connected"],
-  ["CRM", "Connected"],
-  ["Calendar", "Connected"],
-  ["Business Hours", "Set"],
-  ["Emergency Routing", "On"],
-  ["Bilingual", "Enabled"],
-];
-
-const SOLUTIONS: { id: string; label: string; Icon: typeof Building2; blurb: string; handles: string[] }[] = [
+// `photo` is an optional real industry photo (drop into public/industries/).
+// When present it renders on the right; otherwise a placeholder frame shows.
+const SOLUTIONS: { id: string; label: string; Icon: typeof Building2; blurb: string; handles: string[]; photo?: string }[] = [
   { id: "property-management", label: "Property Management", Icon: Building2, blurb: "Keep tenants and prospects served without tying up your office.", handles: ["Tenant inquiries", "Maintenance requests", "Leasing appointments", "Emergency dispatch", "Rent & payment questions", "English & French"] },
   { id: "hvac", label: "HVAC", Icon: Wrench, blurb: "Capture every service call, day or night, and dispatch fast.", handles: ["Emergency requests", "Appointment scheduling", "After-hours dispatch", "Service & quotes", "Maintenance reminders", "English & French"] },
   { id: "dental", label: "Dental", Icon: Stethoscope, blurb: "Fill the schedule and welcome new patients automatically.", handles: ["New patient booking", "Appointment scheduling", "Insurance questions", "Reminders & reschedules", "After-hours triage", "English & French"] },
@@ -58,7 +51,6 @@ function LiveCallCard() {
 function IndustrySolutions() {
   const [active, setActive] = useState(SOLUTIONS[0].id);
   const s = SOLUTIONS.find((x) => x.id === active) ?? SOLUTIONS[0];
-  const Icon = s.Icon;
   return (
     <div className="sol reveal">
       <div className="sol-tabs" role="tablist" aria-label="Choose an industry">
@@ -79,19 +71,11 @@ function IndustrySolutions() {
             ))}
           </div>
         </div>
-        <div className="sol-card">
-          <div className="sol-card-h">
-            <span className="sol-ico"><Icon size={26} /></span>
-            <div className="sol-card-id"><b>{s.label}</b><span>Configured workspace</span></div>
-            <span className="sol-live"><i />Live</span>
-          </div>
-          <p className="sol-card-label">Configuration</p>
-          <div className="sol-conns">
-            {SOL_CONNECTIONS.map(([label, state]) => (
-              <div className="sol-conn" key={label}><span className="sol-conn-l"><CheckCircle2 size={15} />{label}</span><span className="sol-conn-s">{state}</span></div>
-            ))}
-          </div>
-        </div>
+        {s.photo ? (
+          <img className="sol-photo" src={s.photo} alt={`${s.label} — Portico answering calls`} />
+        ) : (
+          <div className="sol-photo ph"><ImageIcon size={30} /><span>{s.label} photo</span></div>
+        )}
       </motion.div>
     </div>
   );

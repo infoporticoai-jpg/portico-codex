@@ -9,15 +9,39 @@ type OpenFn = (mode: "trial" | "demo") => void;
 const ModalCtx = createContext<OpenFn>(() => {});
 export const useOpenModal = () => useContext(ModalCtx);
 
-const TOP_LINKS: [string, string][] = [
-  ["/#solution", "How it Works"],
-  ["/#industries", "Industries"],
-  ["/pricing", "Pricing"],
-];
-const COMPANY_LINKS: [string, string][] = [
-  ["/about", "About us"],
-  ["/blog", "Blog"],
-  ["/faq", "FAQ"],
+type NavItem = { label: string; href: string; soon?: boolean };
+type NavEntry = { label: string; href?: string; items?: NavItem[]; foot?: { text: string; label: string; mode: "trial" | "demo" } };
+
+const NAV: NavEntry[] = [
+  { label: "Products", items: [
+    { label: "AI Receptionist", href: "/#solution" },
+    { label: "Voice Agents", href: "/#solution" },
+    { label: "Call Routing", href: "/#solution" },
+    { label: "Integrations", href: "/integrations" },
+  ] },
+  { label: "Industries", items: [
+    { label: "Property Management", href: "/industries#property-management" },
+    { label: "HVAC", href: "/industries#hvac" },
+    { label: "Dental", href: "/industries#dental" },
+    { label: "Veterinary", href: "/industries#veterinary" },
+    { label: "Law Firms", href: "/industries#law-firms" },
+    { label: "Medical Clinics", href: "/industries#medical-clinics" },
+    { label: "Real Estate", href: "/industries#real-estate" },
+  ], foot: { text: "Don’t see your industry?", label: "Talk to Sales →", mode: "demo" } },
+  { label: "Pricing", href: "/pricing" },
+  { label: "Resources", items: [
+    { label: "Knowledge Base", href: "#" },
+    { label: "Blog", href: "/blog" },
+    { label: "Help Center", href: "#" },
+    { label: "API Documentation", href: "#", soon: true },
+  ] },
+  { label: "Company", items: [
+    { label: "About Us", href: "/about" },
+    { label: "Contact", href: "mailto:hello@portico.intelligence" },
+    { label: "Partners", href: "#" },
+    { label: "Integrations", href: "/integrations" },
+    { label: "Careers", href: "#", soon: true },
+  ] },
 ];
 
 export function LogoMark() {
@@ -88,7 +112,15 @@ export function SiteChrome({ children }: { children: ReactNode }) {
 
   return (
     <ModalCtx.Provider value={open}>
-      <div id="top" className="shell"><nav className="nav" aria-label="Main navigation"><div className="nav-inner"><a className="wordmark" href="/"><LogoMark />PORTICO</a><div className="navlinks">{TOP_LINKS.map(([href, label]) => <a href={href} key={label}>{label}</a>)}<div className="nav-group"><button className="nav-group-btn" aria-haspopup="true">Company <ChevronDown size={15} /></button><div className="nav-drop">{COMPANY_LINKS.map(([href, label]) => <a href={href} key={label}>{label}</a>)}</div></div></div><div className="nav-actions"><button className="button secondary" onClick={() => open("demo")}>Book Demo</button><button className="button primary" onClick={() => open("trial")}>Start Free Trial</button></div><button className="menu-button" aria-label="Toggle menu" aria-expanded={mobileOpen} onClick={() => setMobileOpen(!mobileOpen)}>{mobileOpen ? <X /> : <Menu />}</button></div></nav>{mobileOpen && <div className="mobile-menu">{[...TOP_LINKS, ...COMPANY_LINKS].map(([href, label]) => <a href={href} key={label} onClick={() => setMobileOpen(false)}>{label}</a>)}<button className="button primary" onClick={() => open("trial")}>Start Free Trial</button></div>}</div>
+      <div id="top" className="shell"><nav className="nav" aria-label="Main navigation"><div className="nav-inner"><a className="wordmark" href="/"><LogoMark />PORTICO</a><div className="navlinks">{NAV.map((e) => e.items ? (
+        <div className="nav-group" key={e.label}><button className="nav-group-btn" aria-haspopup="true">{e.label} <ChevronDown size={15} /></button><div className="nav-drop">{e.items.map((it) => it.soon ? <span className="nav-drop-soon" key={it.label}>{it.label}<em>Soon</em></span> : <a href={it.href} key={it.label}>{it.label}</a>)}{e.foot && <div className="nav-drop-foot"><span>{e.foot.text}</span><button onClick={() => open(e.foot!.mode)}>{e.foot.label}</button></div>}</div></div>
+      ) : (
+        <a href={e.href} key={e.label}>{e.label}</a>
+      ))}</div><div className="nav-actions"><button className="button secondary" onClick={() => open("demo")}>Book Demo</button><button className="button primary" onClick={() => open("trial")}>Start Free Trial</button></div><button className="menu-button" aria-label="Toggle menu" aria-expanded={mobileOpen} onClick={() => setMobileOpen(!mobileOpen)}>{mobileOpen ? <X /> : <Menu />}</button></div></nav>{mobileOpen && <div className="mobile-menu">{NAV.map((e) => e.items ? (
+        <div className="mm-group" key={e.label}><span className="mm-head">{e.label}</span>{e.items.map((it) => it.soon ? <span className="mm-soon" key={it.label}>{it.label} · Soon</span> : <a href={it.href} key={it.label} onClick={() => setMobileOpen(false)}>{it.label}</a>)}</div>
+      ) : (
+        <a href={e.href} key={e.label} onClick={() => setMobileOpen(false)}>{e.label}</a>
+      ))}<button className="button primary" onClick={() => open("trial")}>Start Free Trial</button></div>}</div>
       <main>{children}</main>
       <footer className="footer"><div className="shell footer-inner"><a className="wordmark" href="/"><LogoMark />PORTICO</a><div className="footer-links"><a href="/#solution">How it Works</a><a href="/pricing">Pricing</a><a href="/about">About</a><a href="/blog">Blog</a><a href="/faq">FAQ</a><a href="/pricing#enterprise">Enterprise</a><a href="mailto:hello@portico.intelligence">Email us</a></div></div></footer>
       <StickyCTA onStart={() => open("trial")} />
