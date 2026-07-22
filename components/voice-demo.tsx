@@ -41,6 +41,15 @@ const STATUS_VALUE_FR: Record<string, string> = {
   "Personal Injury Intake": "Accueil — blessure corporelle",
 };
 
+// Shown in French mode when this industry has no French recording yet.
+const FR_NOT_AVAILABLE: TranscriptLine[] = [
+  { t: 0, speaker: "system", text: "Cet appel n’est pas encore disponible en français. Passez à EN pour l’écouter." },
+];
+// Shown in French mode when a French recording exists but its transcript hasn't arrived yet.
+const FR_TRANSCRIPT_PENDING: TranscriptLine[] = [
+  { t: 0, speaker: "system", text: "Enregistrement réel — appuyez sur lecture pour l’écouter. La transcription arrive bientôt." },
+];
+
 function fmt(s: number) {
   if (!isFinite(s) || s < 0) s = 0;
   const m = Math.floor(s / 60);
@@ -76,12 +85,21 @@ export function VoiceDemo({ onBook }: { onBook: () => void }) {
   const transcriptRef = useRef<HTMLDivElement>(null);
 
   const demo: Demo = useMemo(() => DEMOS.find((d) => d.id === activeId) ?? DEMOS[0], [activeId]);
-  // Use the French recording + transcript only when both exist; otherwise
-  // fall back to English so the demo never shows a broken/empty player.
-  const useFr = lang === "fr" && !!demo.audioFr && !!demo.transcriptFr;
-  const audioSrc = useFr ? demo.audioFr! : demo.audio;
-  const transcript = useFr ? demo.transcriptFr! : demo.transcript;
-  const fallbackDuration = useFr ? demo.durationFr ?? demo.duration : demo.duration;
+  // French mode never falls back to the English recording. If a French
+  // recording exists, play it (with its transcript, or a "coming soon" note
+  // if only the audio has arrived so far). If no French recording exists at
+  // all, play no audio and show a note pointing back to English — never the
+  // English audio itself.
+  const isFr = lang === "fr";
+  const hasFrAudio = !!demo.audioFr;
+  const hasFrTranscript = !!demo.transcriptFr;
+  const audioSrc = isFr ? (hasFrAudio ? demo.audioFr : undefined) : demo.audio;
+  const transcript = isFr
+    ? hasFrAudio
+      ? hasFrTranscript ? demo.transcriptFr! : FR_TRANSCRIPT_PENDING
+      : FR_NOT_AVAILABLE
+    : demo.transcript;
+  const fallbackDuration = isFr ? demo.durationFr ?? demo.duration : demo.duration;
   const duration = realDuration ?? fallbackDuration;
   const bars = useMemo(() => waveBars(seedOf(demo.id)), [demo.id]);
   const sv = (value: string) => (lang === "fr" ? STATUS_VALUE_FR[value] ?? value : value);
@@ -189,10 +207,18 @@ export function VoiceDemo({ onBook }: { onBook: () => void }) {
               <span className="vd-tab-text">{t(d.label, d.labelFr)}</span>
             </button>
           ))}
-          {demo.real ? (
-            <span className="vd-sample vd-sample-real">{t("Real recording · real transcript", "Enregistrement réel · transcription réelle")}</span>
+          {isFr ? (
+            hasFrAudio && hasFrTranscript ? (
+              <span className="vd-sample vd-sample-real">Enregistrement réel · transcription réelle</span>
+            ) : hasFrAudio ? (
+              <span className="vd-sample">Enregistrement réel · transcription à venir</span>
+            ) : (
+              <span className="vd-sample">Pas encore disponible en français</span>
+            )
+          ) : demo.real ? (
+            <span className="vd-sample vd-sample-real">Real recording · real transcript</span>
           ) : (
-            <span className="vd-sample">{t("Illustrative sample · real recordings coming soon", "Exemple illustratif · vrais enregistrements à venir")}</span>
+            <span className="vd-sample">Illustrative sample · real recordings coming soon</span>
           )}
         </div>
 
