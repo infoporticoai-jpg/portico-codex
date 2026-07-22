@@ -584,3 +584,40 @@ body { margin:0; color:var(--ink); background:#fff; font-family:Geist,Arial,sans
 /* Sign In row (mobile menu) */
 .mm-signin { display:flex; align-items:center; gap:10px; padding:10px 12px; color:#1b2438 !important; font-weight:700; }
 .mm-signin-ico { display:inline-flex; align-items:center; justify-content:center; width:28px; height:28px; border-radius:50%; border:1.5px solid var(--blue); color:var(--blue); flex:none; }
+
+/* ───────────────── Trial wizard ───────────────── */
+.wiz-modal { width:min(100%,560px); padding:36px; }
+.wiz-progress { display:flex; gap:6px; margin-bottom:14px; }
+.wiz-dot { flex:1; height:4px; border-radius:999px; background:#eef2f7; }
+.wiz-dot.on { background:var(--blue); }
+.wiz-modal h2 { font-size:26px; margin:8px 0 6px; }
+.wiz-modal > .eyebrow { display:block; }
+.wiz-fields { display:grid; gap:14px; margin-top:20px; }
+.wiz-fields label { display:grid; gap:7px; color:#334155; font-size:13px; font-weight:600; }
+.wiz-fields input { width:100%; padding:12px; border:1px solid #cbd5e1; border-radius:8px; color:var(--ink); font:inherit; font-size:14px; background:#fff; }
+.wiz-fields input:focus { outline:3px solid #f5c9a4; border-color:var(--blue); }
+.wiz-q { margin-top:20px; }
+.wiz-q-label { display:block; font-size:13px; font-weight:600; color:#334155; margin-bottom:10px; }
+.wiz-pills { display:flex; flex-wrap:wrap; gap:8px; }
+.wiz-pill { font:inherit; font-size:13px; font-weight:600; color:#475569; background:#fff; border:1px solid #dbe1e9; padding:9px 14px; border-radius:999px; cursor:pointer; transition:.15s; }
+.wiz-pill:hover { border-color:var(--blue); }
+.wiz-pill.on { background:var(--blue); border-color:var(--blue); color:#fff; }
+.wiz-plans { display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-top:20px; }
+.wiz-plan { position:relative; text-align:left; padding:14px 16px; border:1.5px solid #dbe1e9; border-radius:12px; background:#fff; cursor:pointer; transition:.15s; }
+.wiz-plan:hover { border-color:var(--blue); }
+.wiz-plan.on { border-color:var(--blue); background:#fff3ea; }
+.wiz-plan-calls { display:block; font-size:12.5px; color:#64748b; font-weight:600; margin-bottom:4px; }
+.wiz-plan-price { display:block; font-size:19px; font-weight:700; color:#1b2438; }
+.wiz-plan-price small { font-size:12px; font-weight:600; color:#94a3b8; }
+.wiz-plan-check { position:absolute; top:12px; right:12px; color:var(--blue); }
+.wiz-enterprise-link { display:block; margin-top:16px; background:none; border:0; padding:0; font:inherit; font-size:13px; font-weight:600; color:var(--blue); cursor:pointer; }
+.wiz-enterprise-link:hover { text-decoration:underline; }
+.wiz-actions { display:flex; align-items:center; justify-content:space-between; margin-top:28px; }
+.wiz-actions .button:disabled { opacity:.45; cursor:not-allowed; transform:none !important; box-shadow:none !important; }
+.wiz-final { text-align:center; padding-top:6px; }
+.wiz-final-check { color:#16a34a; margin-bottom:10px; }
+.wiz-final h2 { font-size:24px; margin:0 0 10px; }
+.wiz-final p { max-width:420px; margin:0 auto 12px; font-size:14px; }
+.wiz-final-note { font-size:12.5px !important; color:#94a3b8 !important; }
+.wiz-final .button { margin-top:14px; }
+@media(max-width:560px){ .wiz-plans{ grid-template-columns:1fr; } .wiz-modal{ padding:26px 22px; } }

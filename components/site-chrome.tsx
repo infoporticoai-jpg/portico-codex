@@ -1,21 +1,15 @@
 "use client";
 
-import { createContext, FormEvent, ReactNode, useContext, useEffect, useState } from "react";
+import { FormEvent, ReactNode, useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 import { AnimatePresence, motion } from "framer-motion";
 import { ArrowRight, CheckCircle2, ChevronDown, Globe, Menu, User, X } from "lucide-react";
+import { TrialWizard } from "./trial-wizard";
+import { ModalCtx, OpenFn, LangCtx, Lang, PORTAL_URL, useLang, useOpenModal } from "./site-context";
 
-const PORTAL_URL = "https://portal.porticointelligence.com";
-
-type OpenFn = (mode: "trial" | "demo") => void;
-const ModalCtx = createContext<OpenFn>(() => {});
-export const useOpenModal = () => useContext(ModalCtx);
-
-export type Lang = "en" | "fr";
-type LangCtxValue = { lang: Lang; setLang: (l: Lang) => void; t: (en: string, fr: string) => string };
-const LangCtx = createContext<LangCtxValue>({ lang: "en", setLang: () => {}, t: (en) => en });
-/** useLang().t(englishText, frenchText) returns the right string for the current language. */
-export const useLang = () => useContext(LangCtx);
+// Re-exported so existing imports of these from "./site-chrome" keep working.
+export { useOpenModal, useLang, PORTAL_URL };
+export type { Lang };
 
 type NavItem = { label: string; labelFr: string; href: string; soon?: boolean };
 type NavEntry = { label: string; labelFr: string; href?: string; items?: NavItem[]; foot?: { text: string; textFr: string; label: string; labelFr: string; mode: "trial" | "demo" } };
@@ -102,14 +96,13 @@ function StickyCTA({ onStart }: { onStart: () => void }) {
   );
 }
 
-function ContactModal({ mode, onClose }: { mode: "trial" | "demo"; onClose: () => void }) {
+function DemoModal({ onClose }: { onClose: () => void }) {
   const { t } = useLang();
   const [sent, setSent] = useState(false);
-  const isTrial = mode === "trial";
   function submit(event: FormEvent<HTMLFormElement>) { event.preventDefault(); setSent(true); }
   return <div className="modal-backdrop" role="presentation" onMouseDown={onClose}><section className="modal" role="dialog" aria-modal="true" aria-labelledby="contact-title" onMouseDown={e => e.stopPropagation()}>
     <button className="modal-close" aria-label="Close form" onClick={onClose}><X size={20} /></button>
-    {sent ? <div className="success"><CheckCircle2 size={38} /><h2>{t("You’re all set.", "Tout est prêt.")}</h2><p>{t("Thanks for your interest. We’ll be in touch shortly.", "Merci de votre intérêt. Nous vous contacterons sous peu.")}</p><button className="button primary" onClick={onClose}>{t("Close", "Fermer")}</button></div> : <><span className="eyebrow">{isTrial ? t("Start free", "Commencer gratuitement") : t("Let’s talk", "Discutons")}</span><h2 id="contact-title">{isTrial ? t("Start your 14-day trial.", "Commencez votre essai de 14 jours.") : t("Book an enterprise demo.", "Réservez une démo entreprise.")}</h2><p>{isTrial ? t("Tell us where to send your trial details.", "Dites-nous où envoyer les détails de votre essai.") : t("Share a few details and our team will tailor the conversation to your operation.", "Partagez quelques détails et notre équipe adaptera la conversation à votre entreprise.")}</p><form onSubmit={submit}><label>{t("Work email", "Courriel professionnel")}<input required type="email" name="email" placeholder="you@company.com" /></label><label>{t("Company name", "Nom de l’entreprise")}<input required name="company" placeholder={t("Your company", "Votre entreprise")} /></label>{!isTrial && <label>{t("Team size", "Taille de l’équipe")}<select name="teamSize" defaultValue=""><option value="" disabled>{t("Select a range", "Choisissez une plage")}</option><option>1–10</option><option>11–50</option><option>51–250</option><option>251+</option></select></label>}<button className="button primary" type="submit">{isTrial ? t("Request trial", "Demander l’essai") : t("Request demo", "Demander la démo")}<ArrowRight size={16} /></button></form></>}
+    {sent ? <div className="success"><CheckCircle2 size={38} /><h2>{t("You’re all set.", "Tout est prêt.")}</h2><p>{t("Thanks for your interest. We’ll be in touch shortly.", "Merci de votre intérêt. Nous vous contacterons sous peu.")}</p><button className="button primary" onClick={onClose}>{t("Close", "Fermer")}</button></div> : <><span className="eyebrow">{t("Let’s talk", "Discutons")}</span><h2 id="contact-title">{t("Book an enterprise demo.", "Réservez une démo entreprise.")}</h2><p>{t("Share a few details and our team will tailor the conversation to your operation.", "Partagez quelques détails et notre équipe adaptera la conversation à votre entreprise.")}</p><form onSubmit={submit}><label>{t("Work email", "Courriel professionnel")}<input required type="email" name="email" placeholder="you@company.com" /></label><label>{t("Company name", "Nom de l’entreprise")}<input required name="company" placeholder={t("Your company", "Votre entreprise")} /></label><label>{t("Team size", "Taille de l’équipe")}<select name="teamSize" defaultValue=""><option value="" disabled>{t("Select a range", "Choisissez une plage")}</option><option>1–10</option><option>11–50</option><option>51–250</option><option>251+</option></select></label><button className="button primary" type="submit">{t("Request demo", "Demander la démo")}<ArrowRight size={16} /></button></form></>}
   </section></div>;
 }
 
@@ -155,7 +148,8 @@ export function SiteChrome({ children }: { children: ReactNode }) {
       <main>{children}</main>
       <footer className="footer"><div className="shell footer-inner"><a className="wordmark" href="/"><LogoMark />PORTICO</a><div className="footer-links"><a href="/#solution">{t("How it Works", "Comment ça marche")}</a><a href="/pricing">{t("Pricing", "Tarifs")}</a><a href="/about">{t("About", "À propos")}</a><a href="/blog">{t("Blog", "Blogue")}</a><a href="/faq">{t("FAQ", "FAQ")}</a><a href="/pricing#enterprise">{t("Enterprise", "Entreprise")}</a><a href="mailto:hello@portico.intelligence">{t("Email us", "Écrivez-nous")}</a></div></div></footer>
       <StickyCTA onStart={() => open("trial")} />
-      {modal && <ContactModal mode={modal} onClose={() => setModal(null)} />}
+      {modal === "demo" && <DemoModal onClose={() => setModal(null)} />}
+      {modal === "trial" && <TrialWizard onClose={() => setModal(null)} />}
       </LangCtx.Provider>
     </ModalCtx.Provider>
   );

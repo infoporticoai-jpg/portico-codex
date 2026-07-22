@@ -4,7 +4,7 @@ import { useState } from "react";
 import { CheckCircle2 } from "lucide-react";
 import { useOpenModal, useLang } from "./site-chrome";
 
-const TIERS = [
+export const TIERS = [
   { calls: 100, price: 149 },
   { calls: 250, price: 349 },
   { calls: 500, price: 649 },
