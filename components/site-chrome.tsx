@@ -15,31 +15,30 @@ type NavEntry = { label: string; href?: string; items?: NavItem[]; foot?: { text
 const NAV: NavEntry[] = [
   { label: "Products", items: [
     { label: "Voice Agents", href: "/voice-agents" },
-    { label: "Intelligent Call Routing", href: "/#solution" },
+    { label: "Intelligent Call Routing", href: "/call-routing" },
     { label: "Integrations", href: "/integrations" },
   ] },
   { label: "Industries", items: [
-    { label: "Property Management", href: "/industries#property-management" },
-    { label: "Home Services", href: "/industries#home-services" },
-    { label: "Dental", href: "/industries#dental" },
-    { label: "Veterinary", href: "/industries#veterinary" },
-    { label: "Law Firms", href: "/industries#law-firms" },
-    { label: "Medical Clinics", href: "/industries#medical-clinics" },
-    { label: "Real Estate", href: "/industries#real-estate" },
+    { label: "Property Management", href: "/property-management" },
+    { label: "Home Services", href: "/home-services" },
+    { label: "Dental", href: "/dental" },
+    { label: "Veterinary", href: "/veterinary" },
+    { label: "Law Firms", href: "/law-firms" },
+    { label: "Medical Clinics", href: "/medical-clinics" },
+    { label: "Real Estate", href: "/real-estate" },
   ], foot: { text: "Don’t see your industry?", label: "Talk to Sales →", mode: "demo" } },
   { label: "Pricing", href: "/pricing" },
   { label: "Resources", items: [
-    { label: "Knowledge Base", href: "#" },
+    { label: "Knowledge Base", href: "/knowledge-base" },
     { label: "Blog", href: "/blog" },
-    { label: "Help Center", href: "#" },
-    { label: "API Documentation", href: "#", soon: true },
+    { label: "Help Center", href: "/help-center" },
+    { label: "API Documentation", href: "/api", soon: true },
   ] },
   { label: "Company", items: [
     { label: "About Us", href: "/about" },
-    { label: "Contact", href: "mailto:hello@portico.intelligence" },
-    { label: "Partners", href: "#" },
-    { label: "Integrations", href: "/integrations" },
-    { label: "Careers", href: "#", soon: true },
+    { label: "Contact", href: "/contact" },
+    { label: "Partners", href: "/partners" },
+    { label: "Careers", href: "/careers", soon: true },
   ] },
 ];
 
@@ -112,11 +111,11 @@ export function SiteChrome({ children }: { children: ReactNode }) {
   return (
     <ModalCtx.Provider value={open}>
       <div id="top" className="shell"><nav className="nav" aria-label="Main navigation"><div className="nav-inner"><a className="wordmark" href="/"><LogoMark />PORTICO</a><div className="navlinks">{NAV.map((e) => e.items ? (
-        <div className="nav-group" key={e.label}><button className="nav-group-btn" aria-haspopup="true">{e.label} <ChevronDown size={15} /></button><div className="nav-drop">{e.items.map((it) => it.soon ? <span className="nav-drop-soon" key={it.label}>{it.label}<em>Soon</em></span> : <a href={it.href} key={it.label}>{it.label}</a>)}{e.foot && <div className="nav-drop-foot"><span>{e.foot.text}</span><button onClick={() => open(e.foot!.mode)}>{e.foot.label}</button></div>}</div></div>
+        <div className="nav-group" key={e.label}><button className="nav-group-btn" aria-haspopup="true">{e.label} <ChevronDown size={15} /></button><div className="nav-drop">{e.items.map((it) => <a href={it.href} key={it.label} className={it.soon ? "nav-drop-soon-link" : undefined}>{it.label}{it.soon && <em>Soon</em>}</a>)}{e.foot && <div className="nav-drop-foot"><span>{e.foot.text}</span><button onClick={() => open(e.foot!.mode)}>{e.foot.label}</button></div>}</div></div>
       ) : (
         <a href={e.href} key={e.label}>{e.label}</a>
       ))}</div><div className="nav-actions"><button className="button secondary" onClick={() => open("demo")}>Book Demo</button><button className="button primary" onClick={() => open("trial")}>Start Free Trial</button></div><button className="menu-button" aria-label="Toggle menu" aria-expanded={mobileOpen} onClick={() => setMobileOpen(!mobileOpen)}>{mobileOpen ? <X /> : <Menu />}</button></div></nav>{mobileOpen && <div className="mobile-menu">{NAV.map((e) => e.items ? (
-        <div className="mm-group" key={e.label}><span className="mm-head">{e.label}</span>{e.items.map((it) => it.soon ? <span className="mm-soon" key={it.label}>{it.label} · Soon</span> : <a href={it.href} key={it.label} onClick={() => setMobileOpen(false)}>{it.label}</a>)}</div>
+        <div className="mm-group" key={e.label}><span className="mm-head">{e.label}</span>{e.items.map((it) => <a href={it.href} key={it.label} className={it.soon ? "mm-soon-link" : undefined} onClick={() => setMobileOpen(false)}>{it.label}{it.soon && " · Soon"}</a>)}</div>
       ) : (
         <a href={e.href} key={e.label} onClick={() => setMobileOpen(false)}>{e.label}</a>
       ))}<button className="button primary" onClick={() => open("trial")}>Start Free Trial</button></div>}</div>
