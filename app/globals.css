@@ -578,7 +578,9 @@ body { margin:0; color:var(--ink); background:#fff; font-family:Geist,Arial,sans
 .lang-toggle button.on { background:#f26a1f; color:#fff; }
 .mobile-menu .lang-toggle { align-self:flex-start; margin:4px 12px 10px; }
 
-/* Sign In link */
-.nav-signin { display:inline-flex; align-items:center; gap:6px; font-size:14px; font-weight:600; color:#475569; text-decoration:none; padding:0 4px; white-space:nowrap; }
-.nav-signin:hover { color:#1b2438; }
-.mm-signin { padding:10px 12px; color:#334155 !important; font-weight:700; }
+/* Sign In — circular account icon (desktop) */
+.nav-signin { display:inline-flex; align-items:center; justify-content:center; width:36px; height:36px; border-radius:50%; border:1.5px solid var(--blue); color:var(--blue); flex:none; transition:background .15s, color .15s; }
+.nav-signin:hover { background:var(--blue); color:#fff; }
+/* Sign In row (mobile menu) */
+.mm-signin { display:flex; align-items:center; gap:10px; padding:10px 12px; color:#1b2438 !important; font-weight:700; }
+.mm-signin-ico { display:inline-flex; align-items:center; justify-content:center; width:28px; height:28px; border-radius:50%; border:1.5px solid var(--blue); color:var(--blue); flex:none; }

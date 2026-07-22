@@ -3,7 +3,7 @@
 import { createContext, FormEvent, ReactNode, useContext, useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 import { AnimatePresence, motion } from "framer-motion";
-import { ArrowRight, CheckCircle2, ChevronDown, Globe, LogIn, Menu, X } from "lucide-react";
+import { ArrowRight, CheckCircle2, ChevronDown, Globe, Menu, User, X } from "lucide-react";
 
 const PORTAL_URL = "https://portal.porticointelligence.com";
 
@@ -147,7 +147,7 @@ export function SiteChrome({ children }: { children: ReactNode }) {
         <div className="nav-group" key={e.label}><button className="nav-group-btn" aria-haspopup="true">{t(e.label, e.labelFr)} <ChevronDown size={15} /></button><div className="nav-drop">{e.items.map((it) => <a href={it.href} key={it.label} className={it.soon ? "nav-drop-soon-link" : undefined}>{t(it.label, it.labelFr)}{it.soon && <em>{t("Soon", "Bientôt")}</em>}</a>)}{e.foot && <div className="nav-drop-foot"><span>{t(e.foot.text, e.foot.textFr)}</span><button onClick={() => open(e.foot!.mode)}>{t(e.foot.label, e.foot.labelFr)}</button></div>}</div></div>
       ) : (
         <a href={e.href} key={e.label}>{t(e.label, e.labelFr)}</a>
-      ))}</div><div className="nav-actions"><LangToggle /><a className="nav-signin" href={PORTAL_URL}><LogIn size={15} />{t("Sign In", "Se connecter")}</a><button className="button secondary" onClick={() => open("demo")}>{t("Book Demo", "Réserver une démo")}</button><button className="button primary" onClick={() => open("trial")}>{t("Start Free Trial", "Essai gratuit")}</button></div><button className="menu-button" aria-label="Toggle menu" aria-expanded={mobileOpen} onClick={() => setMobileOpen(!mobileOpen)}>{mobileOpen ? <X /> : <Menu />}</button></div></nav>{mobileOpen && <div className="mobile-menu"><LangToggle /><a className="nav-signin mm-signin" href={PORTAL_URL}><LogIn size={15} />{t("Sign In", "Se connecter")}</a>{NAV.map((e) => e.items ? (
+      ))}</div><div className="nav-actions"><LangToggle /><a className="nav-signin" href={PORTAL_URL} aria-label={t("Sign In", "Se connecter")} title={t("Sign In", "Se connecter")}><User size={17} /></a><button className="button secondary" onClick={() => open("demo")}>{t("Book Demo", "Réserver une démo")}</button><button className="button primary" onClick={() => open("trial")}>{t("Start Free Trial", "Essai gratuit")}</button></div><button className="menu-button" aria-label="Toggle menu" aria-expanded={mobileOpen} onClick={() => setMobileOpen(!mobileOpen)}>{mobileOpen ? <X /> : <Menu />}</button></div></nav>{mobileOpen && <div className="mobile-menu"><LangToggle /><a className="mm-signin" href={PORTAL_URL}><span className="mm-signin-ico"><User size={16} /></span>{t("Sign In", "Se connecter")}</a>{NAV.map((e) => e.items ? (
         <div className="mm-group" key={e.label}><span className="mm-head">{t(e.label, e.labelFr)}</span>{e.items.map((it) => <a href={it.href} key={it.label} className={it.soon ? "mm-soon-link" : undefined} onClick={() => setMobileOpen(false)}>{t(it.label, it.labelFr)}{it.soon && ` · ${t("Soon", "Bientôt")}`}</a>)}</div>
       ) : (
         <a href={e.href} key={e.label} onClick={() => setMobileOpen(false)}>{t(e.label, e.labelFr)}</a>
