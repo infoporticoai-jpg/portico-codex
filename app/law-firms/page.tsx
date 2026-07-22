@@ -22,6 +22,7 @@ import {
   RelatedLinks,
 } from "../../components/page-kit";
 import { Faq } from "../../components/faq";
+import { IntakeMock, TransferMock } from "../../components/mockups";
 import { RoiCalculator } from "../../components/roi-calculator";
 
 export default function LawFirmsPage() {
@@ -139,6 +140,7 @@ export default function LawFirmsPage() {
             "Flags potential conflicts and time-sensitive deadlines for your team",
             "Sends a structured, confidential intake summary the moment the call ends",
           ]}
+          mock={<IntakeMock caller="New client inquiry" tags={["Personal injury", "Time-sensitive"]} fields={[["Matter type", "Captured"], ["Jurisdiction", "Confirmed"], ["Conflict check", "Cleared"]]} />}
         />
         <SplitFeature
           Icon={PhoneForwarded}
@@ -151,6 +153,7 @@ export default function LawFirmsPage() {
             "Confirms appointments by text and email and adds them to your calendar",
             "Falls back to a scheduled call-back when no attorney is available",
           ]}
+          mock={<TransferMock from="Voice agent" to="Attorney" note="Prospective client — auto matter, statute deadline in 9 days." />}
           flip
         />
       </KitSection>

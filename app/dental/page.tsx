@@ -21,6 +21,7 @@ import {
   RelatedLinks,
 } from "../../components/page-kit";
 import { Faq } from "../../components/faq";
+import { BookingMock, IntakeMock } from "../../components/mockups";
 import { RoiCalculator } from "../../components/roi-calculator";
 
 export default function DentalPage() {
@@ -135,6 +136,7 @@ export default function DentalPage() {
             "Confirms by text and email, then adds it to your calendar",
             "Backfills cancellations from your waitlist to keep chairs full",
           ]}
+          mock={<BookingMock business="Brightleaf Dental" day="Wed" time="3:00 PM" lines={["Provider: Dr. Nguyen", "Cleaning — 45 min"]} />}
         />
         <SplitFeature
           Icon={ClipboardList}
@@ -147,6 +149,7 @@ export default function DentalPage() {
             "Sends a pre-visit summary so verification starts early",
             "Reduces waiting-room paperwork and speeds up seating",
           ]}
+          mock={<IntakeMock caller="New patient" tags={["New patient", "Insurance on file"]} fields={[["Patient info", "Captured"], ["Insurance", "Verified"], ["Reason for visit", "Noted"]]} />}
           flip
         />
       </KitSection>

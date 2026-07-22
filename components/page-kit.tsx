@@ -49,7 +49,7 @@ export function FeatureCards({ items }: { items: { Icon: IconType; title: string
   );
 }
 
-export function SplitFeature({ Icon, eyebrow, title, body, points, src, flip }: { Icon: IconType; eyebrow: string; title: string; body: string; points: string[]; src?: string; flip?: boolean }) {
+export function SplitFeature({ Icon, eyebrow, title, body, points, src, mock, flip }: { Icon: IconType; eyebrow: string; title: string; body: string; points: string[]; src?: string; mock?: ReactNode; flip?: boolean }) {
   return (
     <div className={`split reveal ${flip ? "flip" : ""}`}>
       <div className="split-text">
@@ -59,12 +59,12 @@ export function SplitFeature({ Icon, eyebrow, title, body, points, src, flip }: 
         <p>{body}</p>
         <ul className="split-list">{points.map((p) => <li key={p}>{p}</li>)}</ul>
       </div>
-      <Screenshot src={src} label={`${title} in Portico`} />
+      <Screenshot src={src} label={`${title} in Portico`} mock={mock} />
     </div>
   );
 }
 
-export function Screenshot({ src, label }: { src?: string; label: string }) {
+export function Screenshot({ src, label, mock }: { src?: string; label: string; mock?: ReactNode }) {
   const [failed, setFailed] = useState(!src);
   const ref = useRef<HTMLImageElement>(null);
   useEffect(() => {
@@ -75,6 +75,8 @@ export function Screenshot({ src, label }: { src?: string; label: string }) {
     <div className="shotframe reveal">
       {src && !failed
         ? <img ref={ref} src={src} alt={label} onError={() => setFailed(true)} />
+        : mock
+        ? mock
         : <div className="shotframe-ph"><span>{label}</span></div>}
     </div>
   );

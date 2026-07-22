@@ -4,6 +4,7 @@ import { PhoneCall, Brain, Network, ArrowRightLeft, Siren, MoonStar, SlidersHori
 import { useOpenModal } from "../../components/site-chrome";
 import { Faq } from "../../components/faq";
 import { PageHero, KitSection, FeatureCards, SplitFeature, CtaBanner, RelatedLinks } from "../../components/page-kit";
+import { RoutingMock, TransferMock, CoverageMock } from "../../components/mockups";
 
 const CAPS = [
   { Icon: PhoneCall, title: "Voice agent answers first", body: "Every call is picked up on the first ring by a voice agent that greets the caller, listens, and starts solving — no hold music, no phone tree, no missed calls." },
@@ -79,7 +80,7 @@ export default function CallRoutingPage() {
               "Business hours, holidays, and on-call schedules",
               "Change any rule and see it live in minutes",
             ]}
-            src="/screenshots/routing-rules.png"
+            mock={<RoutingMock rules={[["Caller says \"emergency\"", "On-call team"], ["Spanish detected", "Bilingual queue"], ["After 6pm", "After-hours flow"]]} />}
           />
           <SplitFeature
             flip
@@ -93,7 +94,7 @@ export default function CallRoutingPage() {
               "Transcript and next step logged automatically",
               "Fewer repeated questions, faster resolutions",
             ]}
-            src="/screenshots/warm-transfer.png"
+            mock={<TransferMock from="Voice agent" to="Front desk" note="Caller: Maria Chen — requesting a reschedule, prior no-show flagged." />}
           />
           <SplitFeature
             Icon={Clock}
@@ -106,7 +107,7 @@ export default function CallRoutingPage() {
               "Urgent calls escalated to your on-call schedule",
               "Full logs so morning starts with zero surprises",
             ]}
-            src="/screenshots/after-hours.png"
+            mock={<CoverageMock label="Coverage — this week" />}
           />
         </div>
       </section>

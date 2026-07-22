@@ -5,6 +5,7 @@ import { useOpenModal } from "../../components/site-chrome";
 import { RoiCalculator } from "../../components/roi-calculator";
 import { Faq } from "../../components/faq";
 import { PageHero, KitSection, FeatureCards, SplitFeature, CtaBanner, RelatedLinks } from "../../components/page-kit";
+import { BookingMock, TransferMock } from "../../components/mockups";
 
 const CALL_TYPES = [
   { Icon: Siren, title: "Emergency calls", body: "Burst pipes, no heat, sparking panels, storm damage — Portico recognizes the emergency, gathers the address and problem, and dispatches to your on-call tech in seconds." },
@@ -71,6 +72,7 @@ export default function HomeServicesPage() {
               "Address, job type, and access notes captured up front",
               "Confirmations and reminders sent to cut no-shows",
             ]}
+            mock={<BookingMock business="Summit Heating & Air" day="Fri" time="9:00 AM" lines={["Tech: J. Ramirez assigned", "Drive-time buffer applied"]} />}
           />
           <SplitFeature
             flip
@@ -84,6 +86,7 @@ export default function HomeServicesPage() {
               "Warm transfer with address, problem, and history attached",
               "Text and call-log record of every dispatched job",
             ]}
+            mock={<TransferMock from="Voice agent" to="On-call tech" note="48 Birch Lane — no heat, temperature dropping. Priority dispatch." />}
           />
         </div>
       </section>

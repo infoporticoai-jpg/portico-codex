@@ -20,6 +20,7 @@ import {
 } from "../../components/page-kit";
 import { Faq } from "../../components/faq";
 import { IntegrationsMarquee } from "../../components/integrations-marquee";
+import { SyncMock } from "../../components/mockups";
 
 const CATEGORIES: { name: string; items: [string, string][] }[] = [
   {
@@ -162,6 +163,7 @@ export default function IntegrationsPage() {
           "Trigger any downstream automation the instant a call ends",
         ]}
         flip={false}
+        mock={<SyncMock items={[["CRM", "Synced"], ["Calendar", "Synced"], ["Slack", "Notified"]]} />}
       />
 
       <KitSection

@@ -14,6 +14,7 @@ import {
 import { useOpenModal } from "../../components/site-chrome";
 import { RoiCalculator } from "../../components/roi-calculator";
 import { Faq } from "../../components/faq";
+import { BookingMock, TransferMock } from "../../components/mockups";
 import { PageHero, KitSection, FeatureCards, SplitFeature, CtaBanner, RelatedLinks } from "../../components/page-kit";
 
 const CALL_TYPES = [
@@ -160,6 +161,7 @@ export default function RealEstatePage() {
             "Books against live calendar availability, no phone tag",
             "Sends confirmations and reminders to cut no-shows",
           ]}
+          mock={<BookingMock business="Beacon Realty Group" day="Sat" time="11:00 AM" lines={["124 Oak Street", "Buyer pre-qualified"]} />}
         />
         <SplitFeature
           flip
@@ -173,6 +175,7 @@ export default function RealEstatePage() {
             "Captures a structured message when an agent is unavailable",
             "Applies your team's routing rules to every single call",
           ]}
+          mock={<TransferMock from="Voice agent" to="Listing agent" note="Buyer inquiry — 124 Oak Street, pre-approved financing." />}
         />
       </KitSection>
 

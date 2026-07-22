@@ -6,6 +6,7 @@ import { VoiceDemo } from "../../components/voice-demo";
 import { RoiCalculator } from "../../components/roi-calculator";
 import { Faq } from "../../components/faq";
 import { PageHero, KitSection, FeatureCards, SplitFeature, CtaBanner, RelatedLinks } from "../../components/page-kit";
+import { BookingMock, IntakeMock, KnowledgeMock, AnalyticsMock } from "../../components/mockups";
 
 const CAPS = [
   { Icon: CalendarCheck, title: "Appointment booking", body: "Books directly into your calendar during the call — no callback, no phone tag, no double-booking." },
@@ -53,7 +54,7 @@ export default function VoiceAgentsPage() {
             title="Appointments booked while you work."
             body="The voice agent checks live availability and schedules directly into your calendar during the call. No callback, no back-and-forth — the caller hangs up already booked, with a confirmation on the way."
             points={["Real-time availability across your calendars", "Confirmations and reminders sent automatically", "Reschedules and cancellations handled on the call", "Rules for buffers, hours, and service types"]}
-            src="/screenshots/booking.png"
+            mock={<BookingMock business="Portico Calendar" day="Thu" time="2:00 PM" lines={["Synced to Google Calendar", "Confirmation text sent"]} />}
           />
           <SplitFeature
             flip
@@ -62,7 +63,7 @@ export default function VoiceAgentsPage() {
             title="Every lead qualified before it reaches you."
             body="New callers are asked the questions that matter, and their answers are captured cleanly. Your team follows up on warm, qualified leads instead of chasing voicemails."
             points={["Custom qualifying questions per call type", "Contact details captured and verified", "Intent and urgency detected automatically", "Synced to your CRM the moment the call ends"]}
-            src="/screenshots/leads.png"
+            mock={<IntakeMock caller="Incoming caller" tags={["New lead", "High intent"]} fields={[["Name", "Captured"], ["Phone", "Verified"], ["Interest", "Detected"]]} />}
           />
           <SplitFeature
             Icon={BookOpen}
@@ -70,7 +71,7 @@ export default function VoiceAgentsPage() {
             title="Answers from a knowledge base you control."
             body="Hours, services, pricing, policies, directions — the voice agent answers common questions instantly from a knowledge base you own. Update it anytime; there's nothing to re-train."
             points={["Answers grounded in your own content", "Update instantly, no retraining", "Consistent, accurate every time", "Escalates anything it can't confidently answer"]}
-            src="/screenshots/knowledge.png"
+            mock={<KnowledgeMock question="What are your hours on Saturday?" answer="We're open 9am–2pm on Saturdays." />}
           />
           <SplitFeature
             flip
@@ -79,7 +80,7 @@ export default function VoiceAgentsPage() {
             title="A written record of every conversation."
             body="Each call ends with a summary, full transcript, detected intent, and the outcome — visible in a live dashboard. See what callers want, when they call, and where you're losing them."
             points={["Summary, transcript, and next step per call", "Volume, intents, sentiment, and outcomes", "Transfer and resolution rates at a glance", "Exportable and synced to your tools"]}
-            src="/screenshots/analytics.png"
+            mock={<AnalyticsMock bars={[46, 64, 52, 78, 60, 90, 72]} rows={[["Resolved automatically", "82%"], ["Warm-transferred", "18%"]]} />}
           />
         </div>
       </section>

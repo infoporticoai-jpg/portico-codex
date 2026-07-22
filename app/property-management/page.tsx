@@ -14,6 +14,7 @@ import {
 import { useOpenModal } from "../../components/site-chrome";
 import { RoiCalculator } from "../../components/roi-calculator";
 import { Faq } from "../../components/faq";
+import { BookingMock, TransferMock } from "../../components/mockups";
 import { PageHero, KitSection, FeatureCards, SplitFeature, CtaBanner, RelatedLinks } from "../../components/page-kit";
 
 const CALL_TYPES = [
@@ -153,6 +154,7 @@ export default function PropertyManagementPage() {
             "Sends confirmations and reminders to cut no-shows",
             "Captures move-in timeline, budget, and pet details for follow-up",
           ]}
+          mock={<BookingMock business="Maple Street Building" day="Sat" time="11:00 AM" lines={["Unit 4B — 1BR", "Agent notified"]} />}
         />
         <SplitFeature
           flip
@@ -166,6 +168,7 @@ export default function PropertyManagementPage() {
             "Priority rules you define, applied to every caller",
             "Work orders pushed into your property management software",
           ]}
+          mock={<TransferMock from="Voice agent" to="On-call manager" note="Unit 12 — reported flooding. Priority escalation." />}
         />
       </KitSection>
 

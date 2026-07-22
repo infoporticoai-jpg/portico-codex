@@ -23,6 +23,7 @@ import {
   RelatedLinks,
 } from "../../components/page-kit";
 import { Faq } from "../../components/faq";
+import { MarketplaceMock, RevenueMock, BundleMock } from "../../components/mockups";
 
 const WHY = [
   {
@@ -170,6 +171,7 @@ export default function PartnersPage() {
             "A featured listing in the Portico integrations directory",
           ]}
           flip={false}
+          mock={<MarketplaceMock items={["Your CRM", "Your Calendar", "Your App", "Slack", "Zapier", "+ more"]} />}
         />
         <SplitFeature
           Icon={Handshake}
@@ -183,6 +185,7 @@ export default function PartnersPage() {
             "Ready-made emails, one-pagers, and demo scripts so you can refer in minutes",
           ]}
           flip={true}
+          mock={<RevenueMock amount="$2,140" rows={[["Referred accounts", "6 active"], ["Commission rate", "20%"]]} />}
         />
         <SplitFeature
           Icon={Briefcase}
@@ -196,6 +199,7 @@ export default function PartnersPage() {
             "A named partner manager and hands-on help closing your first deals",
           ]}
           flip={false}
+          mock={<BundleMock items={["Voice agent answering", "Client dashboard access", "Partner discount applied", "Co-branded reporting"]} />}
         />
       </KitSection>
 

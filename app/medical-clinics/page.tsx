@@ -22,6 +22,7 @@ import {
   RelatedLinks,
 } from "../../components/page-kit";
 import { Faq } from "../../components/faq";
+import { BookingMock, TransferMock } from "../../components/mockups";
 import { RoiCalculator } from "../../components/roi-calculator";
 
 export default function MedicalClinicsPage() {
@@ -139,6 +140,7 @@ export default function MedicalClinicsPage() {
             "Confirms by text and email, then writes it to your calendar",
             "Backfills cancellations from your waitlist to protect capacity",
           ]}
+          mock={<BookingMock business="Lakeshore Family Medicine" day="Thu" time="2:30 PM" lines={["Provider: Dr. Alvarez", "Reminder scheduled"]} />}
         />
         <SplitFeature
           Icon={Stethoscope}
@@ -151,6 +153,7 @@ export default function MedicalClinicsPage() {
             "Warm-transfers urgent calls to a nurse or on-call line in seconds",
             "Sends a pre-visit summary so verification and rooming start early",
           ]}
+          mock={<TransferMock from="Voice agent" to="On-call nurse" note="Caller reports chest tightness — escalated per triage protocol." />}
           flip
         />
       </KitSection>

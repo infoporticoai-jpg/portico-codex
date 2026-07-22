@@ -22,6 +22,7 @@ import {
   RelatedLinks,
 } from "../../components/page-kit";
 import { Faq } from "../../components/faq";
+import { TransferMock, BookingMock } from "../../components/mockups";
 import { RoiCalculator } from "../../components/roi-calculator";
 
 const CALL_TYPES = [
@@ -158,6 +159,7 @@ export default function VeterinaryPage() {
             "Warm-transfers or forwards to your emergency line",
             "Passes the pet name, symptoms, and caller history to your team",
           ]}
+          mock={<TransferMock from="Voice agent" to="On-call vet" note="Golden retriever, chocolate ingestion — priority escalation." />}
         />
         <SplitFeature
           flip
@@ -171,6 +173,7 @@ export default function VeterinaryPage() {
             "Captures refill details: pet, medication, dosage, pharmacy",
             "Onboards new clients and collects species and patient info",
           ]}
+          mock={<BookingMock business="Cedar Creek Animal Hospital" day="Mon" time="10:15 AM" lines={["Wellness visit — canine", "Refill request logged"]} />}
         />
       </KitSection>
 
