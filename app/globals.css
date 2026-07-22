@@ -569,3 +569,9 @@ body { margin:0; color:var(--ink); background:#fff; font-family:Geist,Arial,sans
 .mock-transfer-connected { display:flex; align-items:center; gap:8px; font-size:12px; font-weight:700; color:#15803d; background:#f0fdf4; border:1px solid #bbf7d0; padding:10px 12px; border-radius:9px; }
 .mock-note { margin-top:auto; font-size:11.5px; color:#94a3b8; line-height:1.5; padding-top:10px; }
 @media(max-width:560px){ .mock-tiles { grid-template-columns:repeat(2,1fr); } .mock-clock { grid-template-columns:repeat(12,1fr); } }
+
+/* Language toggle */
+.lang-toggle { display:flex; align-items:center; gap:6px; padding:6px 8px; border:1px solid #e2e8f0; border-radius:999px; color:#94a3b8; margin-right:4px; }
+.lang-toggle button { border:0; background:none; padding:3px 7px; border-radius:999px; font:inherit; font-size:12px; font-weight:700; color:#94a3b8; cursor:pointer; transition:.15s; }
+.lang-toggle button.on { background:#f26a1f; color:#fff; }
+.mobile-menu .lang-toggle { align-self:flex-start; margin:4px 12px 10px; }

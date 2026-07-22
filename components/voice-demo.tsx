@@ -7,20 +7,38 @@ import {
   Languages, LifeBuoy, Pause, Play, Siren, UserCheck,
 } from "lucide-react";
 import { CallStatus, CapabilityId, DEMOS, Demo, TranscriptLine } from "./demo-config";
+import { useLang } from "./site-chrome";
 
-const CAPABILITIES: { id: CapabilityId; label: string; Icon: typeof CalendarCheck }[] = [
-  { id: "appointment-booking", label: "Appointment Booking", Icon: CalendarCheck },
-  { id: "lead-qualification", label: "Lead Qualification", Icon: UserCheck },
-  { id: "faq", label: "Frequently Asked Questions", Icon: HelpCircle },
-  { id: "bilingual", label: "Bilingual (English & French)", Icon: Languages },
-  { id: "call-transfers", label: "Call Transfers", Icon: ArrowRightLeft },
-  { id: "emergency-dispatch", label: "Emergency Dispatch", Icon: Siren },
-  { id: "customer-support", label: "Customer Support", Icon: LifeBuoy },
-  { id: "after-hours", label: "After Hours Coverage", Icon: Clock },
+const CAPABILITIES: { id: CapabilityId; label: string; labelFr: string; Icon: typeof CalendarCheck }[] = [
+  { id: "appointment-booking", label: "Appointment Booking", labelFr: "Prise de rendez-vous", Icon: CalendarCheck },
+  { id: "lead-qualification", label: "Lead Qualification", labelFr: "Qualification des prospects", Icon: UserCheck },
+  { id: "faq", label: "Frequently Asked Questions", labelFr: "Questions fréquentes", Icon: HelpCircle },
+  { id: "bilingual", label: "Bilingual (English & French)", labelFr: "Bilingue (anglais et français)", Icon: Languages },
+  { id: "call-transfers", label: "Call Transfers", labelFr: "Transferts d’appels", Icon: ArrowRightLeft },
+  { id: "emergency-dispatch", label: "Emergency Dispatch", labelFr: "Répartition d’urgence", Icon: Siren },
+  { id: "customer-support", label: "Customer Support", labelFr: "Service à la clientèle", Icon: LifeBuoy },
+  { id: "after-hours", label: "After Hours Coverage", labelFr: "Couverture après les heures", Icon: Clock },
 ];
 
-const SPEAKER_LABEL: Record<TranscriptLine["speaker"], string> = {
-  portico: "Portico", caller: "Caller", human: "Receptionist", system: "",
+const SPEAKER_LABEL: Record<TranscriptLine["speaker"], [string, string]> = {
+  portico: ["Portico", "Portico"], caller: ["Caller", "Appelant"], human: ["Receptionist", "Réceptionniste"], system: ["", ""],
+};
+
+/** Small closed set of status values authored in demo-config.ts — translated for display only. */
+const STATUS_VALUE_FR: Record<string, string> = {
+  "English": "Anglais",
+  "Detecting…": "Détection…",
+  "Neutral": "Neutre",
+  "Positive": "Positif",
+  "Concerned": "Préoccupé",
+  "Connected": "Connecté",
+  "Not required": "Non requis",
+  "In progress": "En cours",
+  "Confirmed": "Confirmé",
+  "Booking in progress": "Réservation en cours",
+  "Apartment Viewing": "Visite d’appartement",
+  "Emergency Repair": "Réparation d’urgence",
+  "Personal Injury Intake": "Accueil — blessure corporelle",
 };
 
 function fmt(s: number) {
@@ -45,6 +63,7 @@ function waveBars(seed: number, n = 68) {
 const seedOf = (id: string) => id.split("").reduce((a, c) => a + c.charCodeAt(0), 0);
 
 export function VoiceDemo({ onBook }: { onBook: () => void }) {
+  const { lang, t } = useLang();
   const [activeId, setActiveId] = useState(DEMOS[0].id);
   const [playing, setPlaying] = useState(false);
   const [time, setTime] = useState(0);
@@ -57,10 +76,17 @@ export function VoiceDemo({ onBook }: { onBook: () => void }) {
   const transcriptRef = useRef<HTMLDivElement>(null);
 
   const demo: Demo = useMemo(() => DEMOS.find((d) => d.id === activeId) ?? DEMOS[0], [activeId]);
-  const duration = realDuration ?? demo.duration;
+  // Use the French recording + transcript only when both exist; otherwise
+  // fall back to English so the demo never shows a broken/empty player.
+  const useFr = lang === "fr" && !!demo.audioFr && !!demo.transcriptFr;
+  const audioSrc = useFr ? demo.audioFr! : demo.audio;
+  const transcript = useFr ? demo.transcriptFr! : demo.transcript;
+  const fallbackDuration = useFr ? demo.durationFr ?? demo.duration : demo.duration;
+  const duration = realDuration ?? fallbackDuration;
   const bars = useMemo(() => waveBars(seedOf(demo.id)), [demo.id]);
+  const sv = (value: string) => (lang === "fr" ? STATUS_VALUE_FR[value] ?? value : value);
 
-  // Reset everything when the industry changes.
+  // Reset everything when the industry or active-language recording changes.
   useEffect(() => {
     setPlaying(false);
     setTime(0);
@@ -68,7 +94,7 @@ export function VoiceDemo({ onBook }: { onBook: () => void }) {
     setAudioReady(false);
     const el = audioRef.current;
     if (el) { el.pause(); el.currentTime = 0; el.load(); }
-  }, [activeId]);
+  }, [activeId, audioSrc]);
 
   // Playback clock — drives from real audio when available, else a silent timer.
   useEffect(() => {
@@ -120,16 +146,16 @@ export function VoiceDemo({ onBook }: { onBook: () => void }) {
   }
 
   // Derived, in-sync state.
-  const visible = demo.transcript.filter((l) => l.t <= time + 0.05);
+  const visible = transcript.filter((l) => l.t <= time + 0.05);
   const activeLine = visible[visible.length - 1];
   const usedCaps = new Set(visible.map((l) => l.capability).filter(Boolean) as CapabilityId[]);
   const activeCap = activeLine?.capability;
 
   const status: CallStatus = useMemo(() => {
     let s = { ...demo.initialStatus };
-    for (const l of demo.transcript) if (l.t <= time + 0.05 && l.status) s = { ...s, ...l.status };
+    for (const l of transcript) if (l.t <= time + 0.05 && l.status) s = { ...s, ...l.status };
     return s;
-  }, [demo, time]);
+  }, [demo, transcript, time]);
 
   // Auto-scroll transcript to the newest line.
   useEffect(() => {
@@ -137,13 +163,13 @@ export function VoiceDemo({ onBook }: { onBook: () => void }) {
     if (el) el.scrollTo({ top: el.scrollHeight, behavior: "smooth" });
   }, [visible.length]);
 
-  const statusCards: [string, string, boolean?][] = [
-    ["Language", status.language],
-    ["Intent", status.intent],
-    ["Sentiment", status.sentiment, status.sentiment === "Positive"],
-    ["Knowledge Base", status.knowledgeBase, status.knowledgeBase === "Connected"],
-    ["Transfer", status.transfer, status.transfer === "Connected" || status.transfer === "In progress"],
-    ["Appointment", status.appointment, /confirm|reserv|hold|progress/i.test(status.appointment)],
+  const statusCards: { label: string; value: string; good?: boolean }[] = [
+    { label: t("Language", "Langue"), value: status.language },
+    { label: t("Intent", "Intention"), value: status.intent },
+    { label: t("Sentiment", "Sentiment"), value: status.sentiment, good: status.sentiment === "Positive" },
+    { label: t("Knowledge Base", "Base de connaissances"), value: status.knowledgeBase, good: status.knowledgeBase === "Connected" },
+    { label: t("Transfer", "Transfert"), value: status.transfer, good: status.transfer === "Connected" || status.transfer === "In progress" },
+    { label: t("Appointment", "Rendez-vous"), value: status.appointment, good: /confirm|reserv|hold|progress/i.test(status.appointment) },
   ];
 
   return (
@@ -160,18 +186,18 @@ export function VoiceDemo({ onBook }: { onBook: () => void }) {
               onClick={() => setActiveId(d.id)}
             >
               {d.id === activeId && <motion.span layoutId="vd-tabpill" className="vd-tabpill" transition={{ type: "spring", stiffness: 400, damping: 34 }} />}
-              <span className="vd-tab-text">{d.label}</span>
+              <span className="vd-tab-text">{t(d.label, d.labelFr)}</span>
             </button>
           ))}
-          <span className="vd-sample">Illustrative sample · real recordings coming soon</span>
+          <span className="vd-sample">{t("Illustrative sample · real recordings coming soon", "Exemple illustratif · vrais enregistrements à venir")}</span>
         </div>
 
         <div className="vd-grid">
           {/* LEFT — Capabilities */}
           <aside className="vd-side">
-            <p className="vd-h">Capabilities</p>
+            <p className="vd-h">{t("Capabilities", "Fonctionnalités")}</p>
             <div className="vd-caps">
-              {CAPABILITIES.map(({ id, label, Icon }) => {
+              {CAPABILITIES.map(({ id, label, labelFr, Icon }) => {
                 const on = activeCap === id;
                 const used = usedCaps.has(id);
                 return (
@@ -182,7 +208,7 @@ export function VoiceDemo({ onBook }: { onBook: () => void }) {
                     transition={{ duration: 0.6 }}
                   >
                     <span className="vd-cap-ico"><Icon size={16} /></span>
-                    <span className="vd-cap-label">{label}</span>
+                    <span className="vd-cap-label">{t(label, labelFr)}</span>
                   </motion.div>
                 );
               })}
@@ -191,7 +217,7 @@ export function VoiceDemo({ onBook }: { onBook: () => void }) {
 
           {/* CENTER — Conversation */}
           <section className="vd-center">
-            <div className="vd-live"><span className="vd-live-dot" /> Live Voice Demonstration</div>
+            <div className="vd-live"><span className="vd-live-dot" /> {t("Live Voice Demonstration", "Démonstration vocale en direct")}</div>
             <p className="vd-biz">{demo.business}</p>
 
             <div className="vd-player">
@@ -224,7 +250,7 @@ export function VoiceDemo({ onBook }: { onBook: () => void }) {
                 <span className="vd-time">{fmt(time)}</span>
                 <span className="vd-time-sep">/</span>
                 <span className="vd-time muted">{fmt(duration)}</span>
-                {!audioReady && <span className="vd-preview-tag">preview</span>}
+                {!audioReady && <span className="vd-preview-tag">{t("preview", "aperçu")}</span>}
               </div>
             </div>
 
@@ -250,7 +276,7 @@ export function VoiceDemo({ onBook }: { onBook: () => void }) {
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ duration: 0.35 }}
                     >
-                      <span className="vd-msg-who">{SPEAKER_LABEL[line.speaker]}</span>
+                      <span className="vd-msg-who">{t(...SPEAKER_LABEL[line.speaker] as [string, string])}</span>
                       <span className="vd-bubble">{line.text}</span>
                     </motion.div>
                   )
@@ -261,9 +287,9 @@ export function VoiceDemo({ onBook }: { onBook: () => void }) {
 
           {/* RIGHT — Call Status */}
           <aside className="vd-side">
-            <p className="vd-h">Call Status</p>
+            <p className="vd-h">{t("Call Status", "État de l’appel")}</p>
             <div className="vd-status">
-              {statusCards.map(([label, value, good]) => (
+              {statusCards.map(({ label, value, good }) => (
                 <div className={`vd-stat ${good ? "good" : ""}`} key={label}>
                   <span className="vd-stat-label">{label}</span>
                   <motion.span
@@ -273,12 +299,12 @@ export function VoiceDemo({ onBook }: { onBook: () => void }) {
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.25 }}
                   >
-                    {value}
+                    {sv(value)}
                   </motion.span>
                 </div>
               ))}
               <div className="vd-stat live">
-                <span className="vd-stat-label">Call Duration</span>
+                <span className="vd-stat-label">{t("Call Duration", "Durée de l’appel")}</span>
                 <span className="vd-stat-value">{fmt(time)}</span>
               </div>
             </div>
@@ -288,14 +314,14 @@ export function VoiceDemo({ onBook }: { onBook: () => void }) {
         {/* CTA */}
         <div className="vd-cta">
           <div>
-            <h3>Hear how Portico answers your customers.</h3>
-            <p>Interactive sample calls — real recordings coming soon.</p>
+            <h3>{t("Hear how Portico answers your customers.", "Écoutez comment Portico répond à vos clients.")}</h3>
+            <p>{t("Interactive sample calls — real recordings coming soon.", "Exemples d’appels interactifs — vrais enregistrements à venir.")}</p>
           </div>
           <div className="vd-cta-actions">
             <button className="button primary" onClick={() => { if (!playing) toggle(); transcriptRef.current?.scrollIntoView({ behavior: "smooth", block: "center" }); }}>
-              <Play size={15} /> Listen to Sample Calls
+              <Play size={15} /> {t("Listen to Sample Calls", "Écouter des exemples d’appels")}
             </button>
-            <button className="button secondary" onClick={onBook}>Book Demo</button>
+            <button className="button secondary" onClick={onBook}>{t("Book Demo", "Réserver une démo")}</button>
           </div>
         </div>
       </div>
@@ -303,7 +329,7 @@ export function VoiceDemo({ onBook }: { onBook: () => void }) {
       <audio
         ref={audioRef}
         preload="metadata"
-        src={demo.audio}
+        src={audioSrc}
         onLoadedMetadata={(e) => {
           const d = e.currentTarget.duration;
           if (isFinite(d) && d > 0.5) { setRealDuration(d); setAudioReady(true); }

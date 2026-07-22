@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Faq } from "../../components/faq";
+import { Faq, FaqHeading } from "../../components/faq";
 
 export const metadata: Metadata = {
   title: "FAQ | Portico Intelligence",
@@ -10,10 +10,7 @@ export default function FaqPage() {
   return (
     <section className="section subpage soft">
       <div className="shell">
-        <div className="section-head reveal">
-          <span className="eyebrow">Questions, answered</span>
-          <h2>Everything you need to know.</h2>
-        </div>
+        <FaqHeading />
         <Faq />
       </div>
     </section>

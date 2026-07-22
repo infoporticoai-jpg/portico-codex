@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { CheckCircle2 } from "lucide-react";
-import { useOpenModal } from "./site-chrome";
+import { useOpenModal, useLang } from "./site-chrome";
 
 const TIERS = [
   { calls: 100, price: 149 },
@@ -13,6 +13,7 @@ const TIERS = [
 
 export function PricingPlans() {
   const open = useOpenModal();
+  const { t } = useLang();
   const [idx, setIdx] = useState(1);
   const tier = TIERS[idx];
   const perCall = (tier.price / tier.calls).toFixed(2);
@@ -21,10 +22,10 @@ export function PricingPlans() {
   return (
     <div className="pricing reveal">
       <div className="plan slider-plan">
-        <span className="eyebrow">Self-serve</span>
-        <h3>Choose your monthly volume.</h3>
-        <div className="price-figure"><strong>${tier.price.toLocaleString()}</strong><span>/month</span></div>
-        <div className="price-percall">≈ ${perCall} per answered call</div>
+        <span className="eyebrow">{t("Self-serve", "Libre-service")}</span>
+        <h3>{t("Choose your monthly volume.", "Choisissez votre volume mensuel.")}</h3>
+        <div className="price-figure"><strong>${tier.price.toLocaleString()}</strong><span>{t("/month", "/mois")}</span></div>
+        <div className="price-percall">{t(`≈ $${perCall} per answered call`, `≈ ${perCall} $ par appel répondu`)}</div>
         <input
           className="price-slider"
           type="range"
@@ -36,29 +37,29 @@ export function PricingPlans() {
           aria-label="Monthly call volume"
           style={{ background: `linear-gradient(90deg,#f26a1f ${pct}%,#f0e4d8 ${pct}%)` }}
         />
-        <div className="price-scale"><span>100</span><span>1,000 calls / mo</span></div>
-        <div className="price-calls">{tier.calls.toLocaleString()} answered calls / month</div>
+        <div className="price-scale"><span>100</span><span>{t("1,000 calls / mo", "1 000 appels / mois")}</span></div>
+        <div className="price-calls">{t(`${tier.calls.toLocaleString()} answered calls / month`, `${tier.calls.toLocaleString()} appels répondus / mois`)}</div>
         <ul className="price-feats">
-          <li><CheckCircle2 size={16} />14-day free trial</li>
-          <li><CheckCircle2 size={16} />No setup fee</li>
-          <li><CheckCircle2 size={16} />Scale up or down anytime</li>
-          <li><CheckCircle2 size={16} />Warm human transfer included</li>
+          <li><CheckCircle2 size={16} />{t("14-day free trial", "Essai gratuit de 14 jours")}</li>
+          <li><CheckCircle2 size={16} />{t("No setup fee", "Aucuns frais d’installation")}</li>
+          <li><CheckCircle2 size={16} />{t("Scale up or down anytime", "Ajustez à la hausse ou à la baisse en tout temps")}</li>
+          <li><CheckCircle2 size={16} />{t("Warm human transfer included", "Transfert humain assisté inclus")}</li>
         </ul>
-        <button className="button primary" onClick={() => open("trial")}>Start Free Trial</button>
+        <button className="button primary" onClick={() => open("trial")}>{t("Start Free Trial", "Essai gratuit")}</button>
       </div>
       <div id="enterprise" className="plan featured">
-        <span className="eyebrow enterprise-label">Enterprise</span>
-        <h3>Custom pricing.</h3>
-        <p>For multi-location teams where every conversation counts.</p>
+        <span className="eyebrow enterprise-label">{t("Enterprise", "Entreprise")}</span>
+        <h3>{t("Custom pricing.", "Tarification personnalisée.")}</h3>
+        <p>{t("For multi-location teams where every conversation counts.", "Pour les équipes multi-sites où chaque conversation compte.")}</p>
         <ul>
-          <li>Dedicated onboarding</li>
-          <li>Custom workflows</li>
-          <li>CRM integrations</li>
-          <li>Priority support</li>
-          <li>SLA</li>
-          <li>Multi-location deployment</li>
+          <li>{t("Dedicated onboarding", "Intégration dédiée")}</li>
+          <li>{t("Custom workflows", "Processus personnalisés")}</li>
+          <li>{t("CRM integrations", "Intégrations CRM")}</li>
+          <li>{t("Priority support", "Soutien prioritaire")}</li>
+          <li>{t("SLA", "Entente de service (SLA)")}</li>
+          <li>{t("Multi-location deployment", "Déploiement multi-sites")}</li>
         </ul>
-        <button className="button light" onClick={() => open("demo")}>Book a Demo</button>
+        <button className="button light" onClick={() => open("demo")}>{t("Book a Demo", "Réserver une démo")}</button>
       </div>
     </div>
   );
