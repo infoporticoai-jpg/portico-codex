@@ -15,6 +15,7 @@ const FAQ_ITEMS_EN: [string, string][] = [
   ["Can I connect my CRM?", "Yes. Callers, notes, and outcomes sync to your CRM automatically after every call."],
   ["How long does setup take?", "Self-serve customers can start in minutes. Enterprise onboarding is scoped to your workflows."],
   ["Can I cancel anytime?", "Yes. Self-serve plans are month-to-month with no lock-in."],
+  ["Does the 14-day free trial apply to Enterprise?", "The free trial is for self-serve plans, started instantly through our online signup — no charge until it ends. Enterprise is sales-assisted with a custom pilot scoped to your workflows."],
 ];
 
 const FAQ_ITEMS_FR: [string, string][] = [
@@ -27,6 +28,7 @@ const FAQ_ITEMS_FR: [string, string][] = [
   ["Puis-je connecter mon CRM?", "Oui. Les appelants, les notes et les résultats se synchronisent automatiquement avec votre CRM après chaque appel."],
   ["Combien de temps prend la configuration?", "Les clients en libre-service peuvent démarrer en quelques minutes. L’intégration entreprise est adaptée à vos processus."],
   ["Puis-je annuler en tout temps?", "Oui. Les forfaits libre-service sont mensuels, sans engagement."],
+  ["L’essai gratuit de 14 jours s’applique-t-il à l’entreprise?", "L’essai gratuit s’applique aux forfaits libre-service, activé instantanément grâce à notre inscription en ligne — aucuns frais avant la fin de l’essai. L’entreprise est accompagnée par notre équipe des ventes avec un pilote adapté à vos processus."],
 ];
 
 /** For server-component pages (e.g. /faq) that need metadata + a translated heading. */

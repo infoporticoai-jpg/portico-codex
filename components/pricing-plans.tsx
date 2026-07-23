@@ -60,6 +60,7 @@ export function PricingPlans() {
           <li>{t("Multi-location deployment", "Déploiement multi-sites")}</li>
         </ul>
         <button className="button light" onClick={() => open("demo")}>{t("Book a Demo", "Réserver une démo")}</button>
+        <p className="fine">{t("The 14-day free trial is for self-serve plans. Enterprise starts with a scoped pilot.", "L’essai gratuit de 14 jours s’applique aux forfaits libre-service. L’entreprise commence par un pilote adapté.")}</p>
       </div>
     </div>
   );
