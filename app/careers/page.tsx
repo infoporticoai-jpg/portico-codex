@@ -43,12 +43,33 @@ const INTERESTS = ["Engineering", "Sales", "Success", "Ops", "Other"];
 export default function CareersPage() {
   const open = useOpenModal();
   const [joined, setJoined] = useState(false);
+  const [sending, setSending] = useState(false);
+  const [failed, setFailed] = useState(false);
   const [form, setForm] = useState({ name: "", email: "", interest: "Engineering" });
 
   const set =
     (k: keyof typeof form) =>
     (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) =>
       setForm({ ...form, [k]: e.target.value });
+
+  async function submit(e: React.FormEvent) {
+    e.preventDefault();
+    setSending(true);
+    setFailed(false);
+    try {
+      const res = await fetch("/api/lead", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ formType: "careers", fields: form }),
+      });
+      if (!res.ok) throw new Error("send failed");
+      setJoined(true);
+    } catch {
+      setFailed(true);
+    } finally {
+      setSending(false);
+    }
+  }
 
   return (
     <>
@@ -105,12 +126,7 @@ export default function CareersPage() {
               </button>
             </div>
           ) : (
-            <form
-              onSubmit={(e) => {
-                e.preventDefault();
-                setJoined(true);
-              }}
-            >
+            <form onSubmit={submit}>
               <div style={{ display: "grid", gap: 16 }}>
                 <div>
                   <label style={labelStyle} htmlFor="w-name">
@@ -151,8 +167,9 @@ export default function CareersPage() {
                     ))}
                   </select>
                 </div>
-                <button className="button primary" type="submit" style={{ justifyContent: "center" }}>
-                  Join the waitlist <Send size={16} />
+                {failed && <p className="form-error">Something went wrong sending that — please try again.</p>}
+                <button className="button primary" type="submit" disabled={sending} style={{ justifyContent: "center" }}>
+                  {sending ? "Sending…" : "Join the waitlist"} <Send size={16} />
                 </button>
                 <p style={{ fontSize: 12.5, color: "#64748b", textAlign: "center", margin: 0 }}>
                   <Bell size={12} style={{ verticalAlign: "-1px", marginRight: 4 }} />

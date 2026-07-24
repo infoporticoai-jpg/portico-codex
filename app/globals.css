@@ -113,6 +113,8 @@ body { margin:0; color:var(--ink); background:#fff; font-family:Geist,Arial,sans
 .modal label { display:grid; gap:7px; color:#334155; font-size:13px; font-weight:600; }
 .modal input,.modal select { width:100%; padding:12px; border:1px solid #cbd5e1; border-radius:8px; color:var(--ink); font:inherit; font-size:14px; background:#fff; }
 .modal input:focus,.modal select:focus { outline:3px solid #f5c9a4; border-color:var(--blue); }
+.form-error { margin:-4px 0 0; padding:10px 12px; border-radius:8px; background:#fef2f2; border:1px solid #fecaca; color:#b91c1c; font-size:13px; }
+.modal .button[disabled] { opacity:.6; cursor:not-allowed; }
 .success { text-align:center; padding:16px 4px 4px; }
 .success svg { color:#16a34a; }.success h2 { margin-bottom:8px; }.success .button { margin-top:15px; }
 @media(max-width:800px){.nav-actions{display:none}.menu-button{display:block}.mobile-menu{display:grid}.flow{flex-direction:column;max-width:320px}.flow-item{width:100%;display:grid;grid-template-columns:1fr}.flow-item .arrow{margin:auto;transform:rotate(90deg)}}

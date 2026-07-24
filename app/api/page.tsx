@@ -20,11 +20,27 @@ import { Faq } from "../../components/faq";
 function Waitlist() {
   const [email, setEmail] = useState("");
   const [done, setDone] = useState(false);
+  const [sending, setSending] = useState(false);
+  const [failed, setFailed] = useState(false);
 
-  function submit(e: FormEvent) {
+  async function submit(e: FormEvent) {
     e.preventDefault();
     if (!email.trim()) return;
-    setDone(true);
+    setSending(true);
+    setFailed(false);
+    try {
+      const res = await fetch("/api/lead", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ formType: "api", fields: { email } }),
+      });
+      if (!res.ok) throw new Error("send failed");
+      setDone(true);
+    } catch {
+      setFailed(true);
+    } finally {
+      setSending(false);
+    }
   }
 
   const inputStyle = {
@@ -87,9 +103,14 @@ function Waitlist() {
         aria-label="Work email"
         style={inputStyle}
       />
-      <button className="button primary" type="submit">
-        Join the waitlist
+      <button className="button primary" type="submit" disabled={sending}>
+        {sending ? "Joining…" : "Join the waitlist"}
       </button>
+      {failed && (
+        <p style={{ flexBasis: "100%", textAlign: "center" }} className="form-error">
+          Something went wrong sending that — please try again.
+        </p>
+      )}
       <p style={{ flexBasis: "100%", textAlign: "center", margin: "4px 0 0", fontSize: 13, color: "#54607a" }}>
         No spam. We&rsquo;ll only email you about API access and developer previews.
       </p>

@@ -99,10 +99,33 @@ function StickyCTA({ onStart }: { onStart: () => void }) {
 function DemoModal({ onClose }: { onClose: () => void }) {
   const { t } = useLang();
   const [sent, setSent] = useState(false);
-  function submit(event: FormEvent<HTMLFormElement>) { event.preventDefault(); setSent(true); }
+  const [sending, setSending] = useState(false);
+  const [failed, setFailed] = useState(false);
+  async function submit(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    setSending(true);
+    setFailed(false);
+    const data = new FormData(event.currentTarget);
+    try {
+      const res = await fetch("/api/lead", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          formType: "demo",
+          fields: { email: data.get("email"), company: data.get("company"), teamSize: data.get("teamSize") },
+        }),
+      });
+      if (!res.ok) throw new Error("send failed");
+      setSent(true);
+    } catch {
+      setFailed(true);
+    } finally {
+      setSending(false);
+    }
+  }
   return <div className="modal-backdrop" role="presentation" onMouseDown={onClose}><section className="modal" role="dialog" aria-modal="true" aria-labelledby="contact-title" onMouseDown={e => e.stopPropagation()}>
     <button className="modal-close" aria-label="Close form" onClick={onClose}><X size={20} /></button>
-    {sent ? <div className="success"><CheckCircle2 size={38} /><h2>{t("You’re all set.", "Tout est prêt.")}</h2><p>{t("Thanks for your interest. We’ll be in touch shortly.", "Merci de votre intérêt. Nous vous contacterons sous peu.")}</p><button className="button primary" onClick={onClose}>{t("Close", "Fermer")}</button></div> : <><span className="eyebrow">{t("Let’s talk", "Discutons")}</span><h2 id="contact-title">{t("Book an enterprise demo.", "Réservez une démo entreprise.")}</h2><p>{t("Share a few details and our team will tailor the conversation to your operation.", "Partagez quelques détails et notre équipe adaptera la conversation à votre entreprise.")}</p><form onSubmit={submit}><label>{t("Work email", "Courriel professionnel")}<input required type="email" name="email" placeholder="you@company.com" /></label><label>{t("Company name", "Nom de l’entreprise")}<input required name="company" placeholder={t("Your company", "Votre entreprise")} /></label><label>{t("Team size", "Taille de l’équipe")}<select name="teamSize" defaultValue=""><option value="" disabled>{t("Select a range", "Choisissez une plage")}</option><option>1–10</option><option>11–50</option><option>51–250</option><option>251+</option></select></label><button className="button primary" type="submit">{t("Request demo", "Demander la démo")}<ArrowRight size={16} /></button></form></>}
+    {sent ? <div className="success"><CheckCircle2 size={38} /><h2>{t("You’re all set.", "Tout est prêt.")}</h2><p>{t("Thanks for your interest. We’ll be in touch shortly.", "Merci de votre intérêt. Nous vous contacterons sous peu.")}</p><button className="button primary" onClick={onClose}>{t("Close", "Fermer")}</button></div> : <><span className="eyebrow">{t("Let’s talk", "Discutons")}</span><h2 id="contact-title">{t("Book an enterprise demo.", "Réservez une démo entreprise.")}</h2><p>{t("Share a few details and our team will tailor the conversation to your operation.", "Partagez quelques détails et notre équipe adaptera la conversation à votre entreprise.")}</p><form onSubmit={submit}><label>{t("Work email", "Courriel professionnel")}<input required type="email" name="email" placeholder="you@company.com" /></label><label>{t("Company name", "Nom de l’entreprise")}<input required name="company" placeholder={t("Your company", "Votre entreprise")} /></label><label>{t("Team size", "Taille de l’équipe")}<select name="teamSize" defaultValue=""><option value="" disabled>{t("Select a range", "Choisissez une plage")}</option><option>1–10</option><option>11–50</option><option>51–250</option><option>251+</option></select></label>{failed && <p className="form-error">{t("Something went wrong sending that — please try again.", "Une erreur est survenue lors de l’envoi — veuillez réessayer.")}</p>}<button className="button primary" type="submit" disabled={sending}>{sending ? t("Sending…", "Envoi…") : t("Request demo", "Demander la démo")}<ArrowRight size={16} /></button></form></>}
   </section></div>;
 }
 

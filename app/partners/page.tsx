@@ -114,6 +114,8 @@ export default function PartnersPage() {
     message: "",
   });
   const [sent, setSent] = useState(false);
+  const [sending, setSending] = useState(false);
+  const [failed, setFailed] = useState(false);
 
   const inputStyle: React.CSSProperties = {
     width: "100%",
@@ -138,6 +140,25 @@ export default function PartnersPage() {
   const update = (key: keyof typeof form) => (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>,
   ) => setForm({ ...form, [key]: e.target.value });
+
+  async function submit(e: React.FormEvent) {
+    e.preventDefault();
+    setSending(true);
+    setFailed(false);
+    try {
+      const res = await fetch("/api/lead", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ formType: "partners", fields: form }),
+      });
+      if (!res.ok) throw new Error("send failed");
+      setSent(true);
+    } catch {
+      setFailed(true);
+    } finally {
+      setSending(false);
+    }
+  }
 
   return (
     <>
@@ -302,12 +323,7 @@ export default function PartnersPage() {
               </p>
             </div>
           ) : (
-            <form
-              onSubmit={(e) => {
-                e.preventDefault();
-                setSent(true);
-              }}
-            >
+            <form onSubmit={submit}>
               <div style={{ marginBottom: 18 }}>
                 <label style={labelStyle} htmlFor="p-name">
                   Full name
@@ -382,8 +398,9 @@ export default function PartnersPage() {
                 />
               </div>
 
-              <button className="button primary" type="submit" style={{ width: "100%" }}>
-                Submit application
+              {failed && <p className="form-error">Something went wrong sending that — please try again.</p>}
+              <button className="button primary" type="submit" disabled={sending} style={{ width: "100%" }}>
+                {sending ? "Sending…" : "Submit application"}
               </button>
               <p
                 style={{
