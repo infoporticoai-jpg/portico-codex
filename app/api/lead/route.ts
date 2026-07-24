@@ -32,9 +32,9 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "Missing formType or fields" }, { status: 400 });
   }
 
-  const apiKey = process.env.RESEND_API_KEY;
+  const apiKey = process.env.RESEND_API_KEY ?? process.env.Resend;
   if (!apiKey) {
-    console.error("RESEND_API_KEY is not set");
+    console.error("RESEND_API_KEY (or Resend) is not set");
     return NextResponse.json({ error: "Email is not configured yet" }, { status: 500 });
   }
 
