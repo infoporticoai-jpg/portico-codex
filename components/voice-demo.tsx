@@ -248,7 +248,7 @@ export function VoiceDemo({ onBook }: { onBook: () => void }) {
           {/* CENTER — Conversation */}
           <section className="vd-center">
             <div className="vd-live"><span className="vd-live-dot" /> {t("Live Voice Demonstration", "Démonstration vocale en direct")}</div>
-            <p className="vd-biz">{demo.business}</p>
+            <p className="vd-biz">{isFr && demo.businessFr ? demo.businessFr : demo.business}</p>
 
             <div className="vd-player">
               <div

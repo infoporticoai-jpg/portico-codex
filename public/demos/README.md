@@ -24,7 +24,8 @@ Notes
   duration is used automatically.
 - The nav has an EN/FR language toggle. When French is selected, the demo uses
   `audioFr` + `transcriptFr` for the active industry if you've added them; if not,
-  it falls back to the English recording so nothing breaks.
+  no audio plays and a note tells the visitor to switch to EN — it never falls
+  back to playing the English recording under a French label.
 - To edit a transcript, its timestamps, highlighted capabilities, or call-status
   values, edit the matching entry in `components/demo-config.ts`. Each transcript
   line is `{ t: <seconds>, speaker, text, capability?, status? }` and is revealed

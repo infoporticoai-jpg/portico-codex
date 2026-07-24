@@ -63,6 +63,8 @@ export interface Demo {
   labelFr: string;
   /** Business name (spoken in the recording). */
   business: string;
+  /** Business name spoken in the French recording, if different (falls back to `business`). */
+  businessFr?: string;
   /** Path under /public — e.g. "/demos/property-management.mp3". */
   audio: string;
   /** Fallback length in seconds until the real audio metadata loads. */
@@ -74,8 +76,8 @@ export interface Demo {
   /**
    * Optional French recording + transcript (drop the file in /public/demos/
    * and add the matching transcript). When the language toggle is set to
-   * French and these aren't provided yet, the demo falls back to the
-   * English recording rather than showing a broken player.
+   * French and these aren't provided yet, no audio plays — it never falls
+   * back to the English recording under a French label.
    */
   audioFr?: string;
   durationFr?: number;
@@ -97,21 +99,29 @@ export const DEMOS: Demo[] = [
     id: "property-management",
     label: "Property Management",
     labelFr: "Gestion immobilière",
-    business: "ABC Property Management",
+    business: "Cityline Property Management",
     audio: "/demos/property-management.mp3",
-    duration: 50,
+    duration: 108,
+    real: true,
     initialStatus: baseStatus(),
+    // Real recording, real transcript — timed against the actual 108s file.
     transcript: [
-      { t: 0, speaker: "portico", text: "Thank you for calling ABC Property Management. How can I help you today?" },
-      { t: 5, speaker: "caller", text: "Hi — I'd like to schedule a viewing for one of your apartments.", capability: "lead-qualification", status: { intent: "Apartment Viewing", appointment: "Booking in progress" } },
-      { t: 10, speaker: "portico", text: "Absolutely, I can help with that. Which property are you interested in?", capability: "appointment-booking" },
-      { t: 15, speaker: "caller", text: "The Maple Street building." },
-      { t: 19, speaker: "portico", text: "Great choice. Let me check the viewing calendar for Maple Street.", capability: "appointment-booking", status: { knowledgeBase: "Connected" } },
-      { t: 25, speaker: "portico", text: "I have Thursday at 2 PM or Friday at 10 AM open. Which works better for you?", capability: "appointment-booking" },
-      { t: 31, speaker: "caller", text: "Thursday at 2 works perfectly.", status: { sentiment: "Positive" } },
-      { t: 35, speaker: "portico", text: "You're all set for Thursday at 2 PM. Can I get your name and a good callback number?", capability: "appointment-booking", status: { appointment: "Confirmed" } },
-      { t: 41, speaker: "caller", text: "Jordan Lee, 555-0142.", capability: "lead-qualification" },
-      { t: 45, speaker: "portico", text: "Thank you, Jordan. I'll text you a confirmation now. Have a great day!", capability: "customer-support" },
+      { t: 0, speaker: "portico", text: "Thanks for calling Cityline Property Management! This is Nora, your virtual assistant. How can I help you today?" },
+      { t: 8, speaker: "caller", text: "Hi Nora, uh, a bird flew into my balcony window and it shattered. Can I get a hold of someone to take a look?", capability: "lead-qualification", status: { intent: "Broken Window / Maintenance Request" } },
+      { t: 18, speaker: "portico", text: "Oh, I'm sorry to hear that. We'll get this sorted out quickly. Can I start with your name?", capability: "lead-qualification" },
+      { t: 26, speaker: "caller", text: "Yeah, my name is Ludwig.", capability: "lead-qualification" },
+      { t: 28, speaker: "portico", text: "Thanks, Ludwig. And what's the best number to reach you?", capability: "lead-qualification" },
+      { t: 33, speaker: "caller", text: "It's seven six seven five, five one four, three one two three." },
+      { t: 39, speaker: "portico", text: "Got it. So that's seven six seven, five one four, three one two three. Is that right?", capability: "lead-qualification" },
+      { t: 49, speaker: "caller", text: "That's correct." },
+      { t: 50, speaker: "portico", text: "Perfect. And what's the full address and unit number?", capability: "lead-qualification" },
+      { t: 54, speaker: "caller", text: "It is unit number 201 at the 780 St. Joseph Boulevard, in Montreal.", capability: "lead-qualification" },
+      { t: 61, speaker: "portico", text: "Okay, noted. I'll pass this to the team and they'll confirm the building and get back to you. And do mornings or afternoons work better for you?", capability: "appointment-booking", status: { appointment: "Booking in progress" } },
+      { t: 73, speaker: "caller", text: "Uh, better in the afternoon since I'm working throughout the day.", status: { sentiment: "Positive" } },
+      { t: 78, speaker: "portico", text: "Alright. So, just to confirm, that's a shattered balcony window at 780 Saint Joseph Boulevard, unit 201, for Ludwig, with a preference for an afternoon callback. Anything else I should note?", capability: "appointment-booking", status: { appointment: "Callback scheduled" } },
+      { t: 93, speaker: "caller", text: "That is everything. Thank you so much.", status: { sentiment: "Positive" } },
+      { t: 96, speaker: "portico", text: "Right. Thanks so much, Ludwig. It's all noted, we'll take care of you. Have a great day, thanks for calling, bye now.", capability: "customer-support" },
+      { t: 106, speaker: "caller", text: "Bye." },
     ],
   },
   {
@@ -119,9 +129,12 @@ export const DEMOS: Demo[] = [
     label: "Home Services",
     labelFr: "Services à domicile",
     business: "Comfort Home Services",
+    businessFr: "Maison Confort",
     audio: "/demos/home-services.mp3",
     duration: 110,
     real: true,
+    audioFr: "/demos/home-services-fr.mp3",
+    durationFr: 103,
     initialStatus: baseStatus({ intent: "Detecting…" }),
     // Real recording, real transcript — timed against the actual 110s file.
     transcript: [
@@ -144,26 +157,68 @@ export const DEMOS: Demo[] = [
       { t: 101, speaker: "portico", text: "Alright, thanks so much, Nicholas. It's all noted. Have a great day. Thanks for calling — bye now.", capability: "customer-support" },
       { t: 109, speaker: "caller", text: "Bye." },
     ],
+    // Real French recording, real transcript — timed against the actual 102.7s file.
+    transcriptFr: [
+      { t: 0, speaker: "portico", text: "Merci d’avoir appelé Maison Confort. Ici Léa, votre assistante virtuelle. Comment je peux vous aider aujourd’hui?" },
+      { t: 7, speaker: "caller", text: "Dans le fond, je vais prendre ma douche ce matin, puis je n’ai juste pas d’eau qui sortait.", capability: "lead-qualification", status: { intent: "Demande de plomberie" } },
+      { t: 12, speaker: "portico", text: "Ah, je comprends, ça doit être inconfortable. On va s’occuper de ça. Je commence par votre nom.", capability: "lead-qualification" },
+      { t: 18, speaker: "caller", text: "Thomas.", capability: "lead-qualification" },
+      { t: 21, speaker: "portico", text: "Merci Thomas. Et quel est le meilleur numéro pour vous joindre?", capability: "lead-qualification" },
+      { t: 25, speaker: "caller", text: "C’est le 438 828 5177." },
+      { t: 33, speaker: "portico", text: "Parfait. J’ai 438 828 5177. C’est bien ça?", capability: "lead-qualification" },
+      { t: 41, speaker: "caller", text: "Oui." },
+      { t: 42, speaker: "portico", text: "Et quelle est l’adresse où un technicien devrait se rendre?", capability: "lead-qualification" },
+      { t: 45, speaker: "caller", text: "Le 295 rue Brunet à Saint-Lazare.", capability: "lead-qualification" },
+      { t: 50, speaker: "portico", text: "Laissez-moi m’assurer que j’ai bien ça. C’est le 295 rue Brunet, à Saint-Lazare. C’est exact?", capability: "lead-qualification" },
+      { t: 59, speaker: "caller", text: "Exact." },
+      { t: 63, speaker: "portico", text: "Entendu. Et en général, est-ce que les avant-midi ou les après-midi marchent mieux pour vous?", capability: "appointment-booking", status: { appointment: "Prise de rendez-vous en cours" } },
+      { t: 68, speaker: "caller", text: "L’avant-midi, s’il vous plaît.", status: { sentiment: "Positif" } },
+      { t: 72, speaker: "portico", text: "Parfait. Donc j’ai un problème de plomberie pour l’eau qui ne sort pas, au 295 rue Brunet à Saint-Lazare, et l’équipe va vous rappeler pour confirmer l’heure. Autre chose que je peux noter pour eux?", capability: "appointment-booking", status: { appointment: "Rappel prévu" } },
+      { t: 82, speaker: "caller", text: "Ouais, je veux m’assurer qu’ils n’ont pas peur des chiens parce que j’ai un gros chien chez moi." },
+      { t: 88, speaker: "portico", text: "Pas de problème, je l’ajoute à la demande. Parfait, merci beaucoup Thomas. C’est noté, l’équipe va vous rappeler pour confirmer l’heure. Bonne journée, merci d’avoir appelé, au revoir.", capability: "customer-support" },
+      { t: 100, speaker: "caller", text: "Merci et bonne journée.", status: { sentiment: "Positif" } },
+    ],
   },
   {
     id: "law-firms",
     label: "Law Firms",
     labelFr: "Cabinets d’avocats",
-    business: "Harbor & Cole LLP",
+    business: "Harper & Associates",
     audio: "/demos/law-firms.mp3",
-    duration: 50,
+    duration: 172,
+    real: true,
     initialStatus: baseStatus(),
+    // Real recording, real transcript — timed against the actual 172.5s file.
     transcript: [
-      { t: 0, speaker: "portico", text: "Thank you for calling Harbor and Cole. How can I direct your call?" },
-      { t: 4, speaker: "caller", text: "I was in a car accident last week and I think I need a lawyer.", capability: "lead-qualification", status: { intent: "Personal Injury Intake", sentiment: "Concerned" } },
-      { t: 11, speaker: "portico", text: "I'm sorry that happened. I can take a few details and connect you with our intake attorney. Was anyone injured?", capability: "lead-qualification" },
-      { t: 18, speaker: "caller", text: "Yes, I hurt my back and I've already seen a doctor." },
-      { t: 23, speaker: "portico", text: "Thank you. Has any insurance company contacted you yet?", capability: "faq" },
-      { t: 28, speaker: "caller", text: "Not yet." },
-      { t: 31, speaker: "system", event: "transfer-initiated", text: "Warm transfer initiated…", capability: "call-transfers", status: { transfer: "In progress" } },
-      { t: 34, speaker: "system", event: "receptionist-connected", text: "Intake attorney connected", status: { transfer: "Connected" } },
-      { t: 37, speaker: "human", text: "Hi, this is Dana with Harbor and Cole's intake team. I have your accident details — let's talk about next steps." },
-      { t: 45, speaker: "caller", text: "Thank you, I appreciate it.", status: { sentiment: "Positive" } },
+      { t: 0, speaker: "portico", text: "Thanks for calling Harper and Associates! This is Claire, your virtual assistant. How can I help you today?" },
+      { t: 7, speaker: "caller", text: "Hey Claire, yeah I was just calling about your guys's process. Um, yesterday I walked into a restaurant. And there was no sign indicated that it was like a wet floor. And I slipped and I hit my head really hard and now like I really want to sue them.", capability: "lead-qualification", status: { intent: "Personal Injury Intake", sentiment: "Concerned" } },
+      { t: 27, speaker: "portico", text: "Oh, I'm so sorry to hear that. I hope you're doing okay. Um, do you already have a case open with us, or is this something recent?", capability: "lead-qualification" },
+      { t: 38, speaker: "caller", text: "No, it's something recent." },
+      { t: 39, speaker: "portico", text: "Alright, well, one important piece of advice before we go on: if the other side's insurance company contacts you, avoid giving a recorded statement or signing anything before you've talked to an attorney. It doesn't commit you to anything to let us look at it first.", capability: "faq" },
+      { t: 58, speaker: "caller", text: "All right." },
+      { t: 59, speaker: "portico", text: "The attorney will walk you through the process and your options. Let me just grab a few quick details so they can call you back today. Can I start with your name?", capability: "lead-qualification" },
+      { t: 72, speaker: "caller", text: "Yeah, it's Christian.", capability: "lead-qualification" },
+      { t: 73, speaker: "portico", text: "Thanks, Christian. And what's the best number to reach you?", capability: "lead-qualification" },
+      { t: 77, speaker: "caller", text: "It's gonna be 208-692-1234." },
+      { t: 80, speaker: "portico", text: "Got it. I got two zero eight, six nine two, one two three four. Is that right?", capability: "lead-qualification" },
+      { t: 89, speaker: "caller", text: "Yeah, exactly." },
+      { t: 90, speaker: "portico", text: "Perfect. And were there any injuries from the fall?", capability: "lead-qualification" },
+      { t: 94, speaker: "caller", text: "Oh, I mean, I think I might have a concussion.", status: { sentiment: "Concerned" } },
+      { t: 98, speaker: "portico", text: "Okay, noted. And was there a police report, or were you seen at a hospital or a clinic?", capability: "faq" },
+      { t: 105, speaker: "caller", text: "No. No, no police report." },
+      { t: 107, speaker: "portico", text: "Understood. And can you confirm the full date of the incident for me?", capability: "lead-qualification" },
+      { t: 113, speaker: "caller", text: "Yeah, it was July 22nd. 2026." },
+      { t: 116, speaker: "portico", text: "Got it. Let me make sure I've got this: it happened on July twenty-second, is that right?" },
+      { t: 125, speaker: "caller", text: "Yeah." },
+      { t: 126, speaker: "portico", text: "Okay. And roughly where did it happen?", capability: "lead-qualification" },
+      { t: 128, speaker: "caller", text: "Uh, like I said, I hit my head pretty hard, so I don't remember the exact location, but I know it was on St. Catherine. In Montreal." },
+      { t: 139, speaker: "portico", text: "Okay. On Saint Catherine in Montreal, is that right?" },
+      { t: 143, speaker: "caller", text: "Yeah." },
+      { t: 144, speaker: "portico", text: "Perfect, thank you. Just so you know, the consultation is free, and our fee is thirty-three percent of what we recover, only if we win. An attorney will call you back today. Does that work for you?", capability: "appointment-booking", status: { appointment: "Callback scheduled" } },
+      { t: 159, speaker: "caller", text: "Yeah, it's perfect. Thank you.", status: { sentiment: "Positive" } },
+      { t: 161, speaker: "portico", text: "Alright, thanks so much, Christian. We've got everything we need, it's already with the attorney. Have a good day, thanks for calling, bye now.", capability: "customer-support" },
+      { t: 170, speaker: "caller", text: "Thank you, bye-bye." },
+      { t: 171, speaker: "portico", text: "Take care!" },
     ],
   },
 ];
