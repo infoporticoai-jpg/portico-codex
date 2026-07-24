@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { ArrowLeft, ArrowRight, CheckCircle2, X } from "lucide-react";
-import { useLang, useOpenModal, PORTAL_URL } from "./site-context";
+import { useLang, useOpenModal, STRIPE_CHECKOUT_URL } from "./site-context";
 import { TIERS } from "./pricing-plans";
 
 type FormData = {
@@ -125,9 +125,11 @@ export function TrialWizard({ onClose }: { onClose: () => void }) {
                   <div className="wiz-plans">
                     {TIERS.map((tr, i) => (
                       <button key={tr.calls} type="button" className={`wiz-plan ${form.planIdx === i ? "on" : ""}`} onClick={() => set("planIdx", i)}>
+                        {i === 1 && <span className="wiz-plan-badge">{t("Most popular", "Le plus populaire")}</span>}
+                        <span className="wiz-plan-radio" aria-hidden="true" />
                         <span className="wiz-plan-calls">{tr.calls.toLocaleString()} {t("calls/mo", "appels/mois")}</span>
                         <span className="wiz-plan-price">${tr.price.toLocaleString()}<small>{t("/mo", "/mois")}</small></span>
-                        {form.planIdx === i && <CheckCircle2 size={16} className="wiz-plan-check" />}
+                        <span className="wiz-plan-percall">{t(`≈ $${(tr.price / tr.calls).toFixed(2)}/call`, `≈ ${(tr.price / tr.calls).toFixed(2)} $/appel`)}</span>
                       </button>
                     ))}
                   </div>
@@ -146,14 +148,14 @@ export function TrialWizard({ onClose }: { onClose: () => void }) {
             <CheckCircle2 size={40} className="wiz-final-check" />
             <h2>{t("You’re almost set, ", "Vous y êtes presque, ") + (form.name.split(" ")[0] || "")}.</h2>
             <p>{t(
-              `Your ${tier.calls.toLocaleString()}-call plan starts with a 14-day free trial — no charge today. We’ll email you a reminder before it ends, and your card is only charged then if you keep your plan.`,
-              `Votre forfait de ${tier.calls.toLocaleString()} appels commence par un essai gratuit de 14 jours — aucuns frais aujourd’hui. Nous vous enverrons un rappel par courriel avant la fin, et votre carte ne sera débitée qu’à ce moment si vous conservez votre forfait.`
+              `Your ${tier.calls.toLocaleString()}-call plan starts with a 14-day free trial — no charge today. We’ll email you a reminder one day before your trial ends, and your card is only charged then if you keep your plan.`,
+              `Votre forfait de ${tier.calls.toLocaleString()} appels commence par un essai gratuit de 14 jours — aucuns frais aujourd’hui. Nous vous enverrons un rappel par courriel un jour avant la fin de votre essai, et votre carte ne sera débitée qu’à ce moment si vous conservez votre forfait.`
             )}</p>
             <p className="wiz-final-note">{t(
-              "To keep your payment details secure, you’ll finish setup on our portal — you’ll land straight in your new account.",
-              "Pour protéger vos informations de paiement, vous terminerez la configuration sur notre portail — vous arriverez directement dans votre nouveau compte."
+              "To keep your payment details secure, you’ll finish setup on our secure checkout page.",
+              "Pour protéger vos informations de paiement, vous terminerez la configuration sur notre page de paiement sécurisée."
             )}</p>
-            <a className="button primary" href={PORTAL_URL}>{t("Continue to secure checkout", "Continuer vers le paiement sécurisé")} <ArrowRight size={16} /></a>
+            <a className="button primary" href={STRIPE_CHECKOUT_URL}>{t("Continue to secure checkout", "Continuer vers le paiement sécurisé")} <ArrowRight size={16} /></a>
           </motion.div>
         )}
       </section>

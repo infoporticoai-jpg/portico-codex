@@ -624,14 +624,17 @@ body { margin:0; color:var(--ink); background:#fff; font-family:Geist,Arial,sans
 .wiz-pill { font:inherit; font-size:13px; font-weight:600; color:#475569; background:#fff; border:1px solid #dbe1e9; padding:9px 14px; border-radius:999px; cursor:pointer; transition:.15s; }
 .wiz-pill:hover { border-color:var(--blue); }
 .wiz-pill.on { background:var(--blue); border-color:var(--blue); color:#fff; }
-.wiz-plans { display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-top:20px; }
-.wiz-plan { position:relative; text-align:left; padding:14px 16px; border:1.5px solid #dbe1e9; border-radius:12px; background:#fff; cursor:pointer; transition:.15s; }
-.wiz-plan:hover { border-color:var(--blue); }
-.wiz-plan.on { border-color:var(--blue); background:#fff3ea; }
-.wiz-plan-calls { display:block; font-size:12.5px; color:#64748b; font-weight:600; margin-bottom:4px; }
-.wiz-plan-price { display:block; font-size:19px; font-weight:700; color:#1b2438; }
+.wiz-plans { display:grid; grid-template-columns:1fr 1fr; gap:14px; margin-top:22px; }
+.wiz-plan { position:relative; text-align:left; padding:20px 18px 18px; border:1.5px solid #e5e9f0; border-radius:16px; background:#fff; cursor:pointer; transition:border-color .15s, box-shadow .15s, transform .15s; }
+.wiz-plan:hover { border-color:#f0a86e; transform:translateY(-2px); box-shadow:0 10px 24px -12px rgba(15,23,42,.18); }
+.wiz-plan.on { border-color:var(--blue); background:linear-gradient(180deg,#fff8f2,#fff); box-shadow:0 12px 28px -14px rgba(242,106,31,.35); }
+.wiz-plan-badge { position:absolute; top:-11px; left:16px; background:var(--blue); color:#fff; font-size:10.5px; font-weight:700; letter-spacing:.03em; text-transform:uppercase; padding:4px 10px; border-radius:999px; }
+.wiz-plan-radio { position:absolute; top:18px; right:18px; width:18px; height:18px; border-radius:50%; border:1.5px solid #cbd5e1; background:#fff; transition:.15s; }
+.wiz-plan.on .wiz-plan-radio { border-color:var(--blue); background:var(--blue); box-shadow:inset 0 0 0 3px #fff; }
+.wiz-plan-calls { display:block; font-size:12.5px; color:#64748b; font-weight:600; margin-bottom:6px; padding-right:24px; }
+.wiz-plan-price { display:block; font-size:22px; font-weight:800; letter-spacing:-.02em; color:#1b2438; }
 .wiz-plan-price small { font-size:12px; font-weight:600; color:#94a3b8; }
-.wiz-plan-check { position:absolute; top:12px; right:12px; color:var(--blue); }
+.wiz-plan-percall { display:block; margin-top:4px; font-size:11.5px; color:#94a3b8; }
 .wiz-enterprise-link { display:block; margin-top:16px; background:none; border:0; padding:0; font:inherit; font-size:13px; font-weight:600; color:var(--blue); cursor:pointer; }
 .wiz-enterprise-link:hover { text-decoration:underline; }
 .wiz-actions { display:flex; align-items:center; justify-content:space-between; margin-top:28px; }
