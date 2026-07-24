@@ -195,18 +195,20 @@ export function VoiceDemo({ onBook }: { onBook: () => void }) {
       <div className="vdemo-card">
         {/* Industry switcher */}
         <div className="vd-tabs" role="tablist" aria-label="Choose an industry">
-          {DEMOS.map((d) => (
-            <button
-              key={d.id}
-              role="tab"
-              aria-selected={d.id === activeId}
-              className={`vd-tab ${d.id === activeId ? "on" : ""}`}
-              onClick={() => setActiveId(d.id)}
-            >
-              {d.id === activeId && <motion.span layoutId="vd-tabpill" className="vd-tabpill" transition={{ type: "spring", stiffness: 400, damping: 34 }} />}
-              <span className="vd-tab-text">{t(d.label, d.labelFr)}</span>
-            </button>
-          ))}
+          <div className="vd-tabs-scroll">
+            {DEMOS.map((d) => (
+              <button
+                key={d.id}
+                role="tab"
+                aria-selected={d.id === activeId}
+                className={`vd-tab ${d.id === activeId ? "on" : ""}`}
+                onClick={() => setActiveId(d.id)}
+              >
+                {d.id === activeId && <motion.span layoutId="vd-tabpill" className="vd-tabpill" transition={{ type: "spring", stiffness: 400, damping: 34 }} />}
+                <span className="vd-tab-text">{t(d.label, d.labelFr)}</span>
+              </button>
+            ))}
+          </div>
           {isFr ? (
             hasFrAudio && hasFrTranscript ? (
               <span className="vd-sample vd-sample-real">Enregistrement réel · transcription réelle</span>
