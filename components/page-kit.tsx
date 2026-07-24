@@ -2,7 +2,7 @@
 
 import { ComponentType, ReactNode, useEffect, useRef, useState } from "react";
 import { ArrowRight } from "lucide-react";
-import { useOpenModal } from "./site-chrome";
+import { useOpenModal, useLang } from "./site-chrome";
 
 type IconType = ComponentType<{ size?: number; className?: string }>;
 
@@ -92,6 +92,36 @@ export function CtaBanner({ title, sub }: { title: ReactNode; sub: string }) {
         <div className="hero-actions reveal">
           <button className="button primary" onClick={() => open("trial")}>Start Free Trial</button>
           <button className="button dark-outline" onClick={() => open("demo")}>Book Demo</button>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+export type LegalSection = { h: string; hFr: string; body: string[]; bodyFr: string[] };
+
+export function LegalPage({
+  eyebrow, eyebrowFr, title, titleFr, updated, updatedFr, sections,
+}: {
+  eyebrow: string; eyebrowFr: string; title: string; titleFr: string; updated: string; updatedFr: string;
+  sections: LegalSection[];
+}) {
+  const { t } = useLang();
+  return (
+    <section className="section subpage">
+      <div className="shell">
+        <div className="section-head legal-head reveal">
+          <span className="eyebrow">{t(eyebrow, eyebrowFr)}</span>
+          <h1>{t(title, titleFr)}</h1>
+          <p className="legal-updated">{t(updated, updatedFr)}</p>
+        </div>
+        <div className="prose legal-prose reveal">
+          {sections.map((s, i) => (
+            <div key={i}>
+              <h2>{t(s.h, s.hFr)}</h2>
+              {s.body.map((p, j) => <p key={j}>{t(p, s.bodyFr[j])}</p>)}
+            </div>
+          ))}
         </div>
       </div>
     </section>

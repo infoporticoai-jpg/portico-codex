@@ -3,7 +3,7 @@
 import { FormEvent, ReactNode, useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 import { AnimatePresence, motion } from "framer-motion";
-import { ArrowRight, CheckCircle2, ChevronDown, Globe, Menu, User, X } from "lucide-react";
+import { ArrowRight, CheckCircle2, ChevronDown, Globe, Mail, MapPin, Menu, Phone, User, X } from "lucide-react";
 import { TrialWizard } from "./trial-wizard";
 import { ModalCtx, OpenFn, LangCtx, Lang, PORTAL_URL, useLang, useOpenModal } from "./site-context";
 
@@ -146,7 +146,62 @@ export function SiteChrome({ children }: { children: ReactNode }) {
         <a href={e.href} key={e.label} onClick={() => setMobileOpen(false)}>{t(e.label, e.labelFr)}</a>
       ))}<button className="button primary" onClick={() => open("trial")}>{t("Start Free Trial", "Essai gratuit")}</button></div>}</div>
       <main>{children}</main>
-      <footer className="footer"><div className="shell footer-inner"><a className="wordmark" href="/"><LogoMark />PORTICO</a><div className="footer-links"><a href="/#solution">{t("How it Works", "Comment ça marche")}</a><a href="/pricing">{t("Pricing", "Tarifs")}</a><a href="/about">{t("About", "À propos")}</a><a href="/blog">{t("Blog", "Blogue")}</a><a href="/faq">{t("FAQ", "FAQ")}</a><a href="/pricing#enterprise">{t("Enterprise", "Entreprise")}</a><a href="mailto:hello@portico.intelligence">{t("Email us", "Écrivez-nous")}</a></div></div></footer>
+      <footer className="footer">
+        <div className="shell">
+          <div className="footer-top">
+            <div className="footer-brand">
+              <a className="wordmark" href="/"><LogoMark />PORTICO</a>
+              <p>{t("The hybrid call center. Voice agents answer every call, humans handle what matters.", "Le centre d’appels hybride. Les agents vocaux répondent à chaque appel, les humains gèrent ce qui compte.")}</p>
+              <div className="footer-contact">
+                <a href="mailto:hello@porticointelligence.com"><Mail size={15} /> hello@porticointelligence.com</a>
+                <a href="tel:+14388285171"><Phone size={15} /> +1 438 828 5171</a>
+                <span><MapPin size={15} /> {t("Montréal, QC · Miami, FL", "Montréal, QC · Miami, FL")}</span>
+              </div>
+            </div>
+            <div className="footer-col">
+              <h4>{t("Products", "Produits")}</h4>
+              <a href="/voice-agents">{t("Voice Agents", "Agents vocaux")}</a>
+              <a href="/call-routing">{t("Call Routing", "Routage des appels")}</a>
+              <a href="/integrations">{t("Integrations", "Intégrations")}</a>
+            </div>
+            <div className="footer-col">
+              <h4>{t("Industries", "Secteurs")}</h4>
+              <a href="/property-management">{t("Property Management", "Gestion immobilière")}</a>
+              <a href="/home-services">{t("Home Services", "Services à domicile")}</a>
+              <a href="/law-firms">{t("Law Firms", "Cabinets d’avocats")}</a>
+              <a href="/dental">{t("Dental", "Dentaire")}</a>
+              <a href="/veterinary">{t("Veterinary", "Vétérinaire")}</a>
+              <a href="/medical-clinics">{t("Medical Clinics", "Cliniques médicales")}</a>
+              <a href="/real-estate">{t("Real Estate", "Immobilier")}</a>
+              <a href="/industries">{t("All industries", "Tous les secteurs")}</a>
+            </div>
+            <div className="footer-col">
+              <h4>{t("Company", "Entreprise")}</h4>
+              <a href="/about">{t("About", "À propos")}</a>
+              <a href="/partners">{t("Partners", "Partenaires")}</a>
+              <a href="/careers">{t("Careers", "Carrières")}</a>
+              <a href="/contact">{t("Contact", "Contact")}</a>
+            </div>
+            <div className="footer-col">
+              <h4>{t("Resources", "Ressources")}</h4>
+              <a href="/knowledge-base">{t("Knowledge Base", "Centre de connaissances")}</a>
+              <a href="/blog">{t("Blog", "Blogue")}</a>
+              <a href="/help-center">{t("Help Center", "Centre d’aide")}</a>
+              <a href="/faq">{t("FAQ", "FAQ")}</a>
+            </div>
+            <div className="footer-col">
+              <h4>{t("Legal", "Mentions légales")}</h4>
+              <a href="/privacy">{t("Privacy Policy", "Politique de confidentialité")}</a>
+              <a href="/terms">{t("Terms of Service", "Conditions d’utilisation")}</a>
+              <a href="/acceptable-use">{t("Acceptable Use", "Utilisation acceptable")}</a>
+            </div>
+          </div>
+          <div className="footer-bottom">
+            <span className="footer-compliance">{t("Bill 25 & Law 101 compliant", "Conforme à la Loi 25 et à la Loi 101")}</span>
+            <span>© 2026 Portico Intelligence. {t("All rights reserved.", "Tous droits réservés.")}</span>
+          </div>
+        </div>
+      </footer>
       <StickyCTA onStart={() => open("trial")} />
       {modal === "demo" && <DemoModal onClose={() => setModal(null)} />}
       {modal === "trial" && <TrialWizard onClose={() => setModal(null)} />}
